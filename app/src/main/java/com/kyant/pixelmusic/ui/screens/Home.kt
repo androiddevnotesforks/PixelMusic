@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.ui.theme.androidOrange
 import com.kyant.pixelmusic.ui.theme.googleBlue
 import com.kyant.pixelmusic.ui.theme.googleRed
-import com.kyant.pixelmusic.ui.theme.googleYellow
 
 @Composable
 fun Home(modifier: Modifier = Modifier) {
