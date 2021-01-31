@@ -13,7 +13,7 @@ now and animations may be not fluent enough.
 * I won't provide any packages during this **Pre-Alpha stage** due to the instability, you can build
   it in person. Welcome to report issues and pull request.
 
-## Technological features
+## Technical features
 
 * **Kotlin** 1.4.30-RC
 * **Androidx** Snapshot [7113967](https://androidx.dev/snapshots/builds/7113967/artifacts)
