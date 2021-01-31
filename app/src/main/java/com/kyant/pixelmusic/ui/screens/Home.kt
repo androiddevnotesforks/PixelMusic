@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.ui.theme.androidOrange
 import com.kyant.pixelmusic.ui.theme.googleBlue
 import com.kyant.pixelmusic.ui.theme.googleRed
 import com.kyant.pixelmusic.ui.theme.googleYellow
@@ -66,7 +67,7 @@ fun Home(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 RoundedCornerShape(16.dp),
-                googleBlue,
+                googleBlue.copy(0.04f),
                 elevation = 0.dp
             ) {
                 Row(
@@ -77,11 +78,13 @@ fun Home(modifier: Modifier = Modifier) {
                 ) {
                     Icon(
                         rememberVectorPainter(Icons.Outlined.Search),
-                        "Search"
+                        "Search",
+                        tint = googleBlue
                     )
                     Spacer(Modifier.preferredWidth(32.dp))
                     Text(
                         "Universal Search",
+                        color = googleBlue,
                         style = MaterialTheme.typography.h5
                     )
                 }
@@ -93,7 +96,7 @@ fun Home(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 RoundedCornerShape(16.dp),
-                googleYellow,
+                androidOrange.copy(0.04f),
                 elevation = 0.dp
             ) {
                 Row(
@@ -104,11 +107,13 @@ fun Home(modifier: Modifier = Modifier) {
                 ) {
                     Icon(
                         rememberVectorPainter(Icons.Outlined.Equalizer),
-                        "Tops"
+                        "Tops",
+                        tint = androidOrange
                     )
                     Spacer(Modifier.preferredWidth(32.dp))
                     Text(
                         "Top Lists",
+                        color = androidOrange,
                         style = MaterialTheme.typography.h5
                     )
                 }
@@ -120,7 +125,7 @@ fun Home(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 RoundedCornerShape(16.dp),
-                googleRed,
+                googleRed.copy(0.04f),
                 elevation = 0.dp
             ) {
                 Row(
@@ -131,11 +136,13 @@ fun Home(modifier: Modifier = Modifier) {
                 ) {
                     Icon(
                         rememberVectorPainter(Icons.Outlined.BugReport),
-                        "Bug"
+                        "Bug",
+                        tint = googleRed
                     )
                     Spacer(Modifier.preferredWidth(32.dp))
                     Text(
                         "Crash your system",
+                        color = googleRed,
                         style = MaterialTheme.typography.h5
                     )
                 }
