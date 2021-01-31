@@ -1,0 +1,74 @@
+package com.kyant.pixelmusic.ui.component
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.Media
+import com.kyant.pixelmusic.media.Song
+import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+
+@Composable
+fun Song(
+    song: Song,
+    modifier: Modifier = Modifier
+) {
+    val player = LocalePixelPlayer.current
+    Row(
+        modifier
+            .fillMaxWidth()
+            .preferredHeight(64.dp)
+            .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable {
+                CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                    if (Media.browser.isConnected) {
+                        Media.addSongToPlaylist(
+                            (player.currentWindowIndex + 1).coerceAtMost(Media.songs.size),
+                            song
+                        )
+                        Media.session?.isActive = true
+                        player.next()
+                        player.play()
+                    }
+                }
+            },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Cover(
+            song,
+            Modifier
+                .preferredSize(48.dp)
+                .clip(SmoothRoundedCornerShape())
+        )
+        Column(Modifier.padding(horizontal = 16.dp)) {
+            Text(
+                song.title.toString(),
+                fontWeight = FontWeight.Medium,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = MaterialTheme.typography.body1
+            )
+            Spacer(Modifier.preferredHeight(4.dp))
+            Text(
+                song.subtitle.toString(),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                style = MaterialTheme.typography.caption
+            )
+        }
+    }
+}
