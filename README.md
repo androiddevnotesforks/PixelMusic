@@ -35,3 +35,7 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 
 * **Amplitude Visualization:** [Amplituda](https://github.com/lincollincol/Amplituda)
   by lincollincol
+
+* **Google Sans Rounded
+  Font:** [google_sans_plus_font](https://github.com/nongthaihoang/google_sans_plus_font)
+  by nongthaihoang
