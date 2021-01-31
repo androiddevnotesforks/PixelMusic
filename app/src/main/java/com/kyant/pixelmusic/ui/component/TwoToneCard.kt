@@ -27,7 +27,7 @@ fun TwoToneCard(
             .fillMaxWidth()
             .padding(16.dp, 8.dp),
         RoundedCornerShape(16.dp),
-        color.copy(0.04f),
+        color.copy(0.05f),
         elevation = 0.dp
     ) {
         Row(
