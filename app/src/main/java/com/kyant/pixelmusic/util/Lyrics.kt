@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.kyant.pixelmusic.api.Content
 import com.kyant.pixelmusic.api.Lyrics
 import com.kyant.pixelmusic.api.Time
-import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
@@ -30,6 +30,6 @@ fun Time.toMilliseconds(): Long {
 @Composable
 fun Time.isCurrentLine(lyrics: Lyrics): Boolean {
     return this == lyrics.keys.lastOrNull {
-        LocalePixelPlayer.current.position.value >= it.toMilliseconds()
+        LocalPixelPlayer.current.position.value >= it.toMilliseconds()
     }
 }

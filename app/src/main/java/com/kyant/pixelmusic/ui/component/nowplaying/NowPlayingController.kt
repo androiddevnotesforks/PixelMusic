@@ -13,12 +13,12 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.locals.Media
 
 @Composable
 fun NowPlayingController(modifier: Modifier = Modifier) {
-    val player = LocalePixelPlayer.current
+    val player = LocalPixelPlayer.current
     Row(modifier) {
         IconButton({}) {
             Icon(Icons.Outlined.FavoriteBorder, "Favorite")
@@ -59,7 +59,7 @@ fun NowPlayingController(modifier: Modifier = Modifier) {
 
 @Composable
 fun NowPlayingControllerCompact(modifier: Modifier = Modifier) {
-    val player = LocalePixelPlayer.current
+    val player = LocalPixelPlayer.current
     Row(modifier) {
         IconButton({ player.previous() }) {
             Icon(Icons.Outlined.SkipPrevious, "Skip to prevoius")

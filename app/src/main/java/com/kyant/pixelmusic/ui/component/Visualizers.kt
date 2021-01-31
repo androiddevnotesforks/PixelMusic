@@ -14,14 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalAmplitudes
-import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.util.normalize
 
 @Composable
 fun AmplitudeVisualizer(modifier: Modifier = Modifier) {
     val state = rememberLazyListState()
     val amplitudes = LocalAmplitudes.current
-    val player = LocalePixelPlayer.current
+    val player = LocalPixelPlayer.current
     LaunchedEffect(player.progress) {
         state.snapToItemIndex((state.layoutInfo.totalItemsCount * player.progress).toInt())
     }

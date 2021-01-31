@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.palette.graphics.Palette
 import com.kyant.pixelmusic.locals.LocalNowPlaying
-import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.Cover
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +36,7 @@ fun BoxScope.NowPlayingCollapsed(
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
-    val player = LocalePixelPlayer.current
+    val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
     var backgroundColor by remember { mutableStateOf<Color?>(null) }

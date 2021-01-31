@@ -1,6 +1,6 @@
-# Pixel Player
+# Pixel Music
 
-This is a beautiful **unofficial NetEase Cloud music player** on Android 🥳! Thanks to the KMM and
+This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳! Thanks to the KMM and
 Compose, I planned to support more platforms such as MacOS, Windows 10, Linux in the near future.
 
 **Note:** This project is still in progress, which means it has instability. The features are poor
@@ -25,7 +25,7 @@ now and animations may be not fluent enough.
 * **Android Studio** Arctic Fox | 2020.3.1 Canary 5 or higher
 * **Gradle** 6.8.1 or higher
 
-## Thanks
+## Special Thanks
 
 * **Amplitude Visualization:** [Amplituda](https://github.com/lincollincol/Amplituda)
   by **lincollincol**

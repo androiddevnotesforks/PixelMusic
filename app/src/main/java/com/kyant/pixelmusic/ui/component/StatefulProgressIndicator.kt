@@ -20,7 +20,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.kyant.pixelmusic.locals.LocalePixelPlayer
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.util.minus
 import com.kyant.pixelmusic.util.times
 import com.kyant.pixelmusic.util.toOffsetTimeString
@@ -32,7 +32,7 @@ import kotlin.time.toDuration
 @OptIn(ExperimentalAnimationApi::class, ExperimentalTime::class)
 @Composable
 fun StatefulProgressIndicator(modifier: Modifier = Modifier) {
-    val player = LocalePixelPlayer.current
+    val player = LocalPixelPlayer.current
     BoxWithConstraints(modifier.fillMaxWidth()) {
         var draggingOffset by remember { mutableStateOf(0f) }.apply {
             value = value.coerceIn(((0f..1f) - player.progress) * constraints.maxWidth.toFloat())

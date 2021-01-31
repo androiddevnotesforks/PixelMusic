@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import com.kyant.pixelmusic.media.PixelPlayer
 
-val LocalePixelPlayer = compositionLocalOf<PixelPlayer> { error("No PixelPlayer was provided.") }
+val LocalPixelPlayer = compositionLocalOf<PixelPlayer> { error("No PixelPlayer was provided.") }
 
 @Composable
 fun ProvidePixelPlayer(content: @Composable () -> Unit) {
@@ -16,5 +16,5 @@ fun ProvidePixelPlayer(content: @Composable () -> Unit) {
         position = remember { Animatable(0f) }
         bufferedPositionState = remember { Animatable(0f) }
     }
-    Providers(LocalePixelPlayer provides player, content = content)
+    Providers(LocalPixelPlayer provides player, content = content)
 }

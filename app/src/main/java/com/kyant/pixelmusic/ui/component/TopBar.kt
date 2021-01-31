@@ -1,5 +1,6 @@
 package com.kyant.pixelmusic.ui.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,14 +11,14 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.R
 
 @Composable
-fun TopSearchBar(
-    value: String,
-    onValueChange: (String) -> Unit,
+fun TopBar(
     onSearchButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,11 +37,18 @@ fun TopSearchBar(
                 tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
             )
         }
-        Text(
-            stringResource(R.string.app_name),
-            color = LocalContentColor.current.copy(ContentAlpha.high),
-            style = MaterialTheme.typography.h6
-        )
+        Row {
+            Image(
+                vectorResource(R.drawable.ic_launcher_foreground), null,
+                Modifier.preferredHeight(56.dp),
+                colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
+            )
+            Text(
+                stringResource(R.string.app_name),
+                color = LocalContentColor.current.copy(ContentAlpha.high),
+                style = MaterialTheme.typography.h6
+            )
+        }
         Row {
             IconButton(onSearchButtonClick) {
                 Icon(
@@ -56,9 +64,4 @@ fun TopSearchBar(
             }
         }
     }
-    // OutlinedTextField(
-    //     value,
-    //     onValueChange,
-    //     label = { Text("Search") }
-    // )
 }

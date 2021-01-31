@@ -20,10 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
@@ -33,7 +29,7 @@ import com.kyant.pixelmusic.R
 import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.ui.component.BottomNav
-import com.kyant.pixelmusic.ui.component.TopSearchBar
+import com.kyant.pixelmusic.ui.component.TopBar
 import com.kyant.pixelmusic.ui.component.nowplaying.NowPlaying
 import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
@@ -57,9 +53,8 @@ class MainActivity : AppCompatActivity() {
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore),
                     Triple(Screens.MY.name, "My", Icons.Outlined.AccountCircle)
                 )
-                var text by remember { mutableStateOf("Happy New Year") }
                 ProvidePixelPlayer {
-                    Media.player = LocalePixelPlayer.current
+                    Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(
                             Modifier
@@ -72,10 +67,8 @@ class MainActivity : AppCompatActivity() {
                                 composable(Screens.MY.name) { My() }
                                 composable(Screens.SEARCH.name) { Search() }
                             }
-                            TopSearchBar(
-                                text,
-                                { text = it },
-                                { navController.navigate(Screens.SEARCH.name) }
+                            TopBar(
+                                onSearchButtonClick = { navController.navigate(Screens.SEARCH.name) }
                             )
                             AnimatedVisibility(
                                 navController.currentRoute() != Screens.SEARCH.name,
