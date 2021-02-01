@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.ui.component.TwoToneCard
+import com.kyant.pixelmusic.ui.theme.androidBlue
 import com.kyant.pixelmusic.ui.theme.androidOrange
-import com.kyant.pixelmusic.ui.theme.googleBlue
 import com.kyant.pixelmusic.ui.theme.googleRed
 
 @Composable
@@ -60,7 +60,7 @@ fun Home(modifier: Modifier = Modifier) {
         }
         item {
             TwoToneCard(
-                googleBlue,
+                androidBlue,
                 "Universal Search",
                 Icons.Outlined.Search, "Search"
             )
