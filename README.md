@@ -14,7 +14,7 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 * I won't provide any packages during this **Pre-Alpha stage** due to the instability, you can build
   it in person. Welcome to report issues and pull request.
 
-## Screenshots
+## Screenshots (2021, Feb 1)
 
 ![Home](arts/home.png)
 ![Explore](arts/explore.png)
