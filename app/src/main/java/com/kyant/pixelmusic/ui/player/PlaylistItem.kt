@@ -1,5 +1,8 @@
 package com.kyant.pixelmusic.ui.player
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,78 +10,63 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.media.Song
 import com.kyant.pixelmusic.ui.component.Cover
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlaylistItem(
     index: Int,
     song: Song,
+    selected: Boolean,
     modifier: Modifier = Modifier
 ) {
     val player = LocalPixelPlayer.current
-    Row(
-        modifier
-            .fillMaxWidth()
-            .preferredHeight(64.dp)
-            .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .clickable {
-                player.seekTo(index, 0)
-                player.play()
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Cover(
-            song,
-            Modifier
-                .preferredSize(48.dp)
-                .clip(SmoothRoundedCornerShape())
-        )
-        Column(Modifier.padding(horizontal = 16.dp)) {
-            Text(
-                song.title.toString(),
-                fontWeight = FontWeight.Medium,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.body1
-            )
-            Spacer(Modifier.preferredHeight(4.dp))
-            Text(
-                song.subtitle.toString(),
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                style = MaterialTheme.typography.caption
-            )
-        }
+    val transition = updateTransition(selected)
+    val cornerSize by transition.animateDp {
+        if (it) 16.dp else 8.dp
     }
-}
-
-@Composable
-fun PlaylistNowPlayingItem(
-    song: Song,
-    modifier: Modifier = Modifier
-) {
+    val backgroundColor by transition.animateColor {
+        if (it) MaterialTheme.colors.primary else MaterialTheme.colors.surface
+    }
+    val contentColor by transition.animateColor {
+        if (it) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface
+    }
+    val contentPadding by transition.animateDp {
+        if (it) 16.dp else 0.dp
+    }
+    val coverSize by transition.animateDp {
+        if (it) 56.dp else 48.dp
+    }
     Card(
         modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp),
-        RoundedCornerShape(16.dp),
-        MaterialTheme.colors.primary,
+        RoundedCornerShape(cornerSize),
+        backgroundColor,
+        contentColor,
         elevation = 0.dp
     ) {
         Box(
             Modifier
-                .clickable {}
-                .padding(16.dp)
+                .clickable {
+                    CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                        player.seekTo(index, 0)
+                        player.play()
+                    }
+                }
+                .padding(contentPadding)
         ) {
             Row(
                 Modifier.align(Alignment.CenterStart),
@@ -87,7 +75,7 @@ fun PlaylistNowPlayingItem(
                 Cover(
                     song,
                     Modifier
-                        .preferredSize(56.dp)
+                        .preferredSize(coverSize)
                         .clip(SmoothRoundedCornerShape())
                 )
                 Column(Modifier.padding(horizontal = 16.dp)) {
@@ -106,7 +94,9 @@ fun PlaylistNowPlayingItem(
                     )
                 }
             }
-            PlayPauseButton(Modifier.align(Alignment.CenterEnd))
+            if (selected) {
+                PlayPauseButton(Modifier.align(Alignment.CenterEnd))
+            }
         }
     }
 }

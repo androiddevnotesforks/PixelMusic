@@ -30,11 +30,7 @@ fun Playlist(modifier: Modifier = Modifier) {
             )
             LazyColumn {
                 itemsIndexed(Media.songs) { index, song ->
-                    if (song.id == LocalNowPlaying.current.id) {
-                        PlaylistNowPlayingItem(song)
-                    } else {
-                        PlaylistItem(index, song)
-                    }
+                    PlaylistItem(index, song, song.id == LocalNowPlaying.current.id)
                 }
             }
         }

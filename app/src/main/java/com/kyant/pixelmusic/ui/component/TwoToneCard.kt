@@ -3,10 +3,7 @@ package com.kyant.pixelmusic.ui.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,12 +19,13 @@ fun TwoToneCard(
     contentDescription: String?,
     modifier: Modifier = Modifier,
 ) {
+    val contentColor = if (MaterialTheme.colors.isLight) color else LocalContentColor.current
     Card(
         modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp),
         RoundedCornerShape(16.dp),
-        color.copy(0.05f),
+        color.copy(if (MaterialTheme.colors.isLight) 0.05f else 0.2f),
         elevation = 0.dp
     ) {
         Row(
@@ -40,13 +38,13 @@ fun TwoToneCard(
                 Icon(
                     it,
                     contentDescription,
-                    tint = color
+                    tint = contentColor
                 )
                 Spacer(Modifier.preferredWidth(32.dp))
             }
             Text(
                 text,
-                color = color,
+                color = contentColor,
                 style = MaterialTheme.typography.h5
             )
         }

@@ -18,15 +18,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.player.Playlist
 
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
+    val player = LocalPixelPlayer.current
     var state by remember { mutableStateOf(NowPlayingState.COLLAPSED) }
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
     var playlistDisplayed by remember { mutableStateOf(false) }
     var dragOffset by remember { mutableStateOf(0f) }
+    var horizontalDragOffset by remember { mutableStateOf(0f) }
     val transition = updateTransition(state)
     val width by transition.animateDp {
         when (it) {
@@ -73,13 +76,16 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
             .align(Alignment.BottomStart)
             .offset { offset }
             .pointerInput {
-                detectTapGestures {
+                detectTapGestures(
+                    onLongPress = { playlistDisplayed = !playlistDisplayed }
+                ) {
                     state = NowPlayingState.EXPANDED
                 }
             }
-            .draggable(Orientation.Vertical, onDragStopped = {
-                dragOffset = 0f
-            }) {
+            .draggable(
+                Orientation.Vertical,
+                onDragStopped = { dragOffset = 0f }
+            ) {
                 dragOffset += it
                 when {
                     dragOffset <= -64.dp.toPx() -> state = NowPlayingState.EXPANDED
@@ -98,7 +104,20 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
                     onTabClick = { contentState = it }
                 )
             }
-            NowPlayingCollapsed(state, contentState)
+            NowPlayingCollapsed(
+                state,
+                contentState,
+                Modifier.draggable(
+                    Orientation.Horizontal,
+                    onDragStopped = { horizontalDragOffset = 0f }
+                ) {
+                    horizontalDragOffset += it
+                    when {
+                        horizontalDragOffset <= -32.dp.toPx() -> player.next()
+                        horizontalDragOffset >= 32.dp.toPx() -> player.previous()
+                    }
+                }
+            )
         }
     }
     if (playlistDisplayed) {
