@@ -62,7 +62,9 @@ fun PlaylistItem(
             Modifier
                 .clickable {
                     CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-                        player.seekTo(index, 0)
+                        if (!selected) {
+                            player.seekTo(index, 0)
+                        }
                         player.play()
                     }
                 }
