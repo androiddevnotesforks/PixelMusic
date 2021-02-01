@@ -2,7 +2,7 @@
 
 This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 
-**Notes:**
+**Notice:**
 
 * This project is still in progress, which means it is unstable. The features are poor now and
   animations may not be fluent enough.
