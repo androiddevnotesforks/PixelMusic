@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component.nowplaying
+package com.kyant.pixelmusic.ui.nowplaying
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +20,7 @@ import com.kyant.pixelmusic.locals.LocalLyrics
 import com.kyant.pixelmusic.util.isCurrentLine
 
 @Composable
-fun NowPlayingLyrics(modifier: Modifier = Modifier) {
+fun Lyrics(modifier: Modifier = Modifier) {
     val sortedLyrics = LocalLyrics.current.toList().sortedBy { it.first }
     LazyColumn(
         modifier.fillMaxWidth(),

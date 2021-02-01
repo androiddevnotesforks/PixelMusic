@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component.nowplaying
+package com.kyant.pixelmusic.ui.nowplaying
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -18,12 +18,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.ui.player.Playlist
 
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
     var state by remember { mutableStateOf(NowPlayingState.COLLAPSED) }
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
+    var playlistDisplayed by remember { mutableStateOf(false) }
     var dragOffset by remember { mutableStateOf(0f) }
     val transition = updateTransition(state)
     val width by transition.animateDp {
@@ -92,10 +94,14 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
                 NowPlayingExpanded(
                     Modifier.alpha(alpha),
                     contentState,
+                    onPlaylistButtonClick = { playlistDisplayed = true },
                     onTabClick = { contentState = it }
                 )
             }
             NowPlayingCollapsed(state, contentState)
         }
+    }
+    if (playlistDisplayed) {
+        Playlist()
     }
 }

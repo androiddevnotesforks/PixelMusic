@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component.nowplaying
+package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
 import androidx.compose.animation.animateColorAsState

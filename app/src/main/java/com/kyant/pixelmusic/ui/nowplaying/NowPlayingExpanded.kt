@@ -1,26 +1,26 @@
-package com.kyant.pixelmusic.ui.component.nowplaying
+package com.kyant.pixelmusic.ui.nowplaying
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Article
 import androidx.compose.material.icons.outlined.Audiotrack
 import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.FeaturedPlayList
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalNowPlaying
-import com.kyant.pixelmusic.ui.component.AmplitudeVisualizer
 import com.kyant.pixelmusic.ui.component.ChipGroup
 import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
+import com.kyant.pixelmusic.ui.player.PlayController
 
 @Composable
 fun NowPlayingExpanded(
     modifier: Modifier = Modifier,
     contentState: NowPlayingContentState,
+    onPlaylistButtonClick: () -> Unit,
     onTabClick: (NowPlayingContentState) -> Unit
 ) {
     val song = LocalNowPlaying.current
@@ -31,6 +31,9 @@ fun NowPlayingExpanded(
     )
     ConstraintLayout(modifier.fillMaxSize()) {
         val (content, titles, controllers) = createRefs()
+        IconButton(onPlaylistButtonClick) {
+            Icon(Icons.Outlined.FeaturedPlayList, "Playlist")
+        }
         Box(Modifier.constrainAs(content) {
             top.linkTo(parent.top)
             centerHorizontallyTo(parent)
@@ -40,7 +43,7 @@ fun NowPlayingExpanded(
                 NowPlayingContentState.SONG -> {
                 }
                 NowPlayingContentState.LYRICS -> {
-                    NowPlayingLyrics()
+                    Lyrics()
                 }
                 NowPlayingContentState.VISUALIZERS -> {
                     Column {
@@ -89,7 +92,7 @@ fun NowPlayingExpanded(
                 { onTabClick(NowPlayingContentState.valueOf(it)) },
                 Modifier.padding(16.dp)
             )
-            NowPlayingController(Modifier.padding(16.dp))
+            PlayController(Modifier.padding(16.dp))
             StatefulProgressIndicator(Modifier.padding(32.dp, 8.dp))
         }
     }

@@ -30,7 +30,7 @@ import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.ui.component.BottomNav
 import com.kyant.pixelmusic.ui.component.TopBar
-import com.kyant.pixelmusic.ui.component.nowplaying.NowPlaying
+import com.kyant.pixelmusic.ui.nowplaying.NowPlaying
 import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
