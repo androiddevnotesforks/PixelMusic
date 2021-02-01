@@ -14,6 +14,13 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 * I won't provide any packages during this **Pre-Alpha stage** due to the instability, you can build
   it in person. Welcome to report issues and pull request.
 
+## Screenshots
+
+![Home](arts/home.png)
+![Explore](arts/explore.png)
+![Search](arts/search.png)
+![Player](arts/player.png)
+
 ## Major plans
 
 * Thanks to the KMM and Compose, I planned to support more platforms such as MacOS, Windows 10,
