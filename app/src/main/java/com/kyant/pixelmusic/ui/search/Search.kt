@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.screens
+package com.kyant.pixelmusic.ui.search
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi

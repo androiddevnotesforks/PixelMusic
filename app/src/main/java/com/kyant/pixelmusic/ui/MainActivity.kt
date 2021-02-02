@@ -29,8 +29,10 @@ import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.ui.component.BottomNav
 import com.kyant.pixelmusic.ui.component.TopBar
+import com.kyant.pixelmusic.ui.my.My
 import com.kyant.pixelmusic.ui.nowplaying.NowPlaying
 import com.kyant.pixelmusic.ui.screens.*
+import com.kyant.pixelmusic.ui.search.Search
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
 
@@ -63,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                                 composable(Screens.HOME.name) { Home() }
                                 composable(Screens.EXPLORE.name) { Explore() }
                                 composable(Screens.SEARCH.name) {}
-                                composable(Screens.MY.name) { My() }
+                                composable(Screens.MY.name) {}
                             }
                             TopBar(
                                 onSearchButtonClick = { navController.navigate(Screens.SEARCH.name) },
@@ -83,6 +85,10 @@ class MainActivity : AppCompatActivity() {
                             }
                             Search(
                                 navController.currentRoute() == Screens.SEARCH.name,
+                                onCloseButtonClick = { navController.popBackStack() }
+                            )
+                            My(
+                                navController.currentRoute() == Screens.MY.name,
                                 onCloseButtonClick = { navController.popBackStack() }
                             )
                             ProvideNowPlaying(Media.nowPlaying) {
