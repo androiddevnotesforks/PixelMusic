@@ -5,9 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +20,7 @@ import com.kyant.pixelmusic.R
 @Composable
 fun TopBar(
     onSearchButtonClick: () -> Unit,
+    onMyButtonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -56,9 +57,9 @@ fun TopBar(
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
                 )
             }
-            IconButton({}) {
+            IconButton(onMyButtonClick) {
                 Icon(
-                    Icons.Outlined.Settings, "Settings",
+                    Icons.Outlined.AccountCircle, "My",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
                 )
             }

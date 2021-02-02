@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.Alignment
@@ -35,7 +34,7 @@ import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
 
-enum class Screens { HOME, EXPLORE, MY, SEARCH }
+enum class Screens { HOME, EXPLORE, SEARCH, MY}
 
 class MainActivity : AppCompatActivity() {
     private val mediaButtonReceiver = MediaButtonReceiver()
@@ -50,8 +49,7 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
-                    Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore),
-                    Triple(Screens.MY.name, "My", Icons.Outlined.AccountCircle)
+                    Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
                 )
                 ProvidePixelPlayer {
                     Media.player = LocalPixelPlayer.current
@@ -64,11 +62,12 @@ class MainActivity : AppCompatActivity() {
                             NavHost(navController, Screens.HOME.name) {
                                 composable(Screens.HOME.name) { Home() }
                                 composable(Screens.EXPLORE.name) { Explore() }
-                                composable(Screens.MY.name) { My() }
                                 composable(Screens.SEARCH.name) { Search() }
+                                composable(Screens.MY.name) { My() }
                             }
                             TopBar(
-                                onSearchButtonClick = { navController.navigate(Screens.SEARCH.name) }
+                                onSearchButtonClick = { navController.navigate(Screens.SEARCH.name) },
+                                onMyButtonClick = { navController.navigate(Screens.MY.name) }
                             )
                             AnimatedVisibility(
                                 navController.currentRoute() != Screens.SEARCH.name,
