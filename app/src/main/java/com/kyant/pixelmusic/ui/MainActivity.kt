@@ -34,7 +34,7 @@ import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
 
-enum class Screens { HOME, EXPLORE, SEARCH, MY}
+enum class Screens { HOME, EXPLORE, SEARCH, MY }
 
 class MainActivity : AppCompatActivity() {
     private val mediaButtonReceiver = MediaButtonReceiver()
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                             NavHost(navController, Screens.HOME.name) {
                                 composable(Screens.HOME.name) { Home() }
                                 composable(Screens.EXPLORE.name) { Explore() }
-                                composable(Screens.SEARCH.name) { Search() }
+                                composable(Screens.SEARCH.name) {}
                                 composable(Screens.MY.name) { My() }
                             }
                             TopBar(
@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity() {
                                     { navController.navigate(it) }
                                 )
                             }
+                            Search(
+                                navController.currentRoute() == Screens.SEARCH.name,
+                                onCloseButtonClick = { navController.popBackStack() }
+                            )
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying()
                             }
