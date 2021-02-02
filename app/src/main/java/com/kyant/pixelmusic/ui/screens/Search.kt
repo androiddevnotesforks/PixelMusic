@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -58,6 +59,7 @@ fun Search(
                         OutlinedTextField(
                             value,
                             { value = it },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                             singleLine = true,
                             onImeActionPerformed = { action, controller ->
                                 if (action == ImeAction.Search) {
