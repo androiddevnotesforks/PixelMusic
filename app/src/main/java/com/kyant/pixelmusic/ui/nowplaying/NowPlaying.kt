@@ -113,8 +113,8 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
                 ) {
                     horizontalDragOffset += it
                     when {
-                        horizontalDragOffset <= -32.dp.toPx() -> player.next()
-                        horizontalDragOffset >= 32.dp.toPx() -> player.previous()
+                        horizontalDragOffset <= -48.dp.toPx() -> player.next()
+                        horizontalDragOffset >= 48.dp.toPx() -> player.previous()
                     }
                 }
             )
