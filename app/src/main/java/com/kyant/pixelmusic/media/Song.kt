@@ -8,9 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
-import com.kyant.pixelmusic.api.findAlbum
 import com.kyant.pixelmusic.api.findUrl
-import com.kyant.pixelmusic.util.loadImage
+import com.kyant.pixelmusic.util.loadCover
 
 typealias SongId = Long
 
@@ -58,6 +57,6 @@ fun com.kyant.pixelmusic.api.search.Song.toMediaItem(): Song = Song(
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
-    icon = album?.id?.findAlbum()?.album?.picUrl?.toUri()?.loadImage()?.asAndroidBitmap(),
+    icon = album?.id?.loadCover()?.asAndroidBitmap(),
     mediaUri = id?.findUrl()?.toUri()
 )

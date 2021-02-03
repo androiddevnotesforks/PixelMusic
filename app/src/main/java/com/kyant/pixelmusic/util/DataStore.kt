@@ -1,6 +1,8 @@
 package com.kyant.pixelmusic.util
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import java.io.*
 
 class DataStore(val context: Context, val name: String) {
@@ -29,13 +31,29 @@ class DataStore(val context: Context, val name: String) {
         }
     }
 
+    fun writeBitmap(key: String, bitmap: Bitmap) {
+        try {
+            FileOutputStream(File(key.coordinated.path)).apply {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, this)
+                flush()
+                close()
+            }
+        } catch (e: IOException) {
+            error(e)
+        }
+    }
+
     fun <T> writeWhileNotExist(key: String, content: T) {
-        if (!File(requirePath(key)).exists()) {
+        if (!contains(key)) {
             write(key, content)
         }
     }
 
-    fun requirePath(key: String): String = key.coordinated.path
+    fun writeBitmapWhileNotExist(key: String, bitmap: Bitmap) {
+        if (!contains(key)) {
+            writeBitmap(key, bitmap)
+        }
+    }
 
     inline operator fun <reified T> get(key: String, def: T? = null): T? {
         try {
@@ -46,6 +64,14 @@ class DataStore(val context: Context, val name: String) {
             error(e)
         }
     }
+
+    fun getBitmap(key: String, def: Bitmap? = null): Bitmap? {
+        return BitmapFactory.decodeFile(key.coordinated.path) ?: def
+    }
+
+    fun contains(key: String): Boolean = File(requirePath(key)).exists()
+
+    fun requirePath(key: String): String = key.coordinated.path
 
     fun clear(key: String? = null) {
         if (key == null) {
