@@ -16,12 +16,13 @@ fun Cover(
     song: Song,
     modifier: Modifier = Modifier
 ) {
-    val alpha = remember(song.icon) { Animatable(0f) }
-    LaunchedEffect(song.icon) {
-        if (song.icon != null) {
-            alpha.animateTo(1f)
-        } else {
-            alpha.animateTo(0f)
+    val alpha = remember(song.icon) { Animatable(0f) }.apply {
+        LaunchedEffect(song.icon) {
+            if (song.icon != null) {
+                animateTo(1f)
+            } else {
+                animateTo(0f)
+            }
         }
     }
     Image(
