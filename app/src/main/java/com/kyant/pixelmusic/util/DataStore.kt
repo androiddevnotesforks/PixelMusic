@@ -103,8 +103,4 @@ open class BaseDataStore(
             File(key.coordinated.path).delete()
         }
     }
-
-    init {
-        file.mkdirs()
-    }
 }
