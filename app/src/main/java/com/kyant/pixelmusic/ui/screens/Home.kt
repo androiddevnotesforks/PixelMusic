@@ -8,14 +8,12 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Equalizer
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.ui.component.TwoToneCard
 import com.kyant.pixelmusic.ui.theme.androidBlue
-import com.kyant.pixelmusic.ui.theme.androidOrange
 
 @Composable
 fun Home(modifier: Modifier = Modifier) {
@@ -61,13 +59,6 @@ fun Home(modifier: Modifier = Modifier) {
                 androidBlue,
                 "Universal Search",
                 Icons.Outlined.Search, "Search"
-            )
-        }
-        item {
-            TwoToneCard(
-                androidOrange,
-                "Top Lists",
-                Icons.Outlined.Equalizer, "Tops"
             )
         }
     }
