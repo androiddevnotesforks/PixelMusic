@@ -86,10 +86,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                             }
                             Search(searchVisible)
-                            My(myVisible)
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying()
                             }
+                            My(myVisible)
                         }
                     }
                 }
