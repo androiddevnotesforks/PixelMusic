@@ -17,8 +17,12 @@ fun Cover(
     modifier: Modifier = Modifier
 ) {
     val alpha = remember(song.icon) { Animatable(0f) }
-    song.icon?.LaunchedIOEffectUnit {
-        alpha.animateTo(1f)
+    song.icon.LaunchedIOEffectUnit {
+        if (song.icon != null) {
+            alpha.animateTo(1f)
+        } else {
+            alpha.animateTo(0f)
+        }
     }
     Image(
         song.icon?.asImageBitmap() ?: EmptyImage,
