@@ -32,8 +32,7 @@ import com.kyant.pixelmusic.ui.component.Song
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Search(
-    visible: Boolean,
-    onCloseButtonClick: () -> Unit,
+    visible: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
@@ -41,7 +40,7 @@ fun Search(
     ProvideSearchResult(value.text) {
         val result = LocalSearchResult.current.result?.songs
         AnimatedVisibility(
-            visible,
+            visible.value,
             modifier,
             enter = slideInVertically({ with(density) { -it - 24.dp.roundToPx() } }),
             exit = slideOutVertically({ with(density) { -it - 24.dp.roundToPx() } })
@@ -53,7 +52,7 @@ fun Search(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        IconButton(onCloseButtonClick) {
+                        IconButton({ visible.value = false }) {
                             Icon(Icons.Outlined.Close, "Close")
                         }
                         OutlinedTextField(

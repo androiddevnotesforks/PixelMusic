@@ -8,7 +8,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Equalizer
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.ui.component.TwoToneCard
 import com.kyant.pixelmusic.ui.theme.androidBlue
 import com.kyant.pixelmusic.ui.theme.androidOrange
-import com.kyant.pixelmusic.ui.theme.googleRed
 
 @Composable
 fun Home(modifier: Modifier = Modifier) {
@@ -70,13 +68,6 @@ fun Home(modifier: Modifier = Modifier) {
                 androidOrange,
                 "Top Lists",
                 Icons.Outlined.Equalizer, "Tops"
-            )
-        }
-        item {
-            TwoToneCard(
-                googleRed,
-                "Crash your system",
-                Icons.Outlined.BugReport, "Bug"
             )
         }
     }

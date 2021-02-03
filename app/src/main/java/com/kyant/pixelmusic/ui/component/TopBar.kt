@@ -9,18 +9,19 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.R
 
 @Composable
 fun TopBar(
-    onSearchButtonClick: () -> Unit,
-    onMyButtonClick: () -> Unit,
+    searchVisible: MutableState<Boolean>,
+    myVisible: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -40,7 +41,7 @@ fun TopBar(
         }
         Row {
             Image(
-                vectorResource(R.drawable.ic_launcher_foreground), null,
+                painterResource(R.drawable.ic_launcher_foreground), null,
                 Modifier.preferredHeight(56.dp),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
             )
@@ -51,13 +52,13 @@ fun TopBar(
             )
         }
         Row {
-            IconButton(onSearchButtonClick) {
+            IconButton({ searchVisible.value = true }) {
                 Icon(
                     Icons.Outlined.Search, "Search",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
                 )
             }
-            IconButton(onMyButtonClick) {
+            IconButton({ myVisible.value = true }) {
                 Icon(
                     Icons.Outlined.AccountCircle, "My",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)

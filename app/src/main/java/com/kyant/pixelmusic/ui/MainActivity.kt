@@ -19,6 +19,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.setContent
@@ -36,7 +38,7 @@ import com.kyant.pixelmusic.ui.search.Search
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
 
-enum class Screens { HOME, EXPLORE, SEARCH, MY }
+enum class Screens { HOME, EXPLORE }
 
 class MainActivity : AppCompatActivity() {
     private val mediaButtonReceiver = MediaButtonReceiver()
@@ -49,6 +51,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             PixelMusicTheme {
                 val navController = rememberNavController()
+                val searchVisible = remember { mutableStateOf(false) }
+                val myVisible = remember { mutableStateOf(false) }
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
@@ -64,15 +68,13 @@ class MainActivity : AppCompatActivity() {
                             NavHost(navController, Screens.HOME.name) {
                                 composable(Screens.HOME.name) { Home() }
                                 composable(Screens.EXPLORE.name) { Explore() }
-                                composable(Screens.SEARCH.name) {}
-                                composable(Screens.MY.name) {}
                             }
                             TopBar(
-                                onSearchButtonClick = { navController.navigate(Screens.SEARCH.name) },
-                                onMyButtonClick = { navController.navigate(Screens.MY.name) }
+                                searchVisible,
+                                myVisible
                             )
                             AnimatedVisibility(
-                                navController.currentRoute() != Screens.SEARCH.name,
+                                !searchVisible.value,
                                 Modifier.align(Alignment.BottomCenter),
                                 enter = slideInVertically({ it }),
                                 exit = slideOutVertically({ it })
@@ -83,14 +85,8 @@ class MainActivity : AppCompatActivity() {
                                     { navController.navigate(it) }
                                 )
                             }
-                            Search(
-                                navController.currentRoute() == Screens.SEARCH.name,
-                                onCloseButtonClick = { navController.popBackStack() }
-                            )
-                            My(
-                                navController.currentRoute() == Screens.MY.name,
-                                onCloseButtonClick = { navController.popBackStack() }
-                            )
+                            Search(searchVisible)
+                            My(myVisible)
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying()
                             }
