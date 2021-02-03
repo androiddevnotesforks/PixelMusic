@@ -69,10 +69,7 @@ class MainActivity : AppCompatActivity() {
                                 composable(Screens.HOME.name) { Home() }
                                 composable(Screens.EXPLORE.name) { Explore() }
                             }
-                            TopBar(
-                                searchVisible,
-                                myVisible
-                            )
+                            TopBar(searchVisible, myVisible)
                             AnimatedVisibility(
                                 !searchVisible.value,
                                 Modifier.align(Alignment.BottomCenter),

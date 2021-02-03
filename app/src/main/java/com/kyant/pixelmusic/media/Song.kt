@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
 import com.kyant.pixelmusic.api.findUrl
+import com.kyant.pixelmusic.api.playlist.Track
 import com.kyant.pixelmusic.util.loadCover
 
 typealias SongId = Long
@@ -51,12 +52,23 @@ fun MediaDescriptionCompat.toSong(): Song = Song(
 )
 
 @Composable
-fun com.kyant.pixelmusic.api.search.Song.toMediaItem(): Song = Song(
+fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     id,
     album?.id,
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
     icon = album?.id?.loadCover()?.asAndroidBitmap(),
+    mediaUri = id?.findUrl()?.toUri()
+)
+
+@Composable
+fun Track.toSong(): Song = Song(
+    id,
+    al?.id,
+    name,
+    ar?.map { it.name }?.joinToString(),
+    al?.name,
+    icon = al?.id?.loadCover()?.asAndroidBitmap(),
     mediaUri = id?.findUrl()?.toUri()
 )

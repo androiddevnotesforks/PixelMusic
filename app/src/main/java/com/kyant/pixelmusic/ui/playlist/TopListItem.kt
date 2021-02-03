@@ -1,6 +1,7 @@
-package com.kyant.pixelmusic.ui.component
+package com.kyant.pixelmusic.ui.playlist
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -19,6 +20,7 @@ import com.kyant.pixelmusic.util.loadImage
 @Composable
 fun TopListItem(
     topList: TopList,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -28,7 +30,9 @@ fun TopListItem(
         RoundedCornerShape(8.dp),
         elevation = 3.dp
     ) {
-        Column(modifier.padding(16.dp)) {
+        Column(modifier
+            .clickable { onClick() }
+            .padding(16.dp)) {
             Text(
                 topList.name.toString(),
                 overflow = TextOverflow.Ellipsis,
@@ -47,7 +51,7 @@ fun TopListItem(
 }
 
 @Composable
-fun TopListItemCover(
+fun TopListCover(
     topList: TopList,
     modifier: Modifier = Modifier
 ) {

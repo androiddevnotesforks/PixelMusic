@@ -26,7 +26,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalSearchResult
 import com.kyant.pixelmusic.locals.ProvideSearchResult
-import com.kyant.pixelmusic.media.toMediaItem
+import com.kyant.pixelmusic.media.toSong
 import com.kyant.pixelmusic.ui.component.Song
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -70,7 +70,7 @@ fun Search(
                     LazyColumn {
                         result?.let { songs ->
                             items(songs) {
-                                Song(it.toMediaItem())
+                                Song(it.toSong())
                             }
                         }
                     }
