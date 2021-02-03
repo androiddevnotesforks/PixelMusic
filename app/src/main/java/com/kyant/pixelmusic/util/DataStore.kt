@@ -5,12 +5,35 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.*
 
-class DataStore(val context: Context, val name: String) {
-    inline val path: String get() = context.noBackupFilesDir.path
-    private inline val file get() = File(listOf(path, name).joinToString(File.separator))
-    inline val String.coordinated: String get() = replace(File.separator.toRegex(), "|")
+class DataStore(
+    override val context: Context,
+    override val name: String
+) : BaseDataStore(context, context.noBackupFilesDir.path, name) {
+    init {
+        file.mkdirs()
+    }
+}
+
+class CacheDataStore(
+    override val context: Context,
+    override val name: String
+) : BaseDataStore(context, context.cacheDir.path, name) {
+    init {
+        file.mkdirs()
+    }
+}
+
+open class BaseDataStore(
+    open val context: Context,
+    val path: String,
+    open val name: String
+) {
+    inline val file
+        get() = File(listOf(path, name).joinToString(File.separator))
+    inline val String.coordinated: String
+        get() = replace(File.separator.toRegex(), "|")
     inline val String.path: String
-        get() = listOf(this@DataStore.path, name, this).joinToString(File.separator)
+        get() = listOf(this@BaseDataStore.path, name, this).joinToString(File.separator)
 
     inline fun <reified T> String.stream(): T {
         return ObjectInputStream(FileInputStream(File(this.path))).readObject() as T

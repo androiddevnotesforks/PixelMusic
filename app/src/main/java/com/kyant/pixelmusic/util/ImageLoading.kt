@@ -12,8 +12,8 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.kyant.pixelmusic.api.AlbumId
 import com.kyant.pixelmusic.api.findAlbum
-import com.kyant.pixelmusic.locals.LocalDataStore
-import com.kyant.pixelmusic.locals.ProvideDataStore
+import com.kyant.pixelmusic.locals.LocalCacheDataStore
+import com.kyant.pixelmusic.locals.ProvideCacheDataStore
 
 val EmptyImage = ImageBitmap(1, 1)
 
@@ -35,8 +35,8 @@ fun Any.loadImage(): ImageBitmap? {
 fun AlbumId.loadCover(): ImageBitmap? {
     var cover by remember(this) { mutableStateOf<ImageBitmap?>(null) }
     var cached by remember(this) { mutableStateOf(false) }
-    ProvideDataStore("covers") {
-        val dataStore = LocalDataStore.current
+    ProvideCacheDataStore("covers") {
+        val dataStore = LocalCacheDataStore.current
         val path = "$this.jpg"
         if (dataStore.contains(path)) {
             cached = true
