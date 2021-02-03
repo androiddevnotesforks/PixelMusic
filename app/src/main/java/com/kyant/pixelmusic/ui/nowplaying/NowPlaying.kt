@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
-import com.kyant.pixelmusic.ui.player.Playlist
+import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
@@ -27,7 +27,7 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
     val player = LocalPixelPlayer.current
     var state by remember { mutableStateOf(NowPlayingState.COLLAPSED) }
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
-    var playlistDisplayed by remember { mutableStateOf(false) }
+    val playlistVisible = remember { mutableStateOf(false) }
     var dragOffset by remember { mutableStateOf(0f) }
     var horizontalDragOffset by remember { mutableStateOf(0f) }
     val transition = updateTransition(state)
@@ -77,7 +77,7 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
             .offset { offset }
             .pointerInput {
                 detectTapGestures(
-                    onLongPress = { playlistDisplayed = !playlistDisplayed }
+                    onLongPress = { playlistVisible.value = !playlistVisible.value }
                 ) {
                     state = NowPlayingState.EXPANDED
                 }
@@ -100,7 +100,7 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
                 NowPlayingExpanded(
                     Modifier.alpha(alpha),
                     contentState,
-                    onPlaylistButtonClick = { playlistDisplayed = true },
+                    onPlaylistButtonClick = { playlistVisible.value = true },
                     onTabClick = { contentState = it }
                 )
             }
@@ -120,7 +120,5 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
             )
         }
     }
-    if (playlistDisplayed) {
-        Playlist()
-    }
+    PlayerPlaylist(playlistVisible)
 }

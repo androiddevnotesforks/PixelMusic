@@ -26,7 +26,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 @Composable
-fun PlaylistItem(
+fun PlayerPlaylistItem(
     index: Int,
     song: Song,
     selected: Boolean,

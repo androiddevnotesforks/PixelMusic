@@ -42,8 +42,8 @@ fun Search(
         AnimatedVisibility(
             visible.value,
             modifier,
-            enter = slideInVertically({ with(density) { -it - 24.dp.roundToPx() } }),
-            exit = slideOutVertically({ with(density) { -it - 24.dp.roundToPx() } })
+            enter = slideInVertically({ with(density) { -(it + 24.dp.roundToPx()) } }),
+            exit = slideOutVertically({ with(density) { -(it + 24.dp.roundToPx()) } })
         ) {
             Card(
                 Modifier.fillMaxSize(),
