@@ -4,11 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.SwipeableState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -18,22 +16,18 @@ import androidx.compose.ui.unit.dp
 import com.kyant.inimate.insets.LocalSysUiController
 import com.kyant.inimate.insets.LocalWindowInsets
 import com.kyant.inimate.insets.statusBarsPadding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackLayer(
     state: SwipeableState<Boolean>?,
+    darkIcons: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
     val density = LocalDensity.current
     val systemUiController = LocalSysUiController.current
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val isLight = MaterialTheme.colors.isLight
     BoxWithConstraints(
         Modifier
             .fillMaxSize()
@@ -56,13 +50,6 @@ fun BackLayer(
                 content()
             }
         }
-        LaunchedEffect(progress, isLight) {
-            CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-                systemUiController.setSystemBarsColor(
-                    Color.Transparent,
-                    if (isLight) progress <= 0.5f else false
-                )
-            }
-        }
+        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons)
     }
 }

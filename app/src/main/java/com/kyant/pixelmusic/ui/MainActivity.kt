@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SwipeableState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
@@ -26,6 +27,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.*
 import com.kyant.inimate.layer.BackLayer
 import com.kyant.inimate.layer.ForeLayer
+import com.kyant.inimate.layer.progress
 import com.kyant.pixelmusic.R
 import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
@@ -88,7 +90,15 @@ class MainActivity : AppCompatActivity() {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
-                            BackLayer(state) {
+                            BackLayer(
+                                state,
+                                darkIcons = when {
+                                    !nowPlayingState.offset.value.isNaN() &&
+                                            nowPlayingState.progress(constraints) >= 0.95f -> MaterialTheme.colors.isLight
+                                    MaterialTheme.colors.isLight -> state?.progress(constraints) ?: 0f <= 0.5f
+                                    else -> false
+                                }
+                            ) {
                                 NavHost(navController, Screens.HOME.name) {
                                     composable(Screens.HOME.name) { Home() }
                                     composable(Screens.EXPLORE.name) { Explore() }
