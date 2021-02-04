@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 BackHandler(searchState.value or myState.value or nowPlayingState.value) {
-                    searchState.animateTo(false)
-                    myState.animateTo(false)
-                    nowPlayingState.animateTo(false)
+                    if (searchState.value) searchState.animateTo(false)
+                    if (myState.value)  myState.animateTo(false)
+                    if (nowPlayingState.value) nowPlayingState.animateTo(false)
                 }
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
