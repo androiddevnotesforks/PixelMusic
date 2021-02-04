@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 BackHandler(searchState.value or myState.value or nowPlayingState.value) {
                     if (searchState.value) searchState.animateTo(false)
-                    if (myState.value)  myState.animateTo(false)
+                    if (myState.value) myState.animateTo(false)
                     if (nowPlayingState.value) nowPlayingState.animateTo(false)
                 }
                 val items = listOf(
