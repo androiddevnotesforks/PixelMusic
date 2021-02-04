@@ -24,7 +24,10 @@ fun Playlist(
     modifier: Modifier = Modifier
 ) {
     val playlist = topList.value?.id?.findPlaylist()
-    ForeLayer(rememberSwipeableState(topList.value != null), modifier) {
+    ForeLayer(
+        rememberSwipeableState(topList.value != null),
+        modifier
+    ) {
         IconButton({ topList.value = null }) {
             Icon(Icons.Outlined.Close, "Close")
         }

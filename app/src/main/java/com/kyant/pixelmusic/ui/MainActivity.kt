@@ -7,14 +7,12 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
@@ -22,10 +20,12 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.rememberSwipeableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.*
 import com.kyant.inimate.layer.BackLayer
+import com.kyant.inimate.layer.ForeLayer
 import com.kyant.pixelmusic.R
 import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
@@ -43,7 +43,7 @@ enum class Screens { HOME, EXPLORE }
 class MainActivity : AppCompatActivity() {
     private val mediaButtonReceiver = MediaButtonReceiver()
 
-    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -54,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val searchState = rememberSwipeableState(false)
                 val myState = rememberSwipeableState(false)
+                BackHandler(searchState.value or myState.value) {
+                    searchState.animateTo(false)
+                    myState.animateTo(false)
+                }
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
@@ -69,23 +73,21 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 TopBar(searchState, myState)
                             }
-                            AnimatedVisibility(
-                                !searchState.value,
-                                Modifier.align(Alignment.BottomCenter),
-                                enter = slideInVertically({ it }),
-                                exit = slideOutVertically({ it })
-                            ) {
-                                BottomNav(
-                                    items,
-                                    { navController.currentRoute() == it },
-                                    { navController.navigate(it) }
-                                )
+                            BottomNav(
+                                items,
+                                { navController.currentRoute() == it },
+                                { navController.navigate(it) },
+                                Modifier.align(Alignment.BottomCenter)
+                            )
+                            ForeLayer(searchState) {
+                                Search()
                             }
-                            Search(searchState)
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying()
                             }
-                            My(myState)
+                            ForeLayer(myState, Modifier.padding(top = 80.dp)) {
+                                My()
+                            }
                         }
                     }
                 }

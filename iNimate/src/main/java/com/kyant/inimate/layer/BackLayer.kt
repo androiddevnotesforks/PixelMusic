@@ -3,10 +3,8 @@ package com.kyant.inimate.layer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.SwipeableState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -23,10 +21,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackLayer(
-    state: SwipeableState<Boolean>,
+    state: ForeLayerState,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -39,15 +36,14 @@ fun BackLayer(
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        val progress =
-            (1 - (if (state.offset.value.isNaN()) 0f else state.offset.value) / constraints.maxHeight.toFloat())
-                .coerceIn(0f..1f)
+        val progress = state.progress(constraints)
         Surface(
             modifier
                 .fillMaxSize()
-                .padding(top = with(density) { LocalWindowInsets.current.statusBars.top.toDp() } * progress - 8.dp * progress)
+                .padding(top = (with(density) { LocalWindowInsets.current.statusBars.top.toDp() } * progress - 8.dp * progress)
+                    .coerceAtLeast(0.dp))
                 .scale((screenWidth - 24.dp * progress) / screenWidth),
-            RoundedCornerShape(16.dp * progress)
+            RoundedCornerShape((12.dp * progress).coerceAtLeast(0.dp))
         ) {
             Box(
                 Modifier
