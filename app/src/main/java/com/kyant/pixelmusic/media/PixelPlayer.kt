@@ -75,7 +75,9 @@ class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
                                 }
                             }
                         } else {
-                            position.stop()
+                            CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+                                position.stop()
+                            }
                         }
                     }
                     STATE_ENDED -> {

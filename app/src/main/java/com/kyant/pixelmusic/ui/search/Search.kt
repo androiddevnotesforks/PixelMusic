@@ -37,12 +37,7 @@ fun Search(
                     value,
                     { value = it },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                    singleLine = true,
-                    onImeActionPerformed = { action, controller ->
-                        if (action == ImeAction.Search) {
-                            controller?.hideSoftwareKeyboard()
-                        }
-                    }
+                    singleLine = true
                 )
             }
             LazyColumn {
