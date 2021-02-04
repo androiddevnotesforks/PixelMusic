@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
-                            BackLayer(searchState.targetValue or myState.targetValue) {
+                            BackLayer(myState) {
                                 NavHost(navController, Screens.HOME.name) {
                                     composable(Screens.HOME.name) { Home() }
                                     composable(Screens.EXPLORE.name) { Explore() }

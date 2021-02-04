@@ -1,18 +1,14 @@
 package com.kyant.inimate.layer
 
-import androidx.compose.animation.core.animateDp
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.SwipeableState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -22,12 +18,15 @@ import androidx.compose.ui.unit.dp
 import com.kyant.inimate.insets.LocalSysUiController
 import com.kyant.inimate.insets.LocalWindowInsets
 import com.kyant.inimate.insets.statusBarsPadding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackLayer(
-    backed: Boolean,
-    progress: Float,
+    state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -35,28 +34,19 @@ fun BackLayer(
     val systemUiController = LocalSysUiController.current
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val isLight = MaterialTheme.colors.isLight
-    val transition = updateTransition(backed)
-    val statusBarPadding by transition.animateDp({ tween(500) }) {
-        with(density) {
-            if (backed) LocalWindowInsets.current.statusBars.top.toDp() else 0.dp
-        }
-    }
-    val padding by transition.animateDp({ tween(500) }) {
-        if (backed) 24.dp else 0.dp
-    }
-    val cornerSize by transition.animateDp({ tween(500) }) {
-        if (backed) 16.dp else 0.dp
-    }
-    Surface(
-        Modifier.fillMaxSize(),
-        color = Color.Black
+    BoxWithConstraints(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Black)
     ) {
+        val progress =
+            1 - (if (state.offset.value.isNaN()) 0f else state.offset.value) / constraints.maxHeight.toFloat()
         Surface(
             modifier
                 .fillMaxSize()
-                .padding(top = statusBarPadding - padding / 2)
-                .scale((screenWidth - padding) / screenWidth),
-            RoundedCornerShape(cornerSize)
+                .padding(top = with(density) { LocalWindowInsets.current.statusBars.top.toDp() } * progress - 8.dp * progress)
+                .scale((screenWidth - 24.dp * progress) / screenWidth),
+            RoundedCornerShape(16.dp * progress)
         ) {
             Box(
                 Modifier
@@ -66,14 +56,13 @@ fun BackLayer(
                 content()
             }
         }
-    }
-    LaunchedEffect(backed, isLight) {
-        CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-            delay(if (backed) 150 else 250)
-            systemUiController.setSystemBarsColor(
-                Color.Transparent,
-                if (isLight) !backed else false
-            )
+        LaunchedEffect(progress, isLight) {
+            CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+                systemUiController.setSystemBarsColor(
+                    Color.Transparent,
+                    if (isLight) progress <= 0.5f else false
+                )
+            }
         }
     }
 }
