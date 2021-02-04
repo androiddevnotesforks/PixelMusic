@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.BoxWithConstraintsScope
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,9 +21,11 @@ import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
+fun BoxWithConstraintsScope.NowPlaying(
+    state: SwipeableState<Boolean>,
+    modifier: Modifier = Modifier
+) {
     val player = LocalPixelPlayer.current
-    val state = rememberSwipeableState(false)
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
     val playlistState = rememberSwipeableState(false)
     val progress = state.progress(constraints).coerceIn(0f..1f)

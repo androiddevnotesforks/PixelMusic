@@ -15,14 +15,13 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kyant.inimate.layer.ForeLayerState
 import com.kyant.pixelmusic.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TopBar(
-    searchState: ForeLayerState,
-    myState: ForeLayerState,
+    searchState: SwipeableState<Boolean>,
+    myState: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     Row(

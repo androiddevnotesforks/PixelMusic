@@ -54,9 +54,11 @@ class MainActivity : AppCompatActivity() {
                 val navController = rememberNavController()
                 val searchState = rememberSwipeableState(false)
                 val myState = rememberSwipeableState(false)
-                BackHandler(searchState.value or myState.value) {
+                val nowPlayingState = rememberSwipeableState(false)
+                BackHandler(searchState.value or myState.value or nowPlayingState.value) {
                     searchState.animateTo(false)
                     myState.animateTo(false)
+                    nowPlayingState.animateTo(false)
                 }
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
@@ -83,7 +85,7 @@ class MainActivity : AppCompatActivity() {
                                 Search()
                             }
                             ProvideNowPlaying(Media.nowPlaying) {
-                                NowPlaying()
+                                NowPlaying(nowPlayingState)
                             }
                             ForeLayer(myState, Modifier.padding(top = 80.dp)) {
                                 My()

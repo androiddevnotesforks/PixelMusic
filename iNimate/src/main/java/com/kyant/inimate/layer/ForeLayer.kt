@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +16,7 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ForeLayer(
-    state: ForeLayerState,
+    state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
