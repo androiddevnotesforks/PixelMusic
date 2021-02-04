@@ -8,10 +8,10 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0-alpha05")
-        classpath(kotlin("gradle-plugin", "1.4.21-2"))
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
 
         // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle.kts files
+        // in the individual module build.gradle.kts.kts files
     }
 }
 
