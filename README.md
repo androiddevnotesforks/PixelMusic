@@ -29,7 +29,7 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 ## Technical features
 
 * **Kotlin** 1.4.30-RC
-* **Androidx** Snapshot [7119460](https://androidx.dev/snapshots/builds/7119460/artifacts)
+* **Androidx** Snapshot 7122216
 * **Jetpack Compose** Snapshot (1.0.0-alpha12)
 * **ExoPlayer** 2.12.3
 
