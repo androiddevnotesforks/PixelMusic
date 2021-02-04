@@ -36,7 +36,7 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 ## Build requirements
 
 * **Android Studio** Arctic Fox | 2020.3.1 Canary 5 or higher
-* **Gradle** 6.8.1 or higher
+* **Gradle** 7.0-milestone-1 or higher
 
 ## Special Thanks
 
