@@ -15,11 +15,11 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
@@ -43,7 +43,7 @@ enum class Screens { HOME, EXPLORE }
 class MainActivity : AppCompatActivity() {
     private val mediaButtonReceiver = MediaButtonReceiver()
 
-    @OptIn(ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             PixelMusicTheme(window) {
                 val navController = rememberNavController()
-                val searchVisible = remember { mutableStateOf(false) }
-                val myVisible = remember { mutableStateOf(false) }
+                val searchState = rememberSwipeableState(false)
+                val myState = rememberSwipeableState(false)
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
@@ -62,15 +62,15 @@ class MainActivity : AppCompatActivity() {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
-                            BackLayer(searchVisible.value or myVisible.value) {
+                            BackLayer(searchState.targetValue or myState.targetValue) {
                                 NavHost(navController, Screens.HOME.name) {
                                     composable(Screens.HOME.name) { Home() }
                                     composable(Screens.EXPLORE.name) { Explore() }
                                 }
-                                TopBar(searchVisible, myVisible)
+                                TopBar(searchState, myState)
                             }
                             AnimatedVisibility(
-                                !searchVisible.value,
+                                !searchState.value,
                                 Modifier.align(Alignment.BottomCenter),
                                 enter = slideInVertically({ it }),
                                 exit = slideOutVertically({ it })
@@ -81,11 +81,11 @@ class MainActivity : AppCompatActivity() {
                                     { navController.navigate(it) }
                                 )
                             }
-                            Search(searchVisible)
+                            Search(searchState)
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying()
                             }
-                            My(myVisible)
+                            My(myState)
                         }
                     }
                 }

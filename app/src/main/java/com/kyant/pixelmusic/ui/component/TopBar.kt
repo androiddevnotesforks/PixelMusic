@@ -9,7 +9,6 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -18,10 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.R
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TopBar(
-    searchVisible: MutableState<Boolean>,
-    myVisible: MutableState<Boolean>,
+    searchState: SwipeableState<Boolean>,
+    myState: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -52,13 +52,13 @@ fun TopBar(
             )
         }
         Row {
-            IconButton({ searchVisible.value = true }) {
+            IconButton({ searchState.animateTo(true) }) {
                 Icon(
                     Icons.Outlined.Search, "Search",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
                 )
             }
-            IconButton({ myVisible.value = true }) {
+            IconButton({ myState.animateTo(true) }) {
                 Icon(
                     Icons.Outlined.AccountCircle, "My",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)

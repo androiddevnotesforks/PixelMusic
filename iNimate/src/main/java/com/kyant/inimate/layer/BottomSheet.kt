@@ -1,50 +1,49 @@
 package com.kyant.inimate.layer
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheet(
-    visible: MutableState<Boolean>,
+    state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val elevation = remember(visible) { Animatable(0f) }.apply {
-        LaunchedEffect(visible.value) {
-            if (visible.value) {
-                animateTo(24f)
-            } else {
-                animateTo(0f, tween(200, 200))
-            }
+    var offset by  remember { mutableStateOf(0.dp) }
+    val elevation = remember(state) { Animatable(0f) }.apply {
+        LaunchedEffect(state.targetValue) {
+            animateTo(if (state.targetValue) 24f else 0f)
         }
     }
-    AnimatedVisibility(
-        visible.value,
-        modifier,
-        enter = slideInVertically({ it }),
-        exit = slideOutVertically({ it })
-    ) {
+    BoxWithConstraints {
+        val progress = (if (state.offset.value.isNaN()) 0f else state.offset.value) /
+                constraints.maxHeight.toFloat()
         Card(
-            Modifier
+            modifier
                 .fillMaxSize()
+                .offset(y = maxHeight * progress)
+                .draggable(Orientation.Vertical) {
+                    offset += it.toDp()
+                }
+                .swipeable(
+                    state,
+                    mapOf(
+                        0f to true,
+                        constraints.maxHeight.toFloat() to false
+                    ),
+                    Orientation.Vertical,
+                    thresholds = { _, _ -> FixedThreshold(8.dp) }
+                )
                 .pointerInput { detectTapGestures {} },
             RoundedCornerShape(0.dp),
             elevation = elevation.value.dp

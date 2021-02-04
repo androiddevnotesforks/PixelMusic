@@ -27,6 +27,7 @@ import kotlinx.coroutines.*
 @Composable
 fun BackLayer(
     backed: Boolean,
+    progress: Float,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +23,14 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
     val player = LocalPixelPlayer.current
     var state by remember { mutableStateOf(NowPlayingState.COLLAPSED) }
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
-    val playlistVisible = remember { mutableStateOf(false) }
+    val playlistState = rememberSwipeableState(false)
     var dragOffset by remember { mutableStateOf(0f) }
     var horizontalDragOffset by remember { mutableStateOf(0f) }
     val transition = updateTransition(state)
@@ -77,7 +80,7 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
             .offset { offset }
             .pointerInput {
                 detectTapGestures(
-                    onLongPress = { playlistVisible.value = !playlistVisible.value }
+                    onLongPress = { playlistState.animateTo(!playlistState.value) }
                 ) {
                     state = NowPlayingState.EXPANDED
                 }
@@ -100,7 +103,7 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
                 NowPlayingExpanded(
                     Modifier.alpha(alpha),
                     contentState,
-                    onPlaylistButtonClick = { playlistVisible.value = true },
+                    onPlaylistButtonClick = { playlistState.animateTo(true) },
                     onTabClick = { contentState = it }
                 )
             }
@@ -120,5 +123,5 @@ fun BoxWithConstraintsScope.NowPlaying(modifier: Modifier = Modifier) {
             )
         }
     }
-    PlayerPlaylist(playlistVisible)
+    PlayerPlaylist(playlistState)
 }
