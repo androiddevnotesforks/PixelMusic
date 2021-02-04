@@ -12,15 +12,15 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeableState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.rememberSwipeableState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.*
@@ -52,9 +52,29 @@ class MainActivity : AppCompatActivity() {
         setContent {
             PixelMusicTheme(window) {
                 val navController = rememberNavController()
-                val searchState = rememberSwipeableState(false)
-                val myState = rememberSwipeableState(false)
-                val nowPlayingState = rememberSwipeableState(false)
+                var state: SwipeableState<Boolean>? by remember { mutableStateOf(null) }
+                val searchState = rememberSwipeableState(false).apply {
+                    LaunchedEffect(progress.fraction == 1f) {
+                        println("aaa")
+                        if (progress.fraction != 1f) {
+                            state = this@apply
+                        }
+                    }
+                }
+                val myState = rememberSwipeableState(false).apply {
+                    LaunchedEffect(progress.fraction == 1f) {
+                        if (progress.fraction != 1f) {
+                            state = this@apply
+                        }
+                    }
+                }
+                val nowPlayingState = rememberSwipeableState(false).apply {
+                    LaunchedEffect(progress.fraction == 1f) {
+                        if (progress.fraction != 1f) {
+                            state = this@apply
+                        }
+                    }
+                }
                 BackHandler(searchState.value or myState.value or nowPlayingState.value) {
                     searchState.animateTo(false)
                     myState.animateTo(false)
@@ -68,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
-                            BackLayer(myState) {
+                            BackLayer(state) {
                                 NavHost(navController, Screens.HOME.name) {
                                     composable(Screens.HOME.name) { Home() }
                                     composable(Screens.EXPLORE.name) { Explore() }
@@ -87,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                             ProvideNowPlaying(Media.nowPlaying) {
                                 NowPlaying(nowPlayingState)
                             }
-                            ForeLayer(myState, Modifier.padding(top = 80.dp)) {
+                            ForeLayer(myState) {
                                 My()
                             }
                         }

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.kyant.inimate.insets.statusBarsPadding
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -25,6 +26,8 @@ fun ForeLayer(
         Card(
             modifier
                 .fillMaxSize()
+                .statusBarsPadding()
+                .padding(top = 48.dp)
                 .offset(y = maxHeight * (1f - progress))
                 .swipeable(
                     state,

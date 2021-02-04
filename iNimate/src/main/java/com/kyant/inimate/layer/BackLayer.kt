@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackLayer(
-    state: SwipeableState<Boolean>,
+    state: SwipeableState<Boolean>?,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -39,7 +39,7 @@ fun BackLayer(
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        val progress = state.progress(constraints)
+        val progress = state?.progress(constraints) ?: 0f
         Surface(
             modifier
                 .fillMaxSize()
