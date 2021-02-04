@@ -13,7 +13,7 @@ import androidx.compose.material.icons.outlined.History
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kyant.inimate.layer.BottomSheet
+import com.kyant.inimate.layer.ForeLayer
 import com.kyant.pixelmusic.ui.component.TwoToneCard
 import com.kyant.pixelmusic.ui.theme.androidBlue
 import com.kyant.pixelmusic.ui.theme.androidOrange
@@ -24,7 +24,7 @@ fun My(
     state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    BottomSheet(state, modifier.padding(top = 80.dp)) {
+    ForeLayer(state, modifier.padding(top = 80.dp)) {
         LazyColumn {
             item {
                 Card(

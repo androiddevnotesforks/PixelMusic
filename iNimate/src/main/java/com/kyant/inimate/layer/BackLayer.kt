@@ -40,7 +40,8 @@ fun BackLayer(
             .background(Color.Black)
     ) {
         val progress =
-            1 - (if (state.offset.value.isNaN()) 0f else state.offset.value) / constraints.maxHeight.toFloat()
+            (1 - (if (state.offset.value.isNaN()) 0f else state.offset.value) / constraints.maxHeight.toFloat())
+                .coerceIn(0f..1f)
         Surface(
             modifier
                 .fillMaxSize()

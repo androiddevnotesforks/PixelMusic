@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheet(
+fun ForeLayer(
     state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit

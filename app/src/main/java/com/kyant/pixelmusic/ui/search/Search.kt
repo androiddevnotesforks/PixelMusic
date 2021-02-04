@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
-import com.kyant.inimate.layer.TopSheet
+import com.kyant.inimate.layer.ForeLayer
 import com.kyant.pixelmusic.locals.LocalSearchResult
 import com.kyant.pixelmusic.locals.ProvideSearchResult
 import com.kyant.pixelmusic.media.toSong
@@ -25,7 +25,7 @@ fun Search(
     var value by remember { mutableStateOf(TextFieldValue("Happy New Year")) }
     ProvideSearchResult(value.text) {
         val result = LocalSearchResult.current.result?.songs
-        TopSheet(visible, modifier) {
+        ForeLayer(visible, modifier) {
             OutlinedTextField(
                 value,
                 { value = it },

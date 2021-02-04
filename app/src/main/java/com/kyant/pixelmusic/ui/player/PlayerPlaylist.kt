@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kyant.inimate.layer.TopSheet
+import com.kyant.inimate.layer.ForeLayer
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.Media
 
@@ -21,7 +21,7 @@ fun PlayerPlaylist(
     visible: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    TopSheet(visible, modifier) {
+    ForeLayer(visible, modifier) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton({ visible.animateTo(false) }) {
                 Icon(Icons.Outlined.Close, "Close")
