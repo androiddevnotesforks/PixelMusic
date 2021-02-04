@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component
+package com.kyant.inimate.layer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun TopSheet(
+fun BottomSheet(
     visible: MutableState<Boolean>,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
@@ -39,8 +39,8 @@ fun TopSheet(
     AnimatedVisibility(
         visible.value,
         modifier,
-        enter = slideInVertically({ -it }),
-        exit = slideOutVertically({ -it })
+        enter = slideInVertically({ it }),
+        exit = slideOutVertically({ it })
     ) {
         Card(
             Modifier

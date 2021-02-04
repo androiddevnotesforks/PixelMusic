@@ -1,7 +1,8 @@
-package com.kyant.pixelmusic.ui.component
+package com.kyant.inimate.layer
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -27,7 +28,7 @@ fun FloatingSheet(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val elevation = remember(visible) { androidx.compose.animation.core.Animatable(0f) }.apply {
+    val elevation = remember(visible) { Animatable(0f) }.apply {
         LaunchedEffect(visible.value) {
             if (visible.value) {
                 animateTo(16f)

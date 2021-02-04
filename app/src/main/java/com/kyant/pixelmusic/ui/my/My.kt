@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.kyant.pixelmusic.ui.component.FloatingSheet
+import com.kyant.inimate.layer.BottomSheet
 import com.kyant.pixelmusic.ui.component.TwoToneCard
 import com.kyant.pixelmusic.ui.theme.androidBlue
 import com.kyant.pixelmusic.ui.theme.androidOrange
@@ -25,7 +25,7 @@ fun My(
     visible: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    FloatingSheet(visible, modifier) {
+    BottomSheet(visible, modifier.padding(top = 80.dp)) {
         IconButton({ visible.value = false }) {
             Icon(Icons.Outlined.Close, "Close")
         }

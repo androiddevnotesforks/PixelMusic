@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import com.kyant.pixelmusic.api.findPlaylist
 import com.kyant.pixelmusic.api.toplist.TopList
 import com.kyant.pixelmusic.media.toSong
-import com.kyant.pixelmusic.ui.component.BottomSheet
+import com.kyant.inimate.layer.BottomSheet
 import com.kyant.pixelmusic.ui.component.Song
 
 @Composable

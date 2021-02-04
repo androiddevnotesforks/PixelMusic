@@ -7,15 +7,14 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
@@ -23,9 +22,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.setContent
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.*
+import com.kyant.inimate.layer.BackLayer
 import com.kyant.pixelmusic.R
 import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
@@ -46,10 +46,11 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         createNotificationChannel(Media.NOTIFICATION_CHANNEL_ID, getString(R.string.app_name))
         Media.init(this, connectionCallbacks)
         setContent {
-            PixelMusicTheme {
+            PixelMusicTheme(window) {
                 val navController = rememberNavController()
                 val searchVisible = remember { mutableStateOf(false) }
                 val myVisible = remember { mutableStateOf(false) }
@@ -60,16 +61,14 @@ class MainActivity : AppCompatActivity() {
                 ProvidePixelPlayer {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
-                        BoxWithConstraints(
-                            Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colors.surface)
-                        ) {
-                            NavHost(navController, Screens.HOME.name) {
-                                composable(Screens.HOME.name) { Home() }
-                                composable(Screens.EXPLORE.name) { Explore() }
+                        BoxWithConstraints(Modifier.fillMaxSize()) {
+                            BackLayer(searchVisible.value or myVisible.value) {
+                                NavHost(navController, Screens.HOME.name) {
+                                    composable(Screens.HOME.name) { Home() }
+                                    composable(Screens.EXPLORE.name) { Explore() }
+                                }
+                                TopBar(searchVisible, myVisible)
                             }
-                            TopBar(searchVisible, myVisible)
                             AnimatedVisibility(
                                 !searchVisible.value,
                                 Modifier.align(Alignment.BottomCenter),

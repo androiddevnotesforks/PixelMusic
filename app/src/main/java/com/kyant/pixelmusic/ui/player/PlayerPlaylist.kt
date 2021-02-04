@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.Media
-import com.kyant.pixelmusic.ui.component.TopSheet
+import com.kyant.inimate.layer.TopSheet
 
 @Composable
 fun PlayerPlaylist(
