@@ -2,24 +2,21 @@ package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.palette.graphics.Palette
+import com.kyant.inimate.layer.progress
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.Cover
@@ -29,62 +26,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BoxScope.NowPlayingCollapsed(
-    state: NowPlayingState,
+fun BoxWithConstraintsScope.NowPlayingCollapsed(
+    state: SwipeableState<Boolean>,
     contentState: NowPlayingContentState,
     modifier: Modifier = Modifier
 ) {
-    val density = LocalDensity.current
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
-    var backgroundColor by remember { mutableStateOf<Color?>(null) }
-    val transition = updateTransition(state)
-    val width by transition.animateDp({ spring(stiffness = 2000f) }) {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 256.dp
-            NowPlayingState.EXPANDED -> 256.dp
-        }
-    }
-    val height by transition.animateDp {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 72.dp
-            NowPlayingState.EXPANDED -> 256.dp
-        }
-    }
-    val offset by transition.animateIntOffset({ spring(0.8f, 800f) }) {
-        with(density) {
-            when (it) {
-                NowPlayingState.COLLAPSED -> IntOffset.Zero
-                NowPlayingState.EXPANDED -> IntOffset(0, 80.dp.roundToPx())
-            }
-        }
-    }
-    val cornerSize by transition.animateFloat {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 5f
-            NowPlayingState.EXPANDED -> 4f
-        }
-    }
-    val alpha by transition.animateFloat({ tween(200, 50) }) {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 0f
-            NowPlayingState.EXPANDED -> 1f
-        }
-    }
-    val coverSize by transition.animateDp {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 48.dp
-            NowPlayingState.EXPANDED -> 256.dp
-        }
-    }
-    val horizontalPadding by transition.animateDp {
-        when (it) {
-            NowPlayingState.COLLAPSED -> 16.dp
-            NowPlayingState.EXPANDED -> 0.dp
-        }
-    }
+    val progress = state.progress(constraints).coerceIn(0f..1f)
+    val defaultBackgroundColor = MaterialTheme.colors.surface
+    var backgroundColor by remember { mutableStateOf(defaultBackgroundColor) }
 
     LaunchedEffect(song.icon) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
@@ -104,19 +58,14 @@ fun BoxScope.NowPlayingCollapsed(
         }
     }
 
-    if (state == NowPlayingState.COLLAPSED ||
-        (state == NowPlayingState.EXPANDED && contentState == NowPlayingContentState.SONG)
-    ) {
+    if (progress <= 0.5f || (progress > 0.5f && contentState == NowPlayingContentState.SONG)) {
         Card(
             modifier
-                .preferredSize(width, height)
+                .preferredSize(256.dp, 72.dp + (256.dp - 72.dp) * progress)
                 .align(Alignment.TopCenter)
-                .offset { offset },
-            SmoothRoundedCornerShape(cornerSize.toDouble()),
-            animateColorAsState(
-                backgroundColor?.copy(0.4f) ?: MaterialTheme.colors.surface,
-                tween(500)
-            ).value,
+                .offset(y = 80.dp * progress),
+            SmoothRoundedCornerShape((5f - progress).toDouble()),
+            animateColorAsState(backgroundColor.copy(0.4f), tween(500)).value,
             elevation = 0.dp
         ) {
             Row(
@@ -126,16 +75,16 @@ fun BoxScope.NowPlayingCollapsed(
                 Cover(
                     song,
                     Modifier
-                        .padding(horizontal = horizontalPadding)
-                        .preferredSize(coverSize)
-                        .clip(SmoothRoundedCornerShape(cornerSize.toDouble()))
+                        .padding(horizontal = 16.dp * (1f - progress))
+                        .preferredSize(48.dp + (256.dp - 48.dp) * progress)
+                        .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
                         .clickable { player.playOrPause() }
                 )
-                if (state == NowPlayingState.COLLAPSED) {
+                if (progress <= 0.5f) {
                     Column(
                         Modifier
                             .padding(end = 16.dp)
-                            .alpha(1 - alpha)
+                            .alpha(1f - progress)
                     ) {
                         Text(
                             song.title.toString(),
