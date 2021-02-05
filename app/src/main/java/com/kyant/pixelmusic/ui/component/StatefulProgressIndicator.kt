@@ -60,7 +60,7 @@ fun StatefulProgressIndicator(modifier: Modifier = Modifier) {
                 Box(Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterStart)
-                    .pointerInput {
+                    .pointerInput(Unit) {
                         detectTapGestures {
                             player.seekTo(
                                 (it.x / this@BoxWithConstraints.constraints.maxWidth * player.durationState).toLong()

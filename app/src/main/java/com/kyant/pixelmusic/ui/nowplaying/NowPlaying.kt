@@ -47,7 +47,7 @@ fun BoxWithConstraintsScope.NowPlaying(
                 ),
                 Orientation.Vertical
             )
-            .pointerInput {
+            .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = { playlistState.animateTo(!playlistState.value) }
                 ) {

@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
                 var state: SwipeableState<Boolean>? by remember { mutableStateOf(null) }
                 val searchState = rememberSwipeableState(false).apply {
                     LaunchedEffect(progress.fraction == 1f) {
-                        println("aaa")
                         if (progress.fraction != 1f) {
                             state = this@apply
                         }
