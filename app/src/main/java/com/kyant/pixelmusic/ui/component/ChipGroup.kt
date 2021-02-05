@@ -28,7 +28,14 @@ fun ChipGroup(
     onClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyRow(modifier) {
+    LazyRow(
+        modifier
+            .background(
+                MaterialTheme.colors.onSurface.copy(0.02f),
+                RoundedCornerShape(50)
+            )
+            .padding(2.dp)
+    ) {
         items(items.toList()) { (route, label, icon) ->
             val color = animateColorAsState(
                 if (selected(route)) MaterialTheme.colors.primary
