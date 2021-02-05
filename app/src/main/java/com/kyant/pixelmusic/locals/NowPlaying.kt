@@ -5,11 +5,11 @@ import androidx.compose.runtime.Providers
 import androidx.compose.runtime.compositionLocalOf
 import com.kyant.pixelmusic.media.Song
 
-val LocalNowPlaying = compositionLocalOf<Song> { error("No NowPlaying was provided.") }
+val LocalNowPlaying = compositionLocalOf { Song() }
 
 @Composable
 fun ProvideNowPlaying(song: Song?, content: @Composable () -> Unit) {
-    if (song?.mediaUri != null) {
+    if (song?.id != null) {
         Providers(LocalNowPlaying provides song, content = {
             ProvideLyrics(song) {
                 ProvideAmplitudes(false) {

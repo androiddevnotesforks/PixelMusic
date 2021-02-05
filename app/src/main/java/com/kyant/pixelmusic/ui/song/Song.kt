@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.locals.Media
 import com.kyant.pixelmusic.media.Song
@@ -36,14 +37,22 @@ fun Song(
             .clickable {
                 CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
                     if (Media.browser.isConnected) {
-                        Media.addSongToPlaylist(
-                            (player.currentWindowIndex + 1).coerceAtMost(Media.songs.size),
-                            song
-                        )
-                        Media.session?.isActive = true
-                        player.next()
-                        player.seekTo(0)
-                        player.play()
+                        val index = Media.songs.map { it.id }.indexOf(song.id)
+                        if (index == -1) {
+                            Media.addSongToPlaylist(
+                                (player.currentWindowIndex + 1).coerceAtMost(Media.songs.size),
+                                song
+                            )
+                            Media.session?.isActive = true
+                            player.next()
+                            player.seekTo(0)
+                            player.play()
+                        } else {
+                            if (Media.songs[player.currentWindowIndex].id != song.id) {
+                                player.seekTo(index, 0)
+                            }
+                            player.play()
+                        }
                     }
                 }
             },
