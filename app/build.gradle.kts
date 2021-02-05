@@ -65,7 +65,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-util:$composeVersion")
     implementation("androidx.activity:activity-compose:1.3.0-SNAPSHOT")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha01")
     implementation("androidx.navigation:navigation-compose:1.0.0-SNAPSHOT")
     implementation("com.google.android.exoplayer:exoplayer-core:$exoPlayerVersion")
     implementation("com.google.android.exoplayer:extension-mediasession:$exoPlayerVersion")

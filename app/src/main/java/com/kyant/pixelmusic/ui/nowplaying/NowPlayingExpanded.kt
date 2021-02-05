@@ -1,9 +1,6 @@
 package com.kyant.pixelmusic.ui.nowplaying
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Article
@@ -14,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.ui.component.ChipGroup
 import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
@@ -33,16 +29,15 @@ fun NowPlayingExpanded(
         Triple(NowPlayingContentState.LYRICS.name, "Lyrics", Icons.Outlined.Article),
         Triple(NowPlayingContentState.VISUALIZERS.name, "Visualizers", Icons.Outlined.Explore)
     )
-    ConstraintLayout(modifier.fillMaxSize()) {
-        val (content, titles, controllers) = createRefs()
+    Column(
+        modifier.fillMaxSize(),
+        Arrangement.SpaceAround,
+        Alignment.CenterHorizontally
+    ) {
         IconButton(onPlaylistButtonClick) {
             Icon(Icons.Outlined.FeaturedPlayList, "Playlist")
         }
-        Box(Modifier.constrainAs(content) {
-            top.linkTo(parent.top)
-            centerHorizontallyTo(parent)
-            bottom.linkTo(titles.top)
-        }) {
+        Box {
             when (contentState) {
                 NowPlayingContentState.SONG -> {
                 }
@@ -61,11 +56,7 @@ fun NowPlayingExpanded(
                 }
             }
         }
-        Column(Modifier.constrainAs(titles) {
-            top.linkTo(content.bottom)
-            centerHorizontallyTo(parent)
-            bottom.linkTo(controllers.top)
-        }) {
+        Column {
             if (contentState == NowPlayingContentState.SONG) {
                 Text(
                     song.title.toString(),
@@ -79,13 +70,7 @@ fun NowPlayingExpanded(
                 )
             }
         }
-        Column(
-            Modifier.constrainAs(controllers) {
-                centerHorizontallyTo(parent)
-                bottom.linkTo(parent.bottom)
-            },
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column {
             Divider(
                 Modifier.padding(8.dp),
                 MaterialTheme.colors.onSurface.copy(0.08f)
