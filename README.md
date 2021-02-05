@@ -14,16 +14,23 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 * I won't provide any packages during this **Pre-Alpha stage** due to the instability, you can build
   it in person. Welcome to report issues and pull request.
 
-## Screenshots (2021, Feb 1)
+## Screenshots & Videos
 
+### 2021, Feb 5
+
+Well, there are still some bugs you can see in the GIF.
+![Overview](arts/overview.gif)
 ![Home](arts/home.png)
-![Explore](arts/explore.png)
 ![Search](arts/search.png)
+
+### 2021, Feb 1
+
+![Explore](arts/explore.png)
 ![Player](arts/player.png)
 
 ## Major plans
 
-[-] Achieve iOS-like animations.
+- [ ] Achieve iOS-like animations.
 
 ## Technical features
 
