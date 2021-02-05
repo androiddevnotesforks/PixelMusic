@@ -20,9 +20,9 @@ fun BottomNav(
     ) {
         items.toList().forEach { (route, label, icon) ->
             BottomNavigationItem(
-                { Icon(icon, label) },
                 selected(route),
                 { onClick(route) },
+                { Icon(icon, label) },
                 label = { Text(label) },
                 selectedContentColor = MaterialTheme.colors.primary,
                 unselectedContentColor = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
