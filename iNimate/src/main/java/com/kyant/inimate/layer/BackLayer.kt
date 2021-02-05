@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.kyant.inimate.insets.LocalSysUiController
@@ -27,7 +26,6 @@ fun BackLayer(
 ) {
     val density = LocalDensity.current
     val systemUiController = LocalSysUiController.current
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     BoxWithConstraints(
         Modifier
             .fillMaxSize()
@@ -39,7 +37,7 @@ fun BackLayer(
                 .fillMaxSize()
                 .padding(top = (with(density) { LocalWindowInsets.current.statusBars.top.toDp() } * progress - 8.dp * progress)
                     .coerceAtLeast(0.dp))
-                .scale((screenWidth - 24.dp * progress) / screenWidth),
+                .scale((maxWidth - 24.dp * progress) / maxWidth),
             RoundedCornerShape((12.dp * progress).coerceAtLeast(0.dp))
         ) {
             Box(
