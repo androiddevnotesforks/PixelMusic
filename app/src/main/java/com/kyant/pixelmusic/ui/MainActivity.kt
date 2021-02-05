@@ -74,10 +74,10 @@ class MainActivity : AppCompatActivity() {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
                             BackLayer(
                                 listOf(searchState, myState, nowPlayingState, playlistState),
-                                darkIcons = {
+                                darkIcons = { progress, statusBarHeightRatio ->
                                     when {
-                                        nowPlayingState.progress(constraints) >= 0.95f -> isLight
-                                        isLight -> it <= 0.5f
+                                        nowPlayingState.progress(constraints) >= 1f - statusBarHeightRatio / 2 -> isLight
+                                        isLight -> progress <= 0.5f
                                         else -> false
                                     }
                                 }

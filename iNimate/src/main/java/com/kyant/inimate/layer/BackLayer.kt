@@ -7,6 +7,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.SwipeableState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -20,23 +21,24 @@ import com.kyant.inimate.insets.statusBarsPadding
 @Composable
 fun BackLayer(
     states: List<SwipeableState<Boolean>>,
-    darkIcons: (Float) -> Boolean,
+    darkIcons: (progress: Float, statusBarHeightRatio: Float) -> Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
     val density = LocalDensity.current
     val systemUiController = LocalSysUiController.current
+    val statusBarHeight = with(density) { LocalWindowInsets.current.statusBars.top.toDp() }
     BoxWithConstraints(
         Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
         val progress = states.map { it.progress(constraints) }.maxByOrNull { it } ?: 0f
+        val isDarkIcons = darkIcons(progress, statusBarHeight / maxHeight)
         Surface(
             modifier
                 .fillMaxSize()
-                .padding(top = (with(density) { LocalWindowInsets.current.statusBars.top.toDp() } * progress - 8.dp * progress)
-                    .coerceAtLeast(0.dp))
+                .padding(top = (statusBarHeight * progress - 8.dp * progress).coerceAtLeast(0.dp))
                 .scale((maxWidth - 24.dp * progress) / maxWidth),
             RoundedCornerShape((12.dp * progress).coerceAtLeast(0.dp))
         ) {
@@ -48,6 +50,8 @@ fun BackLayer(
                 content()
             }
         }
-        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons(progress))
+        LaunchedEffect(isDarkIcons) {
+            systemUiController.setSystemBarsColor(Color.Transparent, isDarkIcons)
+        }
     }
 }
