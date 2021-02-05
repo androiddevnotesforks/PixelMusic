@@ -15,7 +15,7 @@ fun BottomNav(
 ) {
     BottomNavigation(
         modifier,
-        MaterialTheme.colors.surface.copy(0.92f),
+        MaterialTheme.colors.surface,
         elevation = 0.dp
     ) {
         items.toList().forEach { (route, label, icon) ->

@@ -3,12 +3,11 @@ package com.kyant.inimate.layer
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeableState
-import androidx.compose.material.swipeable
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
@@ -37,11 +36,18 @@ fun ForeLayer(
                     ),
                     Orientation.Vertical
                 )
-                .pointerInput { detectTapGestures {} },
+                .pointerInput(Unit) { detectTapGestures {} },
             RoundedCornerShape((16.dp * progress).coerceAtLeast(0.dp)),
             elevation = 24.dp * progress
         ) {
-            Column {
+            Column(Modifier.fillMaxSize()) {
+                Divider(
+                    Modifier.preferredWidth(40.dp)
+                        .padding(vertical = 8.dp)
+                        .clip(RoundedCornerShape(50))
+                        .align(Alignment.CenterHorizontally),
+                    thickness = 3.dp
+                )
                 content()
             }
         }
