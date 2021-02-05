@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
                             BackLayer(
-                                listOf(searchState, myState, nowPlayingState),
+                                listOf(searchState, myState, nowPlayingState, playlistState),
                                 darkIcons = {
                                     when {
                                         nowPlayingState.progress(constraints) >= 0.95f -> isLight
