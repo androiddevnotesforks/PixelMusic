@@ -6,4 +6,5 @@ import androidx.compose.ui.unit.Constraints
 
 @OptIn(ExperimentalMaterialApi::class)
 fun SwipeableState<Boolean>.progress(constraints: Constraints): Float =
-    1f - (if (offset.value.isNaN()) 0f else offset.value) / constraints.maxHeight.toFloat()
+    if (offset.value.isNaN()) 0f
+    else 1f - (if (offset.value.isNaN()) 0f else offset.value) / constraints.maxHeight.toFloat()

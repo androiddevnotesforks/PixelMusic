@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.SwipeableState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
@@ -54,48 +53,31 @@ class MainActivity : AppCompatActivity() {
         setContent {
             PixelMusicTheme(window) {
                 val navController = rememberNavController()
-                var state: SwipeableState<Boolean>? by remember { mutableStateOf(null) }
-                val searchState = rememberSwipeableState(false).apply {
-                    LaunchedEffect(progress.fraction == 1f) {
-                        if (progress.fraction != 1f) {
-                            state = this@apply
-                        }
-                    }
-                }
-                val myState = rememberSwipeableState(false).apply {
-                    LaunchedEffect(progress.fraction == 1f) {
-                        if (progress.fraction != 1f) {
-                            state = this@apply
-                        }
-                    }
-                }
-                val nowPlayingState = rememberSwipeableState(false).apply {
-                    LaunchedEffect(progress.fraction == 1f) {
-                        if (progress.fraction != 1f) {
-                            state = this@apply
-                        }
-                    }
-                }
+                val searchState = rememberSwipeableState(false)
+                val myState = rememberSwipeableState(false)
+                val nowPlayingState = rememberSwipeableState(false)
+                val isLight = MaterialTheme.colors.isLight
+                val items = listOf(
+                    Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
+                    Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
+                )
                 BackHandler(searchState.value or myState.value or nowPlayingState.value) {
                     if (searchState.value) searchState.animateTo(false)
                     if (myState.value) myState.animateTo(false)
                     if (nowPlayingState.value) nowPlayingState.animateTo(false)
                 }
-                val items = listOf(
-                    Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
-                    Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
-                )
                 ProvidePixelPlayer {
                     Media.player = LocalPixelPlayer.current
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
                             BackLayer(
-                                state,
-                                darkIcons = when {
-                                    !nowPlayingState.offset.value.isNaN() &&
-                                            nowPlayingState.progress(constraints) >= 0.95f -> MaterialTheme.colors.isLight
-                                    MaterialTheme.colors.isLight -> state?.progress(constraints) ?: 0f <= 0.5f
-                                    else -> false
+                                listOf(searchState, myState, nowPlayingState),
+                                darkIcons = {
+                                    when {
+                                        nowPlayingState.progress(constraints) >= 0.95f -> isLight
+                                        isLight -> it <= 0.5f
+                                        else -> false
+                                    }
                                 }
                             ) {
                                 NavHost(navController, Screens.HOME.name) {

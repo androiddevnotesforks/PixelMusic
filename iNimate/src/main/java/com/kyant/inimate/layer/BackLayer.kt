@@ -20,8 +20,8 @@ import com.kyant.inimate.insets.statusBarsPadding
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BackLayer(
-    state: SwipeableState<Boolean>?,
-    darkIcons: Boolean,
+    states: List<SwipeableState<Boolean>>,
+    darkIcons: (Float) -> Boolean,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
@@ -33,7 +33,7 @@ fun BackLayer(
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        val progress = state?.progress(constraints) ?: 0f
+        val progress = states.map { it.progress(constraints) }.maxByOrNull { it } ?: 0f
         Surface(
             modifier
                 .fillMaxSize()
@@ -50,6 +50,6 @@ fun BackLayer(
                 content()
             }
         }
-        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons)
+        systemUiController.setSystemBarsColor(Color.Transparent, darkIcons(progress))
     }
 }
