@@ -46,7 +46,7 @@ dependencies {
     val exoPlayerVersion = "2.12.3"
 
     implementation(project(":iNimate"))
-    implementation(kotlin("reflect", "1.4.30-RC"))
+    implementation(kotlin("reflect", "1.4.30"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-SNAPSHOT")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-SNAPSHOT")

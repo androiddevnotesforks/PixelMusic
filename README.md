@@ -4,7 +4,7 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 
 **Notice:**
 
-* This project is still in progress, which means it is unstable. The features are poor now and
+* This project is still **in progress**, which means it is unstable. The features are poor now and
   animations may not be fluent enough.
 
 * I'm so sorry that my application **cannot run on the devices below Android 7**. I temporarily
@@ -23,14 +23,13 @@ This is a beautiful **unofficial NetEase Cloud music player** for Android 🥳!
 
 ## Major plans
 
-* Thanks to the KMM and Compose, I planned to support more platforms such as MacOS, Windows 10,
-  Linux in the near future.
+[-] Achieve iOS-like animations.
 
 ## Technical features
 
-* **Kotlin** 1.4.30-RC
-* **Androidx** Snapshot 7122216
-* **Jetpack Compose** Snapshot (1.0.0-alpha12)
+* **Kotlin** 1.4.30
+* **Androidx** snapshot 7125068
+* **Jetpack Compose** snapshot (1.0.0-alpha13)
 * **ExoPlayer** 2.12.3
 
 ## Build requirements

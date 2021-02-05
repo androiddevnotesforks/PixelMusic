@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0-alpha05")
-        classpath(kotlin("gradle-plugin", "1.4.21-2"))
+        classpath(kotlin("gradle-plugin", "1.4.30"))
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts.kts files
@@ -21,7 +21,7 @@ allprojects {
         jcenter()
         maven("https://dl.bintray.com/kotlin/kotlin-eap")
         maven("https://kotlin.bintray.com/kotlinx")
-        maven("https://androidx.dev/snapshots/builds/7122216/artifacts/repository")
+        maven("https://androidx.dev/snapshots/builds/7125068/artifacts/repository")
         maven("https://jitpack.io")
     }
 }
