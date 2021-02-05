@@ -34,6 +34,7 @@ import com.kyant.pixelmusic.ui.component.BottomNav
 import com.kyant.pixelmusic.ui.component.TopBar
 import com.kyant.pixelmusic.ui.my.My
 import com.kyant.pixelmusic.ui.nowplaying.NowPlaying
+import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.search.Search
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
@@ -56,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                 val searchState = rememberSwipeableState(false)
                 val myState = rememberSwipeableState(false)
                 val nowPlayingState = rememberSwipeableState(false)
+                val playlistState = rememberSwipeableState(false)
                 val isLight = MaterialTheme.colors.isLight
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
@@ -96,7 +98,8 @@ class MainActivity : AppCompatActivity() {
                                 Search()
                             }
                             ProvideNowPlaying(Media.nowPlaying) {
-                                NowPlaying(nowPlayingState)
+                                NowPlaying(nowPlayingState, playlistState)
+                                PlayerPlaylist(playlistState)
                             }
                             ForeLayer(myState) {
                                 My()

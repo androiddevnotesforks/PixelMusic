@@ -22,7 +22,6 @@ import com.kyant.inimate.layer.progress
 import com.kyant.inimate.util.lighten
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
-import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -32,13 +31,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(
     state: SwipeableState<Boolean>,
+    playlistState: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
     var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
-    val playlistState = rememberSwipeableState(false)
     val progress = state.progress(constraints).coerceIn(0f..1f)
     var horizontalDragOffset by remember { mutableStateOf(0f) }
     val defaultBackgroundColor = MaterialTheme.colors.surface
@@ -111,5 +110,4 @@ fun BoxWithConstraintsScope.NowPlaying(
             )
         }
     }
-    PlayerPlaylist(playlistState)
 }
