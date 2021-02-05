@@ -13,7 +13,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.kyant.pixelmusic.locals.LocalSearchResult
 import com.kyant.pixelmusic.locals.ProvideSearchResult
 import com.kyant.pixelmusic.media.toSong
-import com.kyant.pixelmusic.ui.component.Song
+import com.kyant.pixelmusic.ui.song.Song
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

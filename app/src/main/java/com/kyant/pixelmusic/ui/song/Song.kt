@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component
+package com.kyant.pixelmusic.ui.song
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -42,6 +42,7 @@ fun Song(
                         )
                         Media.session?.isActive = true
                         player.next()
+                        player.seekTo(0)
                         player.play()
                     }
                 }

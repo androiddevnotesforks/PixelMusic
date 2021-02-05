@@ -28,7 +28,7 @@ import com.kyant.inimate.util.lighten
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.ChipGroup
-import com.kyant.pixelmusic.ui.component.Cover
+import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape

@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.media.Song
-import com.kyant.pixelmusic.ui.component.Cover
+import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

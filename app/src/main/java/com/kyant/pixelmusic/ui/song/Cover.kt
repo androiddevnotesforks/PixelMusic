@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.ui.component
+package com.kyant.pixelmusic.ui.song
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.Image

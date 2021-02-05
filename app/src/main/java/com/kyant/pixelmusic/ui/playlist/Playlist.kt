@@ -15,7 +15,7 @@ import com.kyant.inimate.layer.ForeLayer
 import com.kyant.pixelmusic.api.findPlaylist
 import com.kyant.pixelmusic.api.toplist.TopList
 import com.kyant.pixelmusic.media.toSong
-import com.kyant.pixelmusic.ui.component.Song
+import com.kyant.pixelmusic.ui.song.Song
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
