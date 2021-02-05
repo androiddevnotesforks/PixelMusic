@@ -37,7 +37,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-enum class NowPlayingContentState { SONG, LYRICS, VISUALIZERS }
+enum class NowPlayingContent { SONG, LYRICS, VISUALIZERS }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -49,7 +49,7 @@ fun BoxWithConstraintsScope.NowPlaying(
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
-    var contentState by remember { mutableStateOf(NowPlayingContentState.SONG) }
+    var contentState by remember { mutableStateOf(NowPlayingContent.SONG) }
     val progress = state.progress(constraints).coerceIn(0f..1f)
     var horizontalDragOffset by remember { mutableStateOf(0f) }
     val defaultBackgroundColor = MaterialTheme.colors.surface
@@ -109,12 +109,12 @@ fun BoxWithConstraintsScope.NowPlaying(
             ) {
                 Box {
                     when (contentState) {
-                        NowPlayingContentState.SONG -> {
+                        NowPlayingContent.SONG -> {
                         }
-                        NowPlayingContentState.LYRICS -> {
+                        NowPlayingContent.LYRICS -> {
                             Lyrics()
                         }
-                        NowPlayingContentState.VISUALIZERS -> {
+                        NowPlayingContent.VISUALIZERS -> {
                             Column {
                                 Text(
                                     "Amplitudes",
@@ -137,30 +137,30 @@ fun BoxWithConstraintsScope.NowPlaying(
                     ChipGroup(
                         listOf(
                             Triple(
-                                NowPlayingContentState.SONG.name,
+                                NowPlayingContent.SONG.name,
                                 "Song",
                                 Icons.Outlined.Audiotrack
                             ),
                             Triple(
-                                NowPlayingContentState.LYRICS.name,
+                                NowPlayingContent.LYRICS.name,
                                 "Lyrics",
                                 Icons.Outlined.Article
                             ),
                             Triple(
-                                NowPlayingContentState.VISUALIZERS.name,
+                                NowPlayingContent.VISUALIZERS.name,
                                 "Visualizers",
                                 Icons.Outlined.Explore
                             )
                         ),
                         { contentState.name == it },
-                        { contentState = NowPlayingContentState.valueOf(it) },
+                        { contentState = NowPlayingContent.valueOf(it) },
                         Modifier.padding(16.dp)
                     )
                     PlayController(Modifier.padding(16.dp))
                     StatefulProgressIndicator(Modifier.padding(32.dp, 8.dp))
                 }
             }
-            if (progress <= 0.5f || (progress > 0.5f && contentState == NowPlayingContentState.SONG)) {
+            if (progress <= 0.5f || (progress > 0.5f && contentState == NowPlayingContent.SONG)) {
                 Row(
                     Modifier.draggable(
                         Orientation.Horizontal,
