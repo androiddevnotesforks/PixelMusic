@@ -63,10 +63,13 @@ class MainActivity : AppCompatActivity() {
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
                 )
-                BackHandler(searchState.value or myState.value or nowPlayingState.value) {
-                    if (searchState.value) searchState.animateTo(false)
-                    if (myState.value) myState.animateTo(false)
-                    if (nowPlayingState.value) nowPlayingState.animateTo(false)
+                BackHandler(myState.value or playlistState.value or nowPlayingState.value or searchState.value) {
+                    when {
+                        myState.value -> myState.animateTo(false)
+                        playlistState.value -> playlistState.animateTo(false)
+                        nowPlayingState.value -> nowPlayingState.animateTo(false)
+                        searchState.value -> searchState.animateTo(false)
+                    }
                 }
                 ProvidePixelPlayer {
                     Media.player = LocalPixelPlayer.current
