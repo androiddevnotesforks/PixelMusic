@@ -8,9 +8,10 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
 import com.kyant.pixelmusic.api.SongId
+import com.kyant.pixelmusic.api.findCoverUrl
 import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.playlist.Track
-import com.kyant.pixelmusic.util.loadCover
+import com.kyant.pixelmusic.util.loadImageWithDiskCache
 
 data class Song(
     val id: SongId? = null,
@@ -56,7 +57,10 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
-    icon = album?.id?.loadCover()?.asAndroidBitmap(),
+    icon = album?.id
+        ?.findCoverUrl()
+        ?.loadImageWithDiskCache(album.id.toString(), "covers")
+        ?.asAndroidBitmap(),
     mediaUrl = id?.findUrl()
 )
 
@@ -67,6 +71,9 @@ fun Track.toSong(): Song = Song(
     name,
     ar?.map { it.name }?.joinToString(),
     al?.name,
-    icon = al?.id?.loadCover()?.asAndroidBitmap(),
+    icon = al?.id
+        ?.findCoverUrl()
+        ?.loadImageWithDiskCache(al.id.toString(), "covers")
+        ?.asAndroidBitmap(),
     mediaUrl = id?.findUrl()
 )

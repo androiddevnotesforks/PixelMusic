@@ -15,3 +15,11 @@ fun AlbumId.findAlbum(): AlbumResult? {
         jsonParser.parse<AlbumResult>(URL("$API2/album?id=${this@findAlbum}").readText())
     }
 }
+
+@Composable
+fun AlbumId.findCoverUrl(size: Int = 500): String? {
+    val jsonParser = LocalJsonParser.current
+    return launchedIOEffect {
+        "${jsonParser.parse<AlbumResult>(URL("$API2/album?id=${this@findCoverUrl}").readText())?.album?.picUrl}?param=${size}y$size"
+    }
+}

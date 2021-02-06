@@ -10,8 +10,6 @@ import androidx.core.net.toUri
 import coil.ImageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.kyant.pixelmusic.api.AlbumId
-import com.kyant.pixelmusic.api.findAlbum
 import com.kyant.pixelmusic.locals.LocalCacheDataStore
 import com.kyant.pixelmusic.locals.ProvideCacheDataStore
 
@@ -32,24 +30,24 @@ fun Any.loadImage(): ImageBitmap? {
 }
 
 @Composable
-fun AlbumId.loadCover(): ImageBitmap? {
+fun String.loadImageWithDiskCache(
+    name: String,
+    dataStoreName: String
+): ImageBitmap? {
     var cover by remember(this) { mutableStateOf<ImageBitmap?>(null) }
     var cached by remember(this) { mutableStateOf(false) }
-    ProvideCacheDataStore("covers") {
+    ProvideCacheDataStore(dataStoreName) {
         val dataStore = LocalCacheDataStore.current
-        val path = "$this.jpg"
+        val path = "$name.jpg"
         if (dataStore.contains(path)) {
             cached = true
         } else {
-            "${findAlbum()?.album?.picUrl}?param=500y500".toUri()
-                .loadImage()
-                ?.asAndroidBitmap()
-                ?.let {
-                    LaunchedIOEffectUnit {
-                        dataStore.writeBitmap(path, it)
-                        cached = true
-                    }
+            toUri().loadImage()?.asAndroidBitmap()?.let {
+                LaunchedIOEffectUnit {
+                    dataStore.writeBitmap(path, it)
+                    cached = true
                 }
+            }
         }
         cached.LaunchedIOEffectUnit {
             if (cached) {

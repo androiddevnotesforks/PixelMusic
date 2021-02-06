@@ -16,8 +16,8 @@ fun Cover(
     song: Song,
     modifier: Modifier = Modifier
 ) {
-    val alpha = remember(song.id) { Animatable(0f) }.apply {
-        LaunchedEffect(song.icon) {
+    val alpha = remember(song.albumId) { Animatable(0f) }.apply {
+        LaunchedEffect(song.icon == null) {
             if (song.icon != null) {
                 animateTo(1f)
             } else {
