@@ -30,10 +30,11 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
             setPlaybackState(stateBuilder.build())
             controller?.registerCallback(object : MediaControllerCompat.Callback() {
                 override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
-                    if (state?.state == PlaybackStateCompat.STATE_PLAYING) {
+                    if (state?.state == PlaybackStateCompat.STATE_PLAYING ||
+                        state?.state == PlaybackStateCompat.STATE_PAUSED
+                    ) {
                         startForeground(
-                            1,
-                            buildMediaStyleNotification(Media.NOTIFICATION_CHANNEL_ID).build()
+                            1, buildMediaStyleNotification(Media.NOTIFICATION_CHANNEL_ID).build()
                         )
                     }
                 }
