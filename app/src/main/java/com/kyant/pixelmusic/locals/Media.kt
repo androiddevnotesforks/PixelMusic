@@ -64,8 +64,7 @@ object Media {
             DataStore(context, "playlists")
                 .getOrNull<List<SerializedSong>>("playlist_0")
                 ?.map { it.toSong(context) }
-                ?.let { syncSongsWithPlaylists(it)
-                println(it)}
+                ?.let { syncSongsWithPlaylists(it) }
         }
     }
 

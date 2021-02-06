@@ -140,12 +140,9 @@ fun BoxWithConstraintsScope.NowPlaying(
                             48.dp + animateDpAsState(
                                 208.dp * progress * 2,
                                 spring(stiffness = Spring.StiffnessHigh)
-                            ).value.coerceAtMost(208.dp)
+                            ).value.coerceIn(208.dp * progress..208.dp)
                         )
-                        .offset(
-                            80.dp * progress,
-                            animateDpAsState(68.dp * progress, spring()).value
-                        )
+                        .offset(80.dp * progress, 68.dp * progress)
                         .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
                         .clickable { player.playOrPause() }
                 )
