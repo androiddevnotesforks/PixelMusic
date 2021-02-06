@@ -2,7 +2,7 @@ package com.kyant.pixelmusic.locals
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -16,5 +16,5 @@ fun ProvidePixelPlayer(content: @Composable () -> Unit) {
         position = remember { Animatable(0f) }
         bufferedPositionState = remember { Animatable(0f) }
     }
-    Providers(LocalPixelPlayer provides player, content = content)
+    CompositionLocalProvider(LocalPixelPlayer provides player, content = content)
 }

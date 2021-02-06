@@ -50,5 +50,5 @@ fun ProvideAmplitudes(
             }
         }
     }
-    Providers(LocalAmplitudes provides amplitudes, content = content)
+    CompositionLocalProvider(LocalAmplitudes provides amplitudes, content = content)
 }

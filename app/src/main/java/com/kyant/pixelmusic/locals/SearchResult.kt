@@ -29,5 +29,5 @@ fun ProvideSearchResult(
             }
         }
     }
-    Providers(LocalSearchResult provides result, content = content)
+    CompositionLocalProvider(LocalSearchResult provides result, content = content)
 }

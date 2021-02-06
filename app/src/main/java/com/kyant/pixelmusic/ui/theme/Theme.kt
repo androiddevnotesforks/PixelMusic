@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import com.kyant.inimate.insets.LocalSysUiController
 import com.kyant.inimate.insets.ProvideWindowInsets
 import com.kyant.inimate.insets.SystemUiController
@@ -35,9 +35,9 @@ fun PixelMusicTheme(
         typography = typography,
         shapes = shapes,
         content = {
-            Providers(LocalContentColor provides MaterialTheme.colors.onSurface) {
+            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colors.onSurface) {
                 ProvideWindowInsets {
-                    Providers(LocalSysUiController provides SystemUiController(window)) {
+                    CompositionLocalProvider(LocalSysUiController provides SystemUiController(window)) {
                         content()
                     }
                 }

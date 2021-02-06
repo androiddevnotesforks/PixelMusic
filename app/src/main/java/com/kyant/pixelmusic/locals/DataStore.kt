@@ -1,7 +1,7 @@
 package com.kyant.pixelmusic.locals
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import com.kyant.pixelmusic.util.CacheDataStore
@@ -14,11 +14,11 @@ val LocalCacheDataStore =
 @Composable
 fun ProvideDataStore(name: String, content: @Composable () -> Unit) {
     val dataStore = DataStore(LocalContext.current, name)
-    Providers(LocalDataStore provides dataStore, content = content)
+    CompositionLocalProvider(LocalDataStore provides dataStore, content = content)
 }
 
 @Composable
 fun ProvideCacheDataStore(name: String, content: @Composable () -> Unit) {
     val dataStore = CacheDataStore(LocalContext.current, name)
-    Providers(LocalCacheDataStore provides dataStore, content = content)
+    CompositionLocalProvider(LocalCacheDataStore provides dataStore, content = content)
 }

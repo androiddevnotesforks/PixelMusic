@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.LinearProgressIndicator
@@ -68,13 +69,15 @@ fun StatefulProgressIndicator(modifier: Modifier = Modifier) {
                         }
                     }
                     .draggable(
+                        rememberDraggableState {
+                            draggingOffset += it
+                        },
                         Orientation.Horizontal,
                         onDragStopped = {
                             player.seekTo((player.position.value + durationOffset).toLong())
                             draggingOffset = 0f
-                        }) {
-                        draggingOffset += it
-                    }) {
+                        })
+                ) {
                     Box(
                         Modifier
                             .offset(x = with(LocalDensity.current) {

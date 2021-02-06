@@ -157,9 +157,9 @@ val LocalWindowInsets = staticCompositionLocalOf<WindowInsets> {
  *     val windowInsets = observer.start()
  *
  *     setContent {
- *         // Instead of calling ProvideWindowInsets, we use Providers to provide
+ *         // Instead of calling ProvideWindowInsets, we use CompositionLocalProvider to provide
  *         // the WindowInsets instance from above to AmbientWindowInsets
- *         Providers(AmbientWindowInsets provides windowInsets) {
+ *         CompositionLocalProvider(AmbientWindowInsets provides windowInsets) {
  *             /* Content */
  *         }
  *     }
@@ -356,7 +356,7 @@ fun ProvideWindowInsets(
         }
     }
 
-    Providers(LocalWindowInsets provides windowInsets) {
+    CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
         content()
     }
 }
@@ -395,7 +395,7 @@ fun ProvideWindowInsets(
         }
     }
 
-    Providers(LocalWindowInsets provides windowInsets) {
+    CompositionLocalProvider(LocalWindowInsets provides windowInsets) {
         content()
     }
 }

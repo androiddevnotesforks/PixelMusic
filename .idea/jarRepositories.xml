@@ -17,11 +17,6 @@
       <option name="url" value="https://kotlin.bintray.com/kotlinx" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="maven3" />
-      <option name="name" value="maven3" />
-      <option name="url" value="https://androidx.dev/snapshots/builds/7097907/artifacts/repository" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="BintrayJCenter" />
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
@@ -47,14 +42,9 @@
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="maven4" />
-      <option name="name" value="maven4" />
-      <option name="url" value="https://oss.sonatype.org/content/repositories/snapshots" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="maven3" />
       <option name="name" value="maven3" />
-      <option name="url" value="https://androidx.dev/snapshots/builds/7125068/artifacts/repository" />
+      <option name="url" value="https://androidx.dev/snapshots/builds/7128032/artifacts/repository" />
     </remote-repository>
   </component>
 </project>

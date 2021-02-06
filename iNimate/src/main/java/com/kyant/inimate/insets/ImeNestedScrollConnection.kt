@@ -154,39 +154,39 @@ class ImeNestedScrollConnection(
         return Offset.Zero
     }
 
-    override fun onPostFling(
+    override suspend fun onPostFling(
         consumed: Velocity,
-        available: Velocity,
-        onFinished: (Velocity) -> Unit
-    ) {
+        available: Velocity
+    ): Velocity {
         if (Build.VERSION.SDK_INT < 30) {
             // SimpleImeAnimationController only works on API 30+
-            onFinished(Velocity.Zero)
-            return
+            return Velocity.Zero
         }
 
         if (imeAnimController.isInsetAnimationInProgress()) {
             // If we have an IME animation in progress, from the user scrolling, we can
             // animate to the end state using the velocity
+            var v: Velocity = Velocity.Zero
             imeAnimController.animateToFinish(available.y) { remainingVelocity ->
-                onFinished(Velocity(x = 0f, y = remainingVelocity))
+                v = Velocity(x = 0f, y = remainingVelocity)
             }
-            return
+            return v
         }
 
         // If the fling is in a (upwards direction, and the IME is not visible)
         // start an control request with an immediate fling
         if (scrollImeOnScreenWhenNotVisible && available.y > 0 == imeVisible) {
+            var v: Velocity = Velocity.Zero
             imeAnimController.startAndFling(
                 view = view,
                 velocityY = available.y
             ) { remainingVelocity ->
-                onFinished(Velocity(x = 0f, y = remainingVelocity))
+                v = Velocity(x = 0f, y = remainingVelocity)
             }
-            return
+            return v
         }
 
         // If we reach here we just call onFinished()
-        onFinished(Velocity.Zero)
+        return Velocity.Zero
     }
 }

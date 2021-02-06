@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -28,10 +30,10 @@ import com.kyant.inimate.util.lighten
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.ChipGroup
-import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
+import com.kyant.pixelmusic.ui.song.Cover
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -46,6 +48,7 @@ fun BoxWithConstraintsScope.NowPlaying(
     playlistState: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
@@ -163,15 +166,18 @@ fun BoxWithConstraintsScope.NowPlaying(
             if (progress <= 0.5f || (progress > 0.5f && contentState == NowPlayingContent.SONG)) {
                 Row(
                     Modifier.draggable(
+                        rememberDraggableState {
+                            horizontalDragOffset += it
+                            with(density) {
+                                when {
+                                    horizontalDragOffset <= -48.dp.toPx() -> player.next()
+                                    horizontalDragOffset >= 48.dp.toPx() -> player.previous()
+                                }
+                            }
+                        },
                         Orientation.Horizontal,
                         onDragStopped = { horizontalDragOffset = 0f }
-                    ) {
-                        horizontalDragOffset += it
-                        when {
-                            horizontalDragOffset <= -48.dp.toPx() -> player.next()
-                            horizontalDragOffset >= 48.dp.toPx() -> player.previous()
-                        }
-                    }
+                    )
                         .preferredSize(256.dp, 72.dp + (256.dp - 72.dp) * progress)
                         .align(Alignment.TopCenter)
                         .offset(y = 80.dp * progress),
