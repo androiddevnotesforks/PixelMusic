@@ -102,7 +102,7 @@ fun ProgressBar(modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.caption
                     )
-                    AnimatedVisibility(durationOffset != 0f) {
+                    AnimatedVisibility(durationOffset <= -1000 || durationOffset >= 1000) {
                         Text(
                             "    ${
                                 durationOffset.toLong().toDuration(TimeUnit.MILLISECONDS)

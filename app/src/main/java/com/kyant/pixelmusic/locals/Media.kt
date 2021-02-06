@@ -56,6 +56,8 @@ object Media {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             DataStore(context, "playlists")
                 .write("playlist_0", songs.map { it.serialize() })
+            DataStore(context, "playlists")
+                .write("playlist_0_state", player?.currentWindowIndex to player?.currentPosition)
         }
     }
 
@@ -65,6 +67,11 @@ object Media {
                 .getOrNull<List<SerializedSong>>("playlist_0")
                 ?.map { it.toSong(context) }
                 ?.let { syncSongsWithPlaylists(it) }
+            DataStore(context, "playlists")
+                .getOrNull<Pair<Int?, Long?>>("playlist_0_state")?.let {
+                    player?.seekTo(it.first ?: 0, it.second ?: 0)
+                    player?.position?.snapTo(it.second?.toFloat() ?: 0f)
+                }
         }
     }
 
