@@ -6,11 +6,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
-import coil.ImageLoader
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import com.kyant.pixelmusic.locals.LocalCacheDataStore
 import com.kyant.pixelmusic.locals.ProvideCacheDataStore
 
@@ -26,7 +22,7 @@ fun Any.loadImage(): ImageBitmap? {
             .data(this@loadImage)
             .diskCachePolicy(CachePolicy.DISABLED)
             .build()
-        imageLoader.execute(request).drawable?.toBitmap()?.asImageBitmap()
+        imageLoader.execute(request).drawable.toBitmap().asImageBitmap()
     }
 }
 
