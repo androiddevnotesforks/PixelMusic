@@ -4,9 +4,7 @@ import android.content.*
 import android.media.AudioManager
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
-import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
-import android.support.v4.media.session.PlaybackStateCompat
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -146,11 +144,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private var controllerCallback = object : MediaControllerCompat.Callback() {
-        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {}
-        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {}
-    }
-
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback() {
         override fun onConnected() {
             Media.browser.sessionToken.also { token ->
@@ -158,8 +151,6 @@ class MainActivity : AppCompatActivity() {
                 MediaControllerCompat.setMediaController(this@MainActivity, mediaController)
                 Media.syncWithPlaylists(this@MainActivity)
             }
-            MediaControllerCompat.getMediaController(this@MainActivity)
-                .registerCallback(controllerCallback)
         }
 
         override fun onConnectionSuspended() {}
@@ -188,7 +179,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Media.syncPlaylistsToLocal(this)
         unregisterReceiver(mediaButtonReceiver)
-        MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
         Media.browser.disconnect()
         ContextCompat.getSystemService(this, MediaPlaybackService::class.java)?.stopSelf()
         Media.session?.isActive = false
