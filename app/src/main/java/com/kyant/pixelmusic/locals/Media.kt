@@ -61,7 +61,7 @@ object Media {
         songs.add(index, song)
         val source = ProgressiveMediaSource
             .Factory(dataSourceFactory)
-            .createMediaSource(MediaItem.fromUri(song.mediaUri!!))
+            .createMediaSource(MediaItem.fromUri(song.mediaUrl!!))
         player?.addMediaSource(index, source)
     }
 }

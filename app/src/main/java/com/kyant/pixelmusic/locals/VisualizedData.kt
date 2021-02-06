@@ -28,7 +28,7 @@ fun ProvideAmplitudes(
             song.id.LaunchedIOEffectUnit {
                 dataStore.writeWhileNotExist(
                     song.id.toString(),
-                    URL(song.mediaUri.toString()).readBytes()
+                    URL(song.mediaUrl.toString()).readBytes()
                 )
                 song.id?.let {
                     try {

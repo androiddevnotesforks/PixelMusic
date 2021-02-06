@@ -1,7 +1,6 @@
 package com.kyant.pixelmusic.media
 
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.media.MediaDescriptionCompat
 import androidx.compose.runtime.Composable
@@ -21,9 +20,9 @@ data class Song(
     val subtitle: CharSequence? = null,
     val description: CharSequence? = null,
     val icon: Bitmap? = null,
-    val iconUri: Uri? = null,
+    val iconUrl: String? = null,
     val extras: Bundle? = null,
-    val mediaUri: Uri? = null
+    val mediaUrl: String? = null
 )
 
 fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.Builder()
@@ -32,11 +31,11 @@ fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.B
     .setSubtitle(subtitle)
     .setDescription(description)
     .setIconBitmap(icon)
-    .setIconUri(iconUri)
+    .setIconUri(iconUrl?.toUri())
     .setExtras(Bundle().apply {
         albumId?.let { putLong("albumId", it) }
     })
-    .setMediaUri(mediaUri)
+    .setMediaUri(mediaUrl?.toUri())
     .build()
 
 fun MediaDescriptionCompat.toSong(): Song = Song(
@@ -46,9 +45,9 @@ fun MediaDescriptionCompat.toSong(): Song = Song(
     subtitle,
     description,
     iconBitmap,
-    iconUri,
+    iconUri.toString(),
     extras,
-    mediaUri
+    mediaUri.toString()
 )
 
 @Composable
@@ -59,7 +58,7 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     artists?.map { it.name }?.joinToString(),
     album?.name,
     icon = album?.id?.loadCover()?.asAndroidBitmap(),
-    mediaUri = id?.findUrl()?.toUri()
+    mediaUrl = id?.findUrl()
 )
 
 @Composable
@@ -70,5 +69,5 @@ fun Track.toSong(): Song = Song(
     ar?.map { it.name }?.joinToString(),
     al?.name,
     icon = al?.id?.loadCover()?.asAndroidBitmap(),
-    mediaUri = id?.findUrl()?.toUri()
+    mediaUrl = id?.findUrl()
 )
