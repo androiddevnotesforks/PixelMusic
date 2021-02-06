@@ -10,8 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Article
-import androidx.compose.material.icons.outlined.Audiotrack
-import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +28,6 @@ import com.kyant.inimate.layer.progress
 import com.kyant.inimate.util.lighten
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
-import com.kyant.pixelmusic.ui.component.ChipGroup
 import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
@@ -40,20 +37,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-enum class NowPlayingContent { SONG, LYRICS, VISUALIZERS }
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BoxWithConstraintsScope.NowPlaying(
     state: SwipeableState<Boolean>,
     playlistState: SwipeableState<Boolean>,
+    lyricsState: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
     val isLight = MaterialTheme.colors.isLight
-    var contentState by remember { mutableStateOf(NowPlayingContent.SONG) }
     val progress = state.progress(constraints).coerceIn(0f..1f)
     var horizontalDragOffset by remember { mutableStateOf(0f) }
     val defaultBackgroundColor = MaterialTheme.colors.surface
@@ -106,30 +101,11 @@ fun BoxWithConstraintsScope.NowPlaying(
     ) {
         BoxWithConstraints {
             Column(
-                Modifier.fillMaxSize()
+                Modifier.fillMaxWidth()
+                    .align(Alignment.BottomCenter)
                     .alpha(progress),
-                Arrangement.SpaceBetween,
-                Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box {
-                    when (contentState) {
-                        NowPlayingContent.SONG -> {
-                        }
-                        NowPlayingContent.LYRICS -> {
-                            Lyrics()
-                        }
-                        NowPlayingContent.VISUALIZERS -> {
-                            Column {
-                                Text(
-                                    "Amplitudes",
-                                    Modifier.padding(16.dp, 32.dp),
-                                    style = MaterialTheme.typography.h6
-                                )
-                                AmplitudeVisualizer()
-                            }
-                        }
-                    }
-                }
                 Column(
                     Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -138,76 +114,60 @@ fun BoxWithConstraintsScope.NowPlaying(
                         Modifier.padding(8.dp),
                         MaterialTheme.colors.onSurface.copy(0.08f)
                     )
-                    ChipGroup(
-                        listOf(
-                            Triple(
-                                NowPlayingContent.SONG.name,
-                                "Song",
-                                Icons.Outlined.Audiotrack
-                            ),
-                            Triple(
-                                NowPlayingContent.LYRICS.name,
-                                "Lyrics",
-                                Icons.Outlined.Article
-                            ),
-                            Triple(
-                                NowPlayingContent.VISUALIZERS.name,
-                                "Visualizers",
-                                Icons.Outlined.Explore
-                            )
-                        ),
-                        { contentState.name == it },
-                        { contentState = NowPlayingContent.valueOf(it) },
-                        Modifier.padding(16.dp)
-                    )
                     PlayController(Modifier.padding(16.dp))
                     StatefulProgressIndicator(Modifier.padding(32.dp, 8.dp))
+                    Row(modifier) {
+                        IconButton({ lyricsState.animateTo(true) }) {
+                            Icon(Icons.Outlined.Article, "Lyrics")
+                        }
+                    }
                 }
             }
-            if (progress <= 0.5f || (progress > 0.5f && contentState == NowPlayingContent.SONG)) {
-                Row(
-                    Modifier.draggable(
-                        rememberDraggableState {
-                            horizontalDragOffset += it
-                            with(density) {
-                                when {
-                                    horizontalDragOffset <= -48.dp.toPx() -> player.next()
-                                    horizontalDragOffset >= 48.dp.toPx() -> player.previous()
-                                }
+            Row(
+                Modifier.draggable(
+                    rememberDraggableState {
+                        horizontalDragOffset += it
+                        with(density) {
+                            when {
+                                horizontalDragOffset <= -48.dp.toPx() -> player.next()
+                                horizontalDragOffset >= 48.dp.toPx() -> player.previous()
                             }
-                        },
-                        Orientation.Horizontal,
-                        onDragStopped = { horizontalDragOffset = 0f }
-                    )
-                        .preferredSize(256.dp, 72.dp + (256.dp - 72.dp) * progress)
-                        .align(Alignment.TopCenter)
-                        .offset(y = 80.dp * progress),
-                    verticalAlignment = Alignment.CenterVertically
+                        }
+                    },
+                    Orientation.Horizontal,
+                    onDragStopped = { horizontalDragOffset = 0f }
+                )
+                    .offset(y = 12.dp + 68.dp * progress),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Cover(
+                    song,
+                    Modifier
+                        .padding(horizontal = 16.dp * (1f - progress))
+                        .preferredSize(48.dp + (256.dp - 48.dp) * progress)
+                        .offset(80.dp * progress)
+                        .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
+                        .clickable { player.playOrPause() }
+                )
+                Column(
+                    Modifier
+                        .padding(end = 16.dp)
+                        .offset((-112).dp * progress, 160.dp * progress)
                 ) {
-                    Cover(
-                        song,
-                        Modifier
-                            .padding(horizontal = 16.dp * (1f - progress))
-                            .preferredSize(48.dp + (256.dp - 48.dp) * progress)
-                            .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
-                            .clickable { player.playOrPause() }
+                    Text(
+                        song.title.toString(),
+                        fontWeight = FontWeight.Medium,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.body1
                     )
-                    Column(Modifier.padding(end = 16.dp)) {
-                        Text(
-                            song.title.toString(),
-                            fontWeight = FontWeight.Medium,
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1,
-                            style = MaterialTheme.typography.body1
-                        )
-                        Text(
-                            song.subtitle.toString(),
-                            fontWeight = FontWeight.Medium,
-                            overflow = TextOverflow.Ellipsis,
-                            maxLines = 1,
-                            style = MaterialTheme.typography.caption
-                        )
-                    }
+                    Text(
+                        song.subtitle.toString(),
+                        fontWeight = FontWeight.Medium,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.caption
+                    )
                 }
             }
         }

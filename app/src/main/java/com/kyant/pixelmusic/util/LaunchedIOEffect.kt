@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import okio.IOException
 
 @Composable
-fun Any?.LaunchedIOEffectUnit(block: suspend CoroutineScope.() -> Unit) {
+inline fun Any?.LaunchedIOEffectUnit(crossinline block: suspend CoroutineScope.() -> Unit) {
     LaunchedEffect(this) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             block()
@@ -17,7 +17,7 @@ fun Any?.LaunchedIOEffectUnit(block: suspend CoroutineScope.() -> Unit) {
 }
 
 @Composable
-fun <T> Any?.launchedIOEffect(block: suspend CoroutineScope.(T?) -> T?): T? {
+inline fun <T> Any?.launchedIOEffect(crossinline block: suspend CoroutineScope.(T?) -> T?): T? {
     var result by remember(this) { mutableStateOf<T?>(null) }
     LaunchedEffect(this) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {

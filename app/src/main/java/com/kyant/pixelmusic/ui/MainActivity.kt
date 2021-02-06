@@ -32,6 +32,7 @@ import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.ui.component.BottomNav
 import com.kyant.pixelmusic.ui.component.TopBar
 import com.kyant.pixelmusic.ui.my.My
+import com.kyant.pixelmusic.ui.nowplaying.Lyrics
 import com.kyant.pixelmusic.ui.nowplaying.NowPlaying
 import com.kyant.pixelmusic.ui.player.PlayerPlaylist
 import com.kyant.pixelmusic.ui.playlist.Playlist
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 val nowPlayingState = rememberSwipeableState(false)
                 val playerPlaylistState = rememberSwipeableState(false)
                 val playlistState = rememberSwipeableState(false)
+                val lyricsState = rememberSwipeableState(false)
                 val topList = remember { mutableStateOf<TopList?>(null) }
                 val isLight = MaterialTheme.colors.isLight
                 val items = listOf(
@@ -77,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                         playerPlaylistState.value -> playerPlaylistState.animateTo(false)
                         nowPlayingState.value -> nowPlayingState.animateTo(false)
                         playlistState.value -> playlistState.animateTo(false)
+                        lyricsState.value -> lyricsState.animateTo(false)
                         searchState.value -> searchState.animateTo(false)
                     }
                 }
@@ -88,8 +91,8 @@ class MainActivity : AppCompatActivity() {
                                 listOf(
                                     myState,
                                     playerPlaylistState,
-                                    nowPlayingState,
                                     playlistState,
+                                    lyricsState,
                                     searchState
                                 ),
                                 darkIcons = { progress, statusBarHeightRatio ->
@@ -124,8 +127,13 @@ class MainActivity : AppCompatActivity() {
                                 Playlist(topList)
                             }
                             ProvideNowPlaying(Media.nowPlaying) {
-                                NowPlaying(nowPlayingState, playerPlaylistState)
-                                PlayerPlaylist(playerPlaylistState)
+                                NowPlaying(nowPlayingState, playerPlaylistState, lyricsState)
+                                ForeLayer(playerPlaylistState) {
+                                    PlayerPlaylist()
+                                }
+                                ForeLayer(lyricsState) {
+                                    Lyrics()
+                                }
                             }
                             ForeLayer(myState) {
                                 My()

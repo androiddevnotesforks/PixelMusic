@@ -10,12 +10,6 @@ val LocalNowPlaying = compositionLocalOf { Song() }
 @Composable
 fun ProvideNowPlaying(song: Song?, content: @Composable () -> Unit) {
     if (song?.id != null) {
-        CompositionLocalProvider(LocalNowPlaying provides song, content = {
-            ProvideLyrics(song) {
-                ProvideAmplitudes(false) {
-                    content()
-                }
-            }
-        })
+        CompositionLocalProvider(LocalNowPlaying provides song, content = content)
     }
 }
