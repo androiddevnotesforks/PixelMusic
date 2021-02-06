@@ -69,18 +69,18 @@ class MainActivity : AppCompatActivity() {
                 )
                 BackHandler(
                     myState.value or
+                            lyricsState.value or
                             playerPlaylistState.value or
                             nowPlayingState.value or
                             playlistState.value or
-                            lyricsState.value or
                             searchState.value
                 ) {
                     when {
                         myState.value -> myState.animateTo(false)
+                        lyricsState.value -> lyricsState.animateTo(false)
                         playerPlaylistState.value -> playerPlaylistState.animateTo(false)
                         nowPlayingState.value -> nowPlayingState.animateTo(false)
                         playlistState.value -> playlistState.animateTo(false)
-                        lyricsState.value -> lyricsState.animateTo(false)
                         searchState.value -> searchState.animateTo(false)
                     }
                 }
@@ -91,9 +91,9 @@ class MainActivity : AppCompatActivity() {
                             BackLayer(
                                 listOf(
                                     myState,
+                                    lyricsState,
                                     playerPlaylistState,
                                     playlistState,
-                                    lyricsState,
                                     searchState
                                 ),
                                 darkIcons = { progress, statusBarHeightRatio ->
