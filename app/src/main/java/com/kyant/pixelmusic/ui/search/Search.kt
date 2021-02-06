@@ -30,7 +30,7 @@ fun Search(modifier: Modifier = Modifier) {
             )
             LazyColumn {
                 result?.let { songs ->
-                    items(songs) {
+                    items(songs, { it.id.toString() }) {
                         Song(it.toSong())
                     }
                 }

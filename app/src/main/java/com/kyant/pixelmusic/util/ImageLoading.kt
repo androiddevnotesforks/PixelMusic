@@ -41,12 +41,15 @@ fun AlbumId.loadCover(): ImageBitmap? {
         if (dataStore.contains(path)) {
             cached = true
         } else {
-            findAlbum()?.album?.picUrl?.toUri()?.loadImage()?.asAndroidBitmap()?.let {
-                LaunchedIOEffectUnit {
-                    dataStore.writeBitmap(path, it)
-                    cached = true
+            "${findAlbum()?.album?.picUrl}?param=500y500".toUri()
+                .loadImage()
+                ?.asAndroidBitmap()
+                ?.let {
+                    LaunchedIOEffectUnit {
+                        dataStore.writeBitmap(path, it)
+                        cached = true
+                    }
                 }
-            }
         }
         cached.LaunchedIOEffectUnit {
             if (cached) {

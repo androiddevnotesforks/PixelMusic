@@ -20,7 +20,7 @@ fun Playlist(
     LazyColumn(modifier) {
         playlist?.playlist?.tracks.let { tracks ->
             tracks?.let {
-                items(tracks) {
+                items(tracks, { it.id.toString() }) {
                     Song(it.toSong())
                 }
             }
