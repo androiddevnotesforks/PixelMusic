@@ -20,11 +20,10 @@ import kotlin.concurrent.fixedRateTimer
 class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
     private val animationPeriod = AnimationConstants.DefaultDurationMillis.toLong()
     var isPlayingState: Boolean by mutableStateOf(false)
-    var durationState: Long by mutableStateOf(1)
     lateinit var position: Animatable<Float, AnimationVector1D>
     lateinit var bufferedPositionState: Animatable<Float, AnimationVector1D>
-    inline val progress: Float get() = position.value / durationState.toFloat()
-    inline val bufferedProgress: Float get() = bufferedPositionState.value / durationState.toFloat()
+    inline val progress: Float get() = position.value / duration.toFloat()
+    inline val bufferedProgress: Float get() = bufferedPositionState.value / duration.toFloat()
 
     init {
         setThrowsWhenUsingWrongThread(false)
@@ -61,7 +60,6 @@ class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
                         }
                     }
                     STATE_READY -> {
-                        durationState = duration
                         if (playWhenReady) {
                             fixedRateTimer(
                                 "position", false,

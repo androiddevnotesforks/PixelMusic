@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,13 +33,14 @@ import kotlin.time.toDuration
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalTime::class)
 @Composable
-fun StatefulProgressIndicator(modifier: Modifier = Modifier) {
+fun ProgressBar(modifier: Modifier = Modifier) {
     val player = LocalPixelPlayer.current
+    var width by remember { mutableStateOf(0) }
     BoxWithConstraints(modifier.fillMaxWidth()) {
         var draggingOffset by remember { mutableStateOf(0f) }.apply {
             value = value.coerceIn(((0f..1f) - player.progress) * constraints.maxWidth.toFloat())
         }
-        val durationOffset = draggingOffset / constraints.maxWidth * player.durationState
+        val durationOffset = draggingOffset / constraints.maxWidth * player.duration
         Column {
             Box {
                 LinearProgressIndicator(
@@ -58,25 +60,23 @@ fun StatefulProgressIndicator(modifier: Modifier = Modifier) {
                         .clip(RoundedCornerShape(50)),
                     backgroundColor = Color.Transparent
                 )
-                Box(Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterStart)
-                    .pointerInput(Unit) {
-                        detectTapGestures {
-                            player.seekTo(
-                                (it.x / this@BoxWithConstraints.constraints.maxWidth * player.durationState).toLong()
-                            )
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged { width = it.width }
+                        .pointerInput(Unit) {
+                            detectTapGestures {
+                                player.seekTo(((it.x / width).coerceIn(0f..1f) * player.duration).toLong())
+                            }
                         }
-                    }
-                    .draggable(
-                        rememberDraggableState {
-                            draggingOffset += it
-                        },
-                        Orientation.Horizontal,
-                        onDragStopped = {
-                            player.seekTo((player.position.value + durationOffset).toLong())
-                            draggingOffset = 0f
-                        })
+                        .draggable(
+                            rememberDraggableState { draggingOffset += it },
+                            Orientation.Horizontal,
+                            onDragStopped = {
+                                player.seekTo((player.position.value + durationOffset).toLong())
+                                draggingOffset = 0f
+                            }
+                        )
                 ) {
                     Box(
                         Modifier

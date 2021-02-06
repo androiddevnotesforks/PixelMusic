@@ -31,7 +31,7 @@ import com.kyant.inimate.layer.progress
 import com.kyant.inimate.util.lighten
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
-import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
+import com.kyant.pixelmusic.ui.component.ProgressBar
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import com.kyant.pixelmusic.ui.song.Cover
@@ -109,7 +109,7 @@ fun BoxWithConstraintsScope.NowPlaying(
                         MaterialTheme.colors.onSurface.copy(0.08f)
                     )
                     PlayController(Modifier.padding(16.dp))
-                    StatefulProgressIndicator(Modifier.padding(32.dp, 8.dp))
+                    ProgressBar(Modifier.padding(32.dp, 8.dp))
                     Row(modifier) {
                         IconButton({ lyricsState.animateTo(true) }) {
                             Icon(Icons.Outlined.Article, "Lyrics")
