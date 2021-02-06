@@ -7,11 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
+import com.kyant.pixelmusic.api.SongId
 import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.playlist.Track
 import com.kyant.pixelmusic.util.loadCover
-
-typealias SongId = Long
 
 data class Song(
     val id: SongId? = null,
