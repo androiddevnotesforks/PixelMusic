@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
+import com.kyant.pixelmusic.locals.Media
 import com.kyant.pixelmusic.media.Song
 import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
@@ -62,10 +63,13 @@ fun PlayerPlaylistItem(
             Modifier
                 .clickable {
                     CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-                        if (!selected) {
-                            player.seekTo(index, 0)
+                        if (Media.browser.isConnected) {
+                            Media.session?.isActive = true
+                            if (!selected) {
+                                player.seekTo(index, 0)
+                            }
+                            player.play()
                         }
-                        player.play()
                     }
                 }
                 .padding(contentPadding)

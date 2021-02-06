@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -60,7 +61,7 @@ fun BoxWithConstraintsScope.NowPlaying(
 
     LaunchedEffect(song.icon) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            song.icon?.copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
+            song.icon?.asAndroidBitmap()?.copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
                 Palette.from(bitmap).generate { palette ->
                     if (isLight) {
                         palette?.lightMutedSwatch?.rgb?.let {

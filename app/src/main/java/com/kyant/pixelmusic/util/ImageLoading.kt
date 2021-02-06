@@ -57,3 +57,17 @@ fun String.loadImageWithDiskCache(
     }
     return cover
 }
+
+@Composable
+fun loadCachedImage(
+    name: String,
+    dataStoreName: String
+): ImageBitmap? {
+    val dataStore = CacheDataStore(LocalContext.current, dataStoreName)
+    val path = "$name.jpg"
+    return if (dataStore.contains(path)) {
+        dataStore.getBitmap(path)?.asImageBitmap()
+    } else {
+        EmptyImage
+    }
+}

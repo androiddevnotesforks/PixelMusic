@@ -7,7 +7,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.asImageBitmap
 import com.kyant.pixelmusic.media.Song
 import com.kyant.pixelmusic.util.EmptyImage
 
@@ -26,7 +25,7 @@ fun Cover(
         }
     }
     Image(
-        song.icon?.asImageBitmap() ?: EmptyImage,
+        song.icon ?: EmptyImage,
         song.title.toString(),
         modifier.alpha(alpha.value)
     )

@@ -1,17 +1,20 @@
 package com.kyant.pixelmusic.media
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.media.MediaDescriptionCompat
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
 import com.kyant.pixelmusic.api.SongId
 import com.kyant.pixelmusic.api.findCoverUrl
 import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.playlist.Track
+import com.kyant.pixelmusic.util.loadCachedImage
 import com.kyant.pixelmusic.util.loadImageWithDiskCache
+import java.io.Serializable
 
 data class Song(
     val id: SongId? = null,
@@ -19,10 +22,37 @@ data class Song(
     val title: String? = null,
     val subtitle: String? = null,
     val description: String? = null,
-    val icon: Bitmap? = null,
-    val iconUrl: String? = null,
-    val extras: Bundle? = null,
+    val icon: ImageBitmap? = null,
     val mediaUrl: String? = null
+)
+
+data class SerializedSong(
+    val id: SongId? = null,
+    val albumId: AlbumId? = null,
+    val title: String? = null,
+    val subtitle: String? = null,
+    val description: String? = null,
+    val mediaUrl: String? = null
+) : Serializable
+
+fun Song.serialize(): SerializedSong = SerializedSong(
+    id,
+    albumId,
+    title,
+    subtitle,
+    description,
+    mediaUrl
+)
+
+@Composable
+fun SerializedSong.toSong(): Song = Song(
+    id,
+    albumId,
+    title,
+    subtitle,
+    description,
+    loadCachedImage(albumId.toString(), "covers"),
+    mediaUrl
 )
 
 fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.Builder()
@@ -30,8 +60,7 @@ fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.B
     .setTitle(title)
     .setSubtitle(subtitle)
     .setDescription(description)
-    .setIconBitmap(icon)
-    .setIconUri(iconUrl?.toUri())
+    .setIconBitmap(icon?.asAndroidBitmap())
     .setExtras(Bundle().apply {
         albumId?.let { putLong("albumId", it) }
     })
@@ -44,9 +73,7 @@ fun MediaDescriptionCompat.toSong(): Song = Song(
     title?.toString(),
     subtitle?.toString(),
     description?.toString(),
-    iconBitmap,
-    iconUri.toString(),
-    extras,
+    iconBitmap?.asImageBitmap(),
     mediaUri.toString()
 )
 
@@ -59,8 +86,7 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     album?.name,
     icon = album?.id
         ?.findCoverUrl()
-        ?.loadImageWithDiskCache(album.id.toString(), "covers")
-        ?.asAndroidBitmap(),
+        ?.loadImageWithDiskCache(album.id.toString(), "covers"),
     mediaUrl = id?.findUrl()
 )
 
@@ -73,7 +99,6 @@ fun Track.toSong(): Song = Song(
     al?.name,
     icon = al?.id
         ?.findCoverUrl()
-        ?.loadImageWithDiskCache(al.id.toString(), "covers")
-        ?.asAndroidBitmap(),
+        ?.loadImageWithDiskCache(al.id.toString(), "covers"),
     mediaUrl = id?.findUrl()
 )

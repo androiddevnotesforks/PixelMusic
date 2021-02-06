@@ -20,17 +20,14 @@ fun PlayerPlaylist(
     state: SwipeableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    ForeLayer(
-        state,
-        modifier
-    ) {
+    ForeLayer(state, modifier) {
         Text(
             "Playlist",
             Modifier.padding(16.dp),
             style = MaterialTheme.typography.h5
         )
         LazyColumn {
-            itemsIndexed(Media.songs) { index, song ->
+            itemsIndexed(Media.songs, { _, song -> song.id.toString() }) { index, song ->
                 PlayerPlaylistItem(index, song, song.id == LocalNowPlaying.current.id)
             }
         }
