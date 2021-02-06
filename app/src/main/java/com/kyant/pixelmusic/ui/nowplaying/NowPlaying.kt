@@ -1,6 +1,8 @@
 package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
@@ -137,22 +139,30 @@ fun BoxWithConstraintsScope.NowPlaying(
                     Orientation.Horizontal,
                     onDragStopped = { horizontalDragOffset = 0f }
                 )
-                    .offset(y = 12.dp + 68.dp * progress),
+                    .padding(top = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Cover(
                     song,
                     Modifier
                         .padding(horizontal = 16.dp * (1f - progress))
-                        .preferredSize(48.dp + (256.dp - 48.dp) * progress)
-                        .offset(80.dp * progress)
+                        .preferredSize(
+                            48.dp + animateDpAsState(
+                                208.dp * progress,
+                                spring(stiffness = 8000f)
+                            ).value
+                        )
+                        .offset(
+                            80.dp * progress,
+                            animateDpAsState(68.dp * progress, spring(stiffness = 1000f)).value
+                        )
                         .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
                         .clickable { player.playOrPause() }
                 )
                 Column(
                     Modifier
                         .padding(end = 16.dp)
-                        .offset((-112).dp * progress, 160.dp * progress)
+                        .offset((-112).dp * progress, 256.dp * progress)
                 ) {
                     Text(
                         song.title.toString(),
