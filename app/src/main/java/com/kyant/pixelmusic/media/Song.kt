@@ -1,5 +1,6 @@
 package com.kyant.pixelmusic.media
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.media.MediaDescriptionCompat
 import androidx.compose.runtime.Composable
@@ -44,14 +45,13 @@ fun Song.serialize(): SerializedSong = SerializedSong(
     mediaUrl
 )
 
-@Composable
-fun SerializedSong.toSong(): Song = Song(
+fun SerializedSong.toSong(context: Context): Song = Song(
     id,
     albumId,
     title,
     subtitle,
     description,
-    loadCachedImage(albumId.toString(), "covers"),
+    loadCachedImage(context, albumId.toString(), "covers"),
     mediaUrl
 )
 

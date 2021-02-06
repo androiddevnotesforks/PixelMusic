@@ -14,10 +14,12 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.kyant.pixelmusic.media.MediaPlaybackService
-import com.kyant.pixelmusic.media.PixelPlayer
-import com.kyant.pixelmusic.media.Song
-import com.kyant.pixelmusic.media.toMediaDescription
+import com.kyant.pixelmusic.media.*
+import com.kyant.pixelmusic.util.DataStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 object Media {
     const val NOTIFICATION_CHANNEL_ID = "Pixel Music"
@@ -50,6 +52,22 @@ object Media {
         )
     }
 
+    fun syncPlaylistsToLocal(context: Context) {
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            DataStore(context, "playlists")
+                .write("playlist_0", songs.map { it.serialize() })
+        }
+    }
+
+    fun syncWithPlaylists(context: Context) {
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            DataStore(context, "playlists")
+                .get<List<SerializedSong>>("playlist_0")
+                ?.map { it.toSong(context) }
+                ?.let { syncSongsWithPlaylists(it) }
+        }
+    }
+
     fun restore() {
         player = null
         session = null
@@ -63,5 +81,15 @@ object Media {
             .Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(song.mediaUrl!!))
         player?.addMediaSource(index, source)
+    }
+
+    private fun syncSongsWithPlaylists(songList: List<Song>) {
+        songs.addAll(songList)
+        val sources = songList.map {
+            ProgressiveMediaSource
+                .Factory(dataSourceFactory)
+                .createMediaSource(MediaItem.fromUri(it.mediaUrl!!))
+        }
+        player?.setMediaSources(sources)
     }
 }

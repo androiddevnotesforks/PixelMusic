@@ -12,12 +12,10 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.rememberSwipeableState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -149,6 +147,7 @@ class MainActivity : AppCompatActivity() {
             Media.browser.sessionToken.also { token ->
                 val mediaController = MediaControllerCompat(this@MainActivity, token)
                 MediaControllerCompat.setMediaController(this@MainActivity, mediaController)
+                Media.syncWithPlaylists(this@MainActivity)
             }
             MediaControllerCompat.getMediaController(this@MainActivity)
                 .registerCallback(controllerCallback)
@@ -178,6 +177,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Media.syncPlaylistsToLocal(this)
         unregisterReceiver(mediaButtonReceiver)
         MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
         Media.browser.disconnect()

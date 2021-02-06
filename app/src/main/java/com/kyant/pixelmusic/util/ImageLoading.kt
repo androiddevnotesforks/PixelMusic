@@ -1,5 +1,6 @@
 package com.kyant.pixelmusic.util
 
+import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -58,12 +59,12 @@ fun String.loadImageWithDiskCache(
     return cover
 }
 
-@Composable
 fun loadCachedImage(
+    context: Context,
     name: String,
     dataStoreName: String
 ): ImageBitmap? {
-    val dataStore = CacheDataStore(LocalContext.current, dataStoreName)
+    val dataStore = CacheDataStore(context, dataStoreName)
     val path = "$name.jpg"
     return if (dataStore.contains(path)) {
         dataStore.getBitmap(path)?.asImageBitmap()
