@@ -1,6 +1,6 @@
-package com.kyant.pixelmusic.api.url
+package com.kyant.pixelmusic.api.song
 
-data class UrlResult(
+data class SongResult(
     val data: List<Data>? = listOf(),
     val code: Int? = 0
 )

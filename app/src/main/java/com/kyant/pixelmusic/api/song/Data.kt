@@ -1,4 +1,4 @@
-package com.kyant.pixelmusic.api.url
+package com.kyant.pixelmusic.api.song
 
 data class Data(
     val id: Int? = 0,
