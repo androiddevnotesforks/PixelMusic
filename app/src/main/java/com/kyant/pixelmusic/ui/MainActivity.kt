@@ -28,6 +28,7 @@ import com.kyant.inimate.layer.BackLayer
 import com.kyant.inimate.layer.ForeLayer
 import com.kyant.inimate.layer.progress
 import com.kyant.pixelmusic.R
+import com.kyant.pixelmusic.api.toplist.TopList
 import com.kyant.pixelmusic.locals.*
 import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.ui.component.BottomNav
@@ -35,6 +36,7 @@ import com.kyant.pixelmusic.ui.component.TopBar
 import com.kyant.pixelmusic.ui.my.My
 import com.kyant.pixelmusic.ui.nowplaying.NowPlaying
 import com.kyant.pixelmusic.ui.player.PlayerPlaylist
+import com.kyant.pixelmusic.ui.playlist.Playlist
 import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.search.Search
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
@@ -57,17 +59,26 @@ class MainActivity : AppCompatActivity() {
                 val searchState = rememberSwipeableState(false)
                 val myState = rememberSwipeableState(false)
                 val nowPlayingState = rememberSwipeableState(false)
+                val playerPlaylistState = rememberSwipeableState(false)
                 val playlistState = rememberSwipeableState(false)
+                val topList = remember { mutableStateOf<TopList?>(null) }
                 val isLight = MaterialTheme.colors.isLight
                 val items = listOf(
                     Triple(Screens.HOME.name, "Home", Icons.Outlined.Home),
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
                 )
-                BackHandler(myState.value or playlistState.value or nowPlayingState.value or searchState.value) {
+                BackHandler(
+                    myState.value or
+                            playerPlaylistState.value or
+                            nowPlayingState.value or
+                            playlistState.value or
+                            searchState.value
+                ) {
                     when {
                         myState.value -> myState.animateTo(false)
-                        playlistState.value -> playlistState.animateTo(false)
+                        playerPlaylistState.value -> playerPlaylistState.animateTo(false)
                         nowPlayingState.value -> nowPlayingState.animateTo(false)
+                        playlistState.value -> playlistState.animateTo(false)
                         searchState.value -> searchState.animateTo(false)
                     }
                 }
@@ -76,7 +87,13 @@ class MainActivity : AppCompatActivity() {
                     ProvideJsonParser {
                         BoxWithConstraints(Modifier.fillMaxSize()) {
                             BackLayer(
-                                listOf(searchState, myState, nowPlayingState, playlistState),
+                                listOf(
+                                    myState,
+                                    playerPlaylistState,
+                                    nowPlayingState,
+                                    playlistState,
+                                    searchState
+                                ),
                                 darkIcons = { progress, statusBarHeightRatio ->
                                     when {
                                         nowPlayingState.progress(constraints) >= 1f - statusBarHeightRatio / 2 -> isLight
@@ -87,7 +104,12 @@ class MainActivity : AppCompatActivity() {
                             ) {
                                 NavHost(navController, Screens.HOME.name) {
                                     composable(Screens.HOME.name) { Home() }
-                                    composable(Screens.EXPLORE.name) { Explore() }
+                                    composable(Screens.EXPLORE.name) {
+                                        Explore(
+                                            playlistState,
+                                            topList
+                                        )
+                                    }
                                 }
                                 TopBar(searchState, myState)
                             }
@@ -100,9 +122,12 @@ class MainActivity : AppCompatActivity() {
                             ForeLayer(searchState) {
                                 Search()
                             }
+                            ForeLayer(playlistState) {
+                                Playlist(topList)
+                            }
                             ProvideNowPlaying(Media.nowPlaying) {
-                                NowPlaying(nowPlayingState, playlistState)
-                                PlayerPlaylist(playlistState)
+                                NowPlaying(nowPlayingState, playerPlaylistState)
+                                PlayerPlaylist(playerPlaylistState)
                             }
                             ForeLayer(myState) {
                                 My()
