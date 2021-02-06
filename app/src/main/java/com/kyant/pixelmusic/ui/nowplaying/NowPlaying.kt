@@ -1,6 +1,7 @@
 package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
@@ -34,10 +35,7 @@ import com.kyant.pixelmusic.ui.component.StatefulProgressIndicator
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import com.kyant.pixelmusic.ui.song.Cover
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import com.kyant.pixelmusic.util.LaunchedIOEffectUnit
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -56,19 +54,13 @@ fun BoxWithConstraintsScope.NowPlaying(
     val defaultBackgroundColor = MaterialTheme.colors.surface
     var backgroundColor by remember { mutableStateOf(defaultBackgroundColor) }
 
-    LaunchedEffect(song.icon) {
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            song.icon?.asAndroidBitmap()?.copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
-                Palette.from(bitmap).generate { palette ->
-                    if (isLight) {
-                        palette?.lightMutedSwatch?.rgb?.let {
-                            backgroundColor = Color(it)
-                        }
-                    } else {
-                        palette?.darkMutedSwatch?.rgb?.let {
-                            backgroundColor = Color(it)
-                        }
-                    }
+    song.icon.LaunchedIOEffectUnit {
+        song.icon?.asAndroidBitmap()?.copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
+            Palette.from(bitmap).generate { palette ->
+                if (isLight) {
+                    palette?.lightMutedSwatch?.rgb?.let { backgroundColor = Color(it) }
+                } else {
+                    palette?.darkMutedSwatch?.rgb?.let { backgroundColor = Color(it) }
                 }
             }
         }
@@ -125,7 +117,7 @@ fun BoxWithConstraintsScope.NowPlaying(
                     }
                 }
             }
-            Row(
+            Box(
                 Modifier.draggable(
                     rememberDraggableState {
                         horizontalDragOffset += it
@@ -138,9 +130,7 @@ fun BoxWithConstraintsScope.NowPlaying(
                     },
                     Orientation.Horizontal,
                     onDragStopped = { horizontalDragOffset = 0f }
-                )
-                    .padding(top = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
+                ).padding(top = 12.dp)
             ) {
                 Cover(
                     song,
@@ -148,22 +138,18 @@ fun BoxWithConstraintsScope.NowPlaying(
                         .padding(horizontal = 16.dp * (1f - progress))
                         .preferredSize(
                             48.dp + animateDpAsState(
-                                208.dp * progress,
-                                spring(stiffness = 8000f)
-                            ).value
+                                208.dp * progress * 2,
+                                spring(stiffness = Spring.StiffnessHigh)
+                            ).value.coerceAtMost(208.dp)
                         )
                         .offset(
                             80.dp * progress,
-                            animateDpAsState(68.dp * progress, spring(stiffness = 1000f)).value
+                            animateDpAsState(68.dp * progress, spring()).value
                         )
                         .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
                         .clickable { player.playOrPause() }
                 )
-                Column(
-                    Modifier
-                        .padding(end = 16.dp)
-                        .offset((-112).dp * progress, 256.dp * progress)
-                ) {
+                Column(Modifier.offset(80.dp + 64.dp * progress, 4.dp + 336.dp * progress)) {
                     Text(
                         song.title.toString(),
                         fontWeight = FontWeight.Medium,
