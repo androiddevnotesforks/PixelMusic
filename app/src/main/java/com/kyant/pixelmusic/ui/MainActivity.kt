@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                             playerPlaylistState.value or
                             nowPlayingState.value or
                             playlistState.value or
+                            lyricsState.value or
                             searchState.value
                 ) {
                     when {
