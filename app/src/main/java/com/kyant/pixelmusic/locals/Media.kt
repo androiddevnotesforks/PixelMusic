@@ -62,9 +62,10 @@ object Media {
     fun syncWithPlaylists(context: Context) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             DataStore(context, "playlists")
-                .get<List<SerializedSong>>("playlist_0")
+                .getOrNull<List<SerializedSong>>("playlist_0")
                 ?.map { it.toSong(context) }
-                ?.let { syncSongsWithPlaylists(it) }
+                ?.let { syncSongsWithPlaylists(it)
+                println(it)}
         }
     }
 

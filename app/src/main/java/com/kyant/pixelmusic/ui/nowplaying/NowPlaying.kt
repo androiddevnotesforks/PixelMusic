@@ -102,7 +102,7 @@ fun BoxWithConstraintsScope.NowPlaying(
             },
         shape = RoundedCornerShape(16.dp * (1f - progress)),
         backgroundColor = backgroundColor.lighten(0.4f * (1f - progress)),
-        elevation = 1.dp * (1f - progress)
+        elevation = 1.dp + 23.dp * progress
     ) {
         BoxWithConstraints {
             Column(

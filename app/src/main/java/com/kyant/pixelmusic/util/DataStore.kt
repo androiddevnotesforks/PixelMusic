@@ -78,6 +78,16 @@ open class BaseDataStore(
         }
     }
 
+    inline fun <reified T> getOrNull(key: String): T? {
+        return try {
+            key.coordinated.stream()
+        } catch (e: IOException) {
+            null
+        } catch (e: ClassNotFoundException) {
+            null
+        }
+    }
+
     inline operator fun <reified T> get(key: String, def: T? = null): T? {
         try {
             return key.coordinated.stream() ?: def
