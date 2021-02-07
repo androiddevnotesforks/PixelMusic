@@ -1,9 +1,6 @@
 package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
@@ -26,6 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.palette.graphics.Palette
 import com.kyant.inimate.layer.progress
 import com.kyant.inimate.util.lighten
@@ -40,6 +38,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -107,7 +106,8 @@ fun BoxWithConstraintsScope.NowPlaying(
             Column(
                 Modifier.fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .alpha(progress),
+                    .offset(y = 256.dp * (1f - (progress - 0.5f).coerceAtLeast(0f) * 2))
+                    .alpha((progress - 0.5f).coerceAtLeast(0f) * 2),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Column(
@@ -150,23 +150,23 @@ fun BoxWithConstraintsScope.NowPlaying(
                     song,
                     Modifier
                         .padding(horizontal = 16.dp * (1f - progress))
-                        .preferredSize(
-                            48.dp + animateDpAsState(
-                                208.dp * progress * 2,
-                                spring(stiffness = Spring.StiffnessHigh)
-                            ).value.coerceIn(208.dp * progress..208.dp)
-                        )
+                        .preferredSize((48.dp + 208.dp * progress * 2).coerceIn(256.dp * progress..256.dp))
                         .offset(80.dp * progress, 68.dp * progress)
                         .clip(SmoothRoundedCornerShape((5f - progress).toDouble()))
                         .clickable { player.playOrPause() }
+                        .zIndex(1f)
                 )
-                Column(Modifier.offset(80.dp + 64.dp * progress, 4.dp + 336.dp * progress)) {
+                Column(
+                    Modifier.offset(80.dp + 16.dp * progress, 4.dp + 384.dp * progress)
+                        .alpha((progress - 0.5f).absoluteValue * 2)
+                ) {
                     Text(
                         song.title.toString(),
                         fontWeight = FontWeight.Medium,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        style = MaterialTheme.typography.body1
+                        style = if (progress <= 0.5f) MaterialTheme.typography.body1
+                        else MaterialTheme.typography.h6
                     )
                     Text(
                         song.subtitle.toString(),
