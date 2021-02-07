@@ -54,10 +54,13 @@ object Media {
 
     fun syncPlaylistsToLocal(context: Context) {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            DataStore(context, "playlists")
-                .write("playlist_0", songs.map { it.serialize() })
-            DataStore(context, "playlists")
-                .write("playlist_0_state", player?.currentWindowIndex to player?.currentPosition)
+            val dataStore = DataStore(context, "playlists")
+            val songIndex = player?.currentWindowIndex
+            val position = player?.currentPosition
+            dataStore.write("playlist_0", songs.map { it.serialize() })
+            if (songIndex != null && position != null) {
+                dataStore.write("playlist_0_state", songIndex to position)
+            }
         }
     }
 

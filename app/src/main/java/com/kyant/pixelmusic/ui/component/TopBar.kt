@@ -16,6 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -52,13 +56,21 @@ fun TopBar(
             )
         }
         Row {
-            IconButton({ searchState.animateTo(true) }) {
+            IconButton({
+                CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                    searchState.animateTo(true)
+                }
+            }) {
                 Icon(
                     Icons.Outlined.Search, "Search",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
                 )
             }
-            IconButton({ myState.animateTo(true) }) {
+            IconButton({
+                CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                    myState.animateTo(true)
+                }
+            }) {
                 Icon(
                     Icons.Outlined.AccountCircle, "My",
                     tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)

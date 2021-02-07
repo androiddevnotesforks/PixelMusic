@@ -16,6 +16,10 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.api.findTopList
 import com.kyant.pixelmusic.api.toplist.TopList
 import com.kyant.pixelmusic.ui.playlist.TopListItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -52,7 +56,9 @@ fun Explore(
                 topLists?.list?.let { list ->
                     items(list) {
                         TopListItem(it, {
-                            state.animateTo(true)
+                            CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                                state.animateTo(true)
+                            }
                             topList.value = it
                         })
                     }

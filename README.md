@@ -35,7 +35,7 @@ Well, there are still some bugs you can see in the GIF.
 ## Technical features
 
 * **Kotlin** 1.4.30
-* **Androidx** snapshot 7128032
+* **Androidx** snapshot 7129581
 * **Jetpack Compose** snapshot (1.0.0-alpha13)
 * **ExoPlayer** 2.12.3
 

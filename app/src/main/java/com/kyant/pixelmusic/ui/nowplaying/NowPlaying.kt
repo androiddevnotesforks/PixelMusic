@@ -36,6 +36,10 @@ import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.util.LaunchedIOEffectUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -84,9 +88,15 @@ fun BoxWithConstraintsScope.NowPlaying(
             )
             .pointerInput(Unit) {
                 detectTapGestures(
-                    onLongPress = { playlistState.animateTo(!playlistState.value) }
+                    onLongPress = {
+                        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                            playlistState.animateTo(!playlistState.currentValue)
+                        }
+                    }
                 ) {
-                    state.animateTo(true)
+                    CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                        state.animateTo(true)
+                    }
                 }
             },
         shape = RoundedCornerShape(16.dp * (1f - progress)),
@@ -111,7 +121,11 @@ fun BoxWithConstraintsScope.NowPlaying(
                     PlayController(Modifier.padding(16.dp))
                     ProgressBar(Modifier.padding(32.dp, 8.dp))
                     Row(modifier) {
-                        IconButton({ lyricsState.animateTo(true) }) {
+                        IconButton({
+                            CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                                lyricsState.animateTo(true)
+                            }
+                        }) {
                             Icon(Icons.Outlined.Article, "Lyrics")
                         }
                     }

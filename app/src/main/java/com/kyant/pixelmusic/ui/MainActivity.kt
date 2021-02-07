@@ -38,6 +38,7 @@ import com.kyant.pixelmusic.ui.screens.*
 import com.kyant.pixelmusic.ui.search.Search
 import com.kyant.pixelmusic.ui.theme.PixelMusicTheme
 import com.kyant.pixelmusic.util.currentRoute
+import kotlinx.coroutines.launch
 
 enum class Screens { HOME, EXPLORE }
 
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         Media.init(this, connectionCallbacks)
         setContent {
             PixelMusicTheme(window) {
+                val coroutineScope = rememberCoroutineScope()
                 val navController = rememberNavController()
                 val searchState = rememberSwipeableState(false)
                 val myState = rememberSwipeableState(false)
@@ -66,20 +68,22 @@ class MainActivity : AppCompatActivity() {
                     Triple(Screens.EXPLORE.name, "Explore", Icons.Outlined.Explore)
                 )
                 BackHandler(
-                    myState.value or
-                            lyricsState.value or
-                            playerPlaylistState.value or
-                            nowPlayingState.value or
-                            playlistState.value or
-                            searchState.value
+                    myState.currentValue or
+                            lyricsState.currentValue or
+                            playerPlaylistState.currentValue or
+                            nowPlayingState.currentValue or
+                            playlistState.currentValue or
+                            searchState.currentValue
                 ) {
-                    when {
-                        myState.value -> myState.animateTo(false)
-                        lyricsState.value -> lyricsState.animateTo(false)
-                        playerPlaylistState.value -> playerPlaylistState.animateTo(false)
-                        nowPlayingState.value -> nowPlayingState.animateTo(false)
-                        playlistState.value -> playlistState.animateTo(false)
-                        searchState.value -> searchState.animateTo(false)
+                    coroutineScope.launch {
+                        when {
+                            myState.currentValue -> myState.animateTo(false)
+                            lyricsState.currentValue -> lyricsState.animateTo(false)
+                            playerPlaylistState.currentValue -> playerPlaylistState.animateTo(false)
+                            nowPlayingState.currentValue -> nowPlayingState.animateTo(false)
+                            playlistState.currentValue -> playlistState.animateTo(false)
+                            searchState.currentValue -> searchState.animateTo(false)
+                        }
                     }
                 }
                 ProvidePixelPlayer {
