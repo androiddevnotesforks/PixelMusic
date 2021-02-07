@@ -79,7 +79,10 @@ object Media {
     }
 
     fun restore() {
+        player?.stop()
         player = null
+        browser.disconnect()
+        session?.isActive = false
         session = null
         songs.clear()
         nowPlaying = null

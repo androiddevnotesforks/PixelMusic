@@ -188,10 +188,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Media.syncPlaylistsToLocal(this)
         unregisterReceiver(mediaButtonReceiver)
-        Media.browser.disconnect()
         ContextCompat.getSystemService(this, MediaPlaybackService::class.java)?.stopSelf()
-        Media.session?.isActive = false
-        Media.player?.stop()
         Media.restore()
     }
 }
