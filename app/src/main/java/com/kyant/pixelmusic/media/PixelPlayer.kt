@@ -19,7 +19,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlin.concurrent.fixedRateTimer
 
-
 class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
     private val animationPeriod = AnimationConstants.DefaultDurationMillis.toLong()
     var isPlayingState: Boolean by mutableStateOf(false)

@@ -8,9 +8,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.net.toUri
-import com.kyant.pixelmusic.api.AlbumId
-import com.kyant.pixelmusic.api.SongId
-import com.kyant.pixelmusic.api.findCoverUrl
+import com.kyant.pixelmusic.api.*
 import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.playlist.Track
 import com.kyant.pixelmusic.util.loadCachedImage
@@ -32,8 +30,7 @@ data class SerializedSong(
     val albumId: AlbumId? = null,
     val title: String? = null,
     val subtitle: String? = null,
-    val description: String? = null,
-    val mediaUrl: String? = null
+    val description: String? = null
 ) : Serializable
 
 fun Song.serialize(): SerializedSong = SerializedSong(
@@ -41,8 +38,7 @@ fun Song.serialize(): SerializedSong = SerializedSong(
     albumId,
     title,
     subtitle,
-    description,
-    mediaUrl
+    description
 )
 
 fun SerializedSong.toSong(context: Context): Song = Song(
@@ -52,7 +48,7 @@ fun SerializedSong.toSong(context: Context): Song = Song(
     subtitle,
     description,
     loadCachedImage(context, albumId.toString(), "covers"),
-    mediaUrl
+    id?.findUrl2()
 )
 
 fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.Builder()

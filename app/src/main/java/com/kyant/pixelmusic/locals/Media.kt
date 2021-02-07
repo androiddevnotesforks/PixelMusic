@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.core.net.toUri
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DataSource
@@ -31,8 +32,11 @@ object Media {
     var session: MediaSessionCompat? by mutableStateOf(null)
 
     private lateinit var dataSourceFactory: DataSource.Factory
-    val songs: SnapshotStateList<Song> = mutableStateListOf<Song>().onEach {
-        session?.controller?.addQueueItem(it.toMediaDescription())
+    val songs: SnapshotStateList<Song> = mutableStateListOf<Song>().apply {
+        println(map { it.id })
+        forEach {
+            session?.controller?.addQueueItem(it.toMediaDescription())
+        }
     }
     var nowPlaying: Song? by mutableStateOf(null)
 
@@ -92,16 +96,17 @@ object Media {
         songs.add(index, song)
         val source = ProgressiveMediaSource
             .Factory(dataSourceFactory)
-            .createMediaSource(MediaItem.fromUri(song.mediaUrl!!))
+            .createMediaSource(MediaItem.fromUri(song.mediaUrl!!.toUri()))
         player?.addMediaSource(index, source)
     }
 
     private fun syncSongsWithPlaylists(songList: List<Song>) {
         songs.addAll(songList)
         val sources = songList.map {
+            println(it.mediaUrl)
             ProgressiveMediaSource
                 .Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri(it.mediaUrl!!))
+                .createMediaSource(MediaItem.fromUri(it.mediaUrl!!.toUri()))
         }
         player?.setMediaSources(sources)
     }

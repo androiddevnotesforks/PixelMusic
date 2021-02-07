@@ -2,6 +2,7 @@ package com.kyant.pixelmusic.api
 
 import androidx.compose.runtime.*
 import com.kyant.pixelmusic.api.song.SongResult
+import com.kyant.pixelmusic.locals.JsonParser
 import com.kyant.pixelmusic.locals.LocalJsonParser
 import com.kyant.pixelmusic.util.launchedIOEffect
 import java.net.URL
@@ -17,3 +18,8 @@ fun SongId.findUrl(): String? {
         )?.data?.get(0)?.url
     }
 }
+
+fun SongId.findUrl2(): String? = JsonParser()
+    .parse<SongResult>(
+        URL("$API2/song/url?id=${this@findUrl2}").readText()
+    )?.data?.get(0)?.url

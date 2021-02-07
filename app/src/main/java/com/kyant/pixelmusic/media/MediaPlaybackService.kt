@@ -17,17 +17,20 @@ class MediaPlaybackService : MediaBrowserServiceCompat() {
     override fun onCreate() {
         super.onCreate()
         Media.session = MediaSessionCompat(baseContext, "PIXEL_MUSIC").apply {
-            val intent = Intent(this@MediaPlaybackService, MainActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(
-                this@MediaPlaybackService, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            setSessionActivity(pendingIntent)
-            setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
-            val stateBuilder = PlaybackStateCompat.Builder()
-                .setActions(
-                    PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE
+            setSessionActivity(
+                PendingIntent.getActivity(
+                    this@MediaPlaybackService,
+                    1,
+                    Intent(this@MediaPlaybackService, MainActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT
                 )
-            setPlaybackState(stateBuilder.build())
+            )
+            setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS)
+            setPlaybackState(
+                PlaybackStateCompat.Builder()
+                    .setActions(PlaybackStateCompat.ACTION_PLAY or PlaybackStateCompat.ACTION_PLAY_PAUSE)
+                    .build()
+            )
             controller?.registerCallback(object : MediaControllerCompat.Callback() {
                 override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
                     if (state?.state == PlaybackStateCompat.STATE_PLAYING ||
