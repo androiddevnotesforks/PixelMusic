@@ -30,7 +30,7 @@ fun TopBar(
     Row(
         modifier
             .fillMaxWidth()
-            .preferredHeight(48.dp)
+            .preferredHeight(56.dp)
             .background(MaterialTheme.colors.surface.copy(0.92f))
             .padding(8.dp),
         Arrangement.SpaceBetween,

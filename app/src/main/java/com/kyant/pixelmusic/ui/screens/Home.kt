@@ -28,7 +28,7 @@ fun Home(modifier: Modifier = Modifier) {
                     .padding(16.dp),
                 RoundedCornerShape(16.dp),
                 MaterialTheme.colors.secondary,
-                elevation = 0.dp
+                elevation = 24.dp
             ) {
                 Column(
                     Modifier
