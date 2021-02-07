@@ -86,17 +86,24 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
-    icon = loadImageWithDiskCache(album?.id?.findCoverUrl(), album?.id.toString(), "covers"),
-    mediaUrl = id?.findUrl()
+    loadImageWithDiskCache(album?.id?.findCoverUrl(), album?.id.toString(), "covers"),
+    id?.findUrl()
 )
 
 @Composable
-fun Track.toSong(): Song = Song(
-    id,
-    al?.id,
-    name,
-    ar?.map { it.name }?.joinToString(),
-    al?.name,
-    icon = loadImageWithDiskCache(al?.id?.findCoverUrl(), al?.id.toString(), "covers"),
-    mediaUrl = id?.findUrl()
-)
+fun List<Track>.toSongs(): List<Song> {
+    val urls = map { it.id!! }.findUrls()
+    val songs = mutableListOf<Song>()
+    forEachIndexed { index, song ->
+        songs += Song(
+            song.id,
+            song.al?.id,
+            song.name,
+            song.ar?.map { it.name }?.joinToString(),
+            song.al?.name,
+            loadImageWithDiskCache(song.al?.id?.findCoverUrl(), song.al?.id.toString(), "covers"),
+            urls?.get(index)
+        )
+    }
+    return songs
+}

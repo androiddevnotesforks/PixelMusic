@@ -36,7 +36,7 @@ fun loadImageWithDiskCache(
     name: String,
     dataStoreName: String
 ): ImageBitmap? {
-    var cover by remember(name) { mutableStateOf<ImageBitmap?>(null) }
+    var image by remember(name) { mutableStateOf<ImageBitmap?>(null) }
     var cached by remember(name) { mutableStateOf(false) }
     ProvideCacheDataStore(dataStoreName) {
         val dataStore = LocalCacheDataStore.current
@@ -53,11 +53,11 @@ fun loadImageWithDiskCache(
         }
         cached.LaunchedIOEffectUnit {
             if (cached) {
-                cover = dataStore.getBitmap(path)?.asImageBitmap()
+                image = dataStore.getBitmap(path)?.asImageBitmap()
             }
         }
     }
-    return cover
+    return image
 }
 
 fun loadCachedImage(

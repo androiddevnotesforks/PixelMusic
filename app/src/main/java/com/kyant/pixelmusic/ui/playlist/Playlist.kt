@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.api.findPlaylist
 import com.kyant.pixelmusic.api.toplist.TopList
-import com.kyant.pixelmusic.media.toSong
+import com.kyant.pixelmusic.media.toSongs
 import com.kyant.pixelmusic.ui.song.Song
 
 @Composable
@@ -24,7 +24,7 @@ fun Playlist(
     topList: MutableState<TopList?>,
     modifier: Modifier = Modifier
 ) {
-    val songs = topList.value?.id?.findPlaylist()?.playlist?.tracks?.map { it.toSong() }
+    val songs = topList.value?.id?.findPlaylist()?.playlist?.tracks?.toSongs()
     Column(modifier) {
         Row(
             Modifier.fillMaxWidth(),
