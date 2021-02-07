@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.*
-import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.playlist.Track
 import com.kyant.pixelmusic.util.loadCachedImage
 import com.kyant.pixelmusic.util.loadImageWithDiskCache

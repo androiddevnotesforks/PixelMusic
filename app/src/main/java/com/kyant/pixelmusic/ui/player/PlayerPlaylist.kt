@@ -1,28 +1,56 @@
 package com.kyant.pixelmusic.ui.player
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ClearAll
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.Media
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlayerPlaylist(modifier: Modifier = Modifier) {
     Column(modifier) {
-        Text(
-            "Playlist",
-            Modifier.padding(16.dp),
-            style = MaterialTheme.typography.h5
-        )
+        Row(
+            Modifier.fillMaxWidth(),
+            Arrangement.SpaceBetween,
+            Alignment.CenterVertically
+        ) {
+            Text(
+                "Playlist",
+                Modifier.padding(16.dp),
+                style = MaterialTheme.typography.h5
+            )
+            OutlinedButton(
+                {
+                    CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+                        Media.clearPlaylist()
+                    }
+                },
+                Modifier.padding(horizontal = 8.dp)
+            ) {
+                Icon(Icons.Outlined.ClearAll, "Clear all")
+                Spacer(Modifier.preferredWidth(8.dp))
+                Text("Clear all")
+            }
+        }
         LazyColumn {
-            itemsIndexed(Media.songs, { _, song -> song.id.toString() }) { index, song ->
-                PlayerPlaylistItem(index, song, song.id == LocalNowPlaying.current.id)
+            if (!Media.songs.isNullOrEmpty()) {
+                itemsIndexed(Media.songs, { _, song -> song.id.toString() }) { index, song ->
+                    PlayerPlaylistItem(index, song, song.id == LocalNowPlaying.current.id)
+                }
             }
         }
     }

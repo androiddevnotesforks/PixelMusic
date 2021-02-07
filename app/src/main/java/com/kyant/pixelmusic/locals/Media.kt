@@ -102,14 +102,22 @@ object Media {
         player?.addMediaSource(index, source)
     }
 
+    fun clearPlaylist() {
+        songs.clear()
+        player?.clearMediaItems()
+    }
+
     private fun syncSongsWithPlaylists(songList: List<Song>) {
         songs.addAll(songList)
-        val sources = songList.map {
-            println(it.mediaUrl)
-            ProgressiveMediaSource
-                .Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri(it.mediaUrl!!.toUri()))
+        songList.forEach { song ->
+            song.mediaUrl?.let { url ->
+                val sources = songList.map {
+                    ProgressiveMediaSource
+                        .Factory(dataSourceFactory)
+                        .createMediaSource(MediaItem.fromUri(url.toUri()))
+                }
+                player?.setMediaSources(sources)
+            }
         }
-        player?.setMediaSources(sources)
     }
 }

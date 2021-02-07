@@ -45,13 +45,12 @@ fun Song(
                             Media.session?.isActive = true
                             player.next()
                             player.seekTo(0)
-                            player.play()
                         } else {
                             if (Media.songs[player.currentWindowIndex].id != song.id) {
                                 player.seekTo(index, 0)
                             }
-                            player.play()
                         }
+                        player.play()
                     }
                 }
             },

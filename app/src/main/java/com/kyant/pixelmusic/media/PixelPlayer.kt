@@ -37,7 +37,8 @@ class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
                     player: Player,
                     windowIndex: Int
                 ): MediaDescriptionCompat {
-                    return Media.songs[windowIndex].toMediaDescription()
+                    return Media.songs.getOrNull(windowIndex)?.toMediaDescription()
+                        ?: MediaDescriptionCompat.Builder().build()
                 }
             })
         }
