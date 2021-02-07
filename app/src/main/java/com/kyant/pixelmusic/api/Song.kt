@@ -19,6 +19,13 @@ fun SongId.findUrl(): String? {
     }
 }
 
-fun SongId.findUrl2(): String? = JsonParser()
-    .parse<SongResult>(URL("$API2/song/url?id=${this@findUrl2}").readText())
-    ?.data?.get(0)?.url
+fun List<SongId>.findUrls(): List<String?> {
+    val result = JsonParser().parse<SongResult>(
+        URL("$API2/song/url?id=${this@findUrls.joinToString()}").readText()
+    )?.data?.map { it.id to it.url }?.toMap()
+    val urls = mutableListOf<String?>()
+    forEach {
+        urls += result?.getValue(it)
+    }
+    return urls
+}

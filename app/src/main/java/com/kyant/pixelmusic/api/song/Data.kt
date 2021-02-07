@@ -1,7 +1,7 @@
 package com.kyant.pixelmusic.api.song
 
 data class Data(
-    val id: Int? = 0,
+    val id: Long? = 0,
     val url: String? = "",
     val br: Int? = 0,
     val size: Int? = 0,

@@ -74,7 +74,7 @@ object Media {
         scope.launch {
             DataStore(context, "playlists")
                 .getOrNull<List<SerializedSong>>("playlist_0")
-                ?.map { it.toSong(context) }
+                ?.toSongs(context)
                 ?.let { syncSongsWithPlaylists(it) }
             DataStore(context, "playlists")
                 .getOrNull<Pair<Int?, Long?>>("playlist_0_state")?.let {
@@ -109,15 +109,11 @@ object Media {
 
     private fun syncSongsWithPlaylists(songList: List<Song>) {
         songs.addAll(songList)
-        songList.forEach { song ->
-            song.mediaUrl?.let { url ->
-                val sources = songList.map {
-                    ProgressiveMediaSource
-                        .Factory(dataSourceFactory)
-                        .createMediaSource(MediaItem.fromUri(url.toUri()))
-                }
-                player?.setMediaSources(sources)
-            }
+        val sources = songList.map {
+            ProgressiveMediaSource
+                .Factory(dataSourceFactory)
+                .createMediaSource(MediaItem.fromUri(it.mediaUrl!!.toUri()))
         }
+        player?.setMediaSources(sources)
     }
 }

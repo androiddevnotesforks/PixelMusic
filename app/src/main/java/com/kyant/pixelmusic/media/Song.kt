@@ -40,15 +40,22 @@ fun Song.serialize(): SerializedSong = SerializedSong(
     description
 )
 
-fun SerializedSong.toSong(context: Context): Song = Song(
-    id,
-    albumId,
-    title,
-    subtitle,
-    description,
-    loadCachedImage(context, albumId.toString(), "covers"),
-    id?.findUrl2()
-)
+fun List<SerializedSong>.toSongs(context: Context): List<Song> {
+    val urls = map { it.id!! }.findUrls()
+    val songs = mutableListOf<Song>()
+    forEachIndexed { index, song ->
+        songs += Song(
+            song.id,
+            song.albumId,
+            song.title,
+            song.subtitle,
+            song.description,
+            loadCachedImage(context, song.albumId.toString(), "covers"),
+            urls[index]
+        )
+    }
+    return songs
+}
 
 fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.Builder()
     .setMediaId(id.toString())
