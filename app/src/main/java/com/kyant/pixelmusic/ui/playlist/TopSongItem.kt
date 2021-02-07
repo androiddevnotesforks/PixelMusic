@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.api.toplist.TopList
 
 @Composable
-fun TopListItem(
+fun TopSongItem(
     topList: TopList,
     onClick: () -> Unit,
     modifier: Modifier = Modifier

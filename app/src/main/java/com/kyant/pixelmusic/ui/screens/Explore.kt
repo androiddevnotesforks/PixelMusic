@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.api.findTopList
 import com.kyant.pixelmusic.api.toplist.TopList
-import com.kyant.pixelmusic.ui.playlist.TopListItem
+import com.kyant.pixelmusic.ui.playlist.TopSongItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -42,7 +42,7 @@ fun Explore(
                 Alignment.CenterVertically
             ) {
                 Text(
-                    "Top Lists",
+                    "Top Songs",
                     Modifier.padding(16.dp),
                     style = MaterialTheme.typography.body1
                 )
@@ -55,7 +55,7 @@ fun Explore(
             LazyRow(contentPadding = PaddingValues(64.dp, 16.dp)) {
                 topLists?.list?.let { list ->
                     items(list) {
-                        TopListItem(it, {
+                        TopSongItem(it, {
                             CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
                                 state.animateTo(true)
                             }
