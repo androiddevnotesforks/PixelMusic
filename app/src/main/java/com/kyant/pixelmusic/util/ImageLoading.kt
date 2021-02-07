@@ -60,6 +60,33 @@ fun loadImageWithDiskCache(
     return image
 }
 
+@Composable
+fun loadImageWithDiskCache(
+    query: String?,
+    name: String,
+    dataStore: CacheDataStore = LocalCacheDataStore.current
+): ImageBitmap? {
+    var image by remember(name) { mutableStateOf<ImageBitmap?>(null) }
+    var cached by remember(name) { mutableStateOf(false) }
+    val path = "$name.jpg"
+    if (dataStore.contains(path)) {
+        cached = true
+    } else {
+        query?.toUri()?.loadImage()?.asAndroidBitmap()?.let {
+            name.LaunchedIOEffectUnit {
+                dataStore.writeBitmap(path, it)
+                cached = true
+            }
+        }
+    }
+    cached.LaunchedIOEffectUnit {
+        if (cached) {
+            image = dataStore.getBitmap(path)?.asImageBitmap()
+        }
+    }
+    return image
+}
+
 fun loadCachedImage(
     context: Context,
     name: String,
@@ -67,9 +94,7 @@ fun loadCachedImage(
 ): ImageBitmap? {
     val dataStore = CacheDataStore(context, dataStoreName)
     val path = "$name.jpg"
-    return if (dataStore.contains(path)) {
+    return if (dataStore.contains(path))
         dataStore.getBitmap(path)?.asImageBitmap()
-    } else {
-        EmptyImage
-    }
+    else EmptyImage
 }

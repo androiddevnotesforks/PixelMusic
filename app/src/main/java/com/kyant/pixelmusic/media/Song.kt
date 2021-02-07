@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.*
 import com.kyant.pixelmusic.api.playlist.Track
+import com.kyant.pixelmusic.util.CacheDataStore
 import com.kyant.pixelmusic.util.loadCachedImage
 import com.kyant.pixelmusic.util.loadImageWithDiskCache
 import java.io.Serializable
@@ -42,9 +44,8 @@ fun Song.serialize(): SerializedSong = SerializedSong(
 
 fun List<SerializedSong>.toSongs(context: Context): List<Song> {
     val urls = map { it.id!! }.findUrls2()
-    val songs = mutableListOf<Song>()
-    forEachIndexed { index, song ->
-        songs += Song(
+    return mapIndexed { index, song ->
+        Song(
             song.id,
             song.albumId,
             song.title,
@@ -54,7 +55,6 @@ fun List<SerializedSong>.toSongs(context: Context): List<Song> {
             urls[index]
         )
     }
-    return songs
 }
 
 fun Song.toMediaDescription(): MediaDescriptionCompat = MediaDescriptionCompat.Builder()
@@ -93,17 +93,20 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
 @Composable
 fun List<Track>.toSongs(): List<Song> {
     val urls = map { it.id!! }.findUrls()
-    val songs = mutableListOf<Song>()
-    forEachIndexed { index, song ->
-        songs += Song(
+    val dataStore = CacheDataStore(LocalContext.current, "covers")
+    return mapIndexed { index, song ->
+        Song(
             song.id,
             song.al?.id,
             song.name,
             song.ar?.map { it.name }?.joinToString(),
             song.al?.name,
-            loadImageWithDiskCache(song.al?.id?.findCoverUrl(), song.al?.id.toString(), "covers"),
+            loadImageWithDiskCache(
+                song.al?.id?.findCoverUrl(),
+                song.al?.id.toString(),
+                dataStore
+            ),
             urls?.get(index)
         )
     }
-    return songs
 }
