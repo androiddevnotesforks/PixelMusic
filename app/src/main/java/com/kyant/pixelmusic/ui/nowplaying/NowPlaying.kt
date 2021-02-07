@@ -1,6 +1,7 @@
 package com.kyant.pixelmusic.ui.nowplaying
 
 import android.graphics.Bitmap
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
@@ -18,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -26,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.palette.graphics.Palette
 import com.kyant.inimate.layer.progress
-import com.kyant.inimate.util.lighten
+import com.kyant.inimate.util.offsetGradientBackground
 import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.ProgressBar
@@ -49,26 +51,25 @@ fun BoxWithConstraintsScope.NowPlaying(
     modifier: Modifier = Modifier
 ) {
     val density = LocalDensity.current
+    val isLight = MaterialTheme.colors.isLight
     val player = LocalPixelPlayer.current
     val song = LocalNowPlaying.current
-    val isLight = MaterialTheme.colors.isLight
     val progress = state.progress(constraints).coerceIn(0f..1f)
     var horizontalDragOffset by remember { mutableStateOf(0f) }
-    val defaultBackgroundColor = MaterialTheme.colors.surface
-    var backgroundColor by remember { mutableStateOf(defaultBackgroundColor) }
-
+    val defaultColor = MaterialTheme.colors.surface
+    var colors by remember { mutableStateOf(listOf(defaultColor, defaultColor)) }
     song.icon.LaunchedIOEffectUnit {
         song.icon?.asAndroidBitmap()?.copy(Bitmap.Config.ARGB_8888, true)?.let { bitmap ->
             Palette.from(bitmap).generate { palette ->
-                if (isLight) {
-                    palette?.lightMutedSwatch?.rgb?.let { backgroundColor = Color(it) }
-                } else {
-                    palette?.darkMutedSwatch?.rgb?.let { backgroundColor = Color(it) }
-                }
+                colors = listOf(
+                    if (isLight) Color(palette?.lightMutedSwatch?.rgb ?: Color.White.toArgb())
+                    else Color(palette?.darkMutedSwatch?.rgb ?: Color.Black.toArgb()),
+                    if (isLight) Color(palette?.lightVibrantSwatch?.rgb ?: Color.White.toArgb())
+                    else Color(palette?.darkVibrantSwatch?.rgb ?: Color.Black.toArgb())
+                )
             }
         }
     }
-
     Card(
         modifier
             .preferredSize(
@@ -99,10 +100,19 @@ fun BoxWithConstraintsScope.NowPlaying(
                 }
             },
         shape = RoundedCornerShape(16.dp * (1f - progress)),
-        backgroundColor = backgroundColor.lighten(0.4f * (1f - progress)),
         elevation = 1.dp + 23.dp * progress
     ) {
-        BoxWithConstraints {
+        BoxWithConstraints(
+            Modifier
+                .fillMaxSize()
+                .offsetGradientBackground(
+                    listOf(
+                        animateColorAsState(colors[0]).value,
+                        animateColorAsState(colors[1]).value
+                    ),
+                    constraints.maxWidth.toFloat()
+                )
+        ) {
             Column(
                 Modifier.fillMaxWidth()
                     .align(Alignment.BottomCenter)

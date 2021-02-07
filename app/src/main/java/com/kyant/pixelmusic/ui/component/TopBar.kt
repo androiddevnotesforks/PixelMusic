@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,22 +36,18 @@ fun TopBar(
         Arrangement.SpaceBetween,
         Alignment.CenterVertically
     ) {
-        IconButton({}) {
-            Icon(
-                Icons.Outlined.Menu, "Menu",
-                tint = MaterialTheme.colors.onSurface.copy(ContentAlpha.medium)
-            )
-        }
         Row {
             Image(
                 painterResource(R.drawable.ic_launcher_foreground), null,
-                Modifier.preferredHeight(56.dp),
+                Modifier
+                    .preferredHeight(56.dp)
+                    .padding(end = 8.dp),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.primary)
             )
             Text(
                 stringResource(R.string.app_name),
                 color = LocalContentColor.current.copy(ContentAlpha.high),
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h5
             )
         }
         Row {

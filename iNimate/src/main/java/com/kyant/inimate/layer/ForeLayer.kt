@@ -26,7 +26,7 @@ fun ForeLayer(
             modifier
                 .fillMaxSize()
                 .statusBarsPadding()
-                .padding(top = 48.dp)
+                .padding(top = 32.dp)
                 .offset(y = maxHeight * (1f - progress))
                 .swipeable(
                     state,

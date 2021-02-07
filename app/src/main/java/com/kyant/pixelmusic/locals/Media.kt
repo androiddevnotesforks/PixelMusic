@@ -35,7 +35,6 @@ object Media {
 
     private lateinit var dataSourceFactory: DataSource.Factory
     val songs: SnapshotStateList<Song> = mutableStateListOf<Song>().apply {
-        println(map { it.id })
         forEach {
             session?.controller?.addQueueItem(it.toMediaDescription())
         }
