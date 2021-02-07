@@ -6,8 +6,10 @@ import androidx.compose.animation.core.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.kyant.pixelmusic.locals.Media
@@ -16,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlin.concurrent.fixedRateTimer
+
 
 class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
     private val animationPeriod = AnimationConstants.DefaultDurationMillis.toLong()
@@ -39,6 +42,11 @@ class PixelPlayer(context: Context) : SimpleExoPlayer(Builder(context)) {
                 }
             })
         }
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.CONTENT_TYPE_MOVIE)
+            .build()
+        setAudioAttributes(audioAttributes, true)
         prepare()
         addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
