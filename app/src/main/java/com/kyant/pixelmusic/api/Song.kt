@@ -20,6 +20,5 @@ fun SongId.findUrl(): String? {
 }
 
 fun SongId.findUrl2(): String? = JsonParser()
-    .parse<SongResult>(
-        URL("$API2/song/url?id=${this@findUrl2}").readText()
-    )?.data?.get(0)?.url
+    .parse<SongResult>(URL("$API2/song/url?id=${this@findUrl2}").readText())
+    ?.data?.get(0)?.url

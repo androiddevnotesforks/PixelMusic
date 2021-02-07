@@ -80,9 +80,7 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
-    icon = album?.id
-        ?.findCoverUrl()
-        ?.loadImageWithDiskCache(album.id.toString(), "covers"),
+    icon = loadImageWithDiskCache(album?.id?.findCoverUrl(), album?.id.toString(), "covers"),
     mediaUrl = id?.findUrl()
 )
 
@@ -93,8 +91,6 @@ fun Track.toSong(): Song = Song(
     name,
     ar?.map { it.name }?.joinToString(),
     al?.name,
-    icon = al?.id
-        ?.findCoverUrl()
-        ?.loadImageWithDiskCache(al.id.toString(), "covers"),
+    icon = loadImageWithDiskCache(al?.id?.findCoverUrl(), al?.id.toString(), "covers"),
     mediaUrl = id?.findUrl()
 )

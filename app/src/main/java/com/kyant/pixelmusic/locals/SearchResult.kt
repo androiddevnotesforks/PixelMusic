@@ -23,9 +23,8 @@ fun ProvideSearchResult(
     if (name.isNotBlank()) {
         LaunchedEffect(name) {
             CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-                result = jsonParser.parse(
-                    URL("$API2/search?keywords=$name").readText()
-                ) ?: EmptySearchResult
+                result = jsonParser.parse(URL("$API2/search?keywords=$name").readText())
+                    ?: EmptySearchResult
             }
         }
     }

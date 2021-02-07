@@ -17,15 +17,14 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.kyant.pixelmusic.media.*
 import com.kyant.pixelmusic.util.DataStore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 object Media {
     const val NOTIFICATION_CHANNEL_ID = "Pixel Music"
     const val MEDIA_ROOT_ID = "media_root_id"
     const val EMPTY_MEDIA_ROOT_ID = "empty_root_id"
+
+    val scope=CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     var player: PixelPlayer? by mutableStateOf(null)
     lateinit var browser: MediaBrowserCompat
@@ -57,7 +56,7 @@ object Media {
     }
 
     fun syncPlaylistsToLocal(context: Context) {
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+        scope.launch {
             val dataStore = DataStore(context, "playlists")
             val songIndex = player?.currentWindowIndex
             val position = player?.currentPosition
@@ -69,7 +68,7 @@ object Media {
     }
 
     fun syncWithPlaylists(context: Context) {
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+        scope.launch {
             DataStore(context, "playlists")
                 .getOrNull<List<SerializedSong>>("playlist_0")
                 ?.map { it.toSong(context) }

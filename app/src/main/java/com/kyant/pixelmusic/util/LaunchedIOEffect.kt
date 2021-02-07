@@ -30,15 +30,3 @@ inline fun <T> Any?.launchedIOEffect(crossinline block: suspend CoroutineScope.(
     }
     return result
 }
-
-inline fun <T> Any?.launchedIO(crossinline block: suspend CoroutineScope.(T?) -> T?): T? {
-    var result by mutableStateOf<T?>(null)
-    CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-        try {
-            result = block(result)
-        } catch (e: IOException) {
-            println(e)
-        }
-    }
-    return result
-}

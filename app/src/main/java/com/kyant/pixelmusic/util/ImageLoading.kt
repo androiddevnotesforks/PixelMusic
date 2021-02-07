@@ -31,20 +31,21 @@ fun Any.loadImage(): ImageBitmap? {
 }
 
 @Composable
-fun String.loadImageWithDiskCache(
+fun loadImageWithDiskCache(
+    query: String?,
     name: String,
     dataStoreName: String
 ): ImageBitmap? {
-    var cover by remember(this) { mutableStateOf<ImageBitmap?>(null) }
-    var cached by remember(this) { mutableStateOf(false) }
+    var cover by remember(name) { mutableStateOf<ImageBitmap?>(null) }
+    var cached by remember(name) { mutableStateOf(false) }
     ProvideCacheDataStore(dataStoreName) {
         val dataStore = LocalCacheDataStore.current
         val path = "$name.jpg"
         if (dataStore.contains(path)) {
             cached = true
         } else {
-            toUri().loadImage()?.asAndroidBitmap()?.let {
-                LaunchedIOEffectUnit {
+            query?.toUri()?.loadImage()?.asAndroidBitmap()?.let {
+                name.LaunchedIOEffectUnit {
                     dataStore.writeBitmap(path, it)
                     cached = true
                 }
