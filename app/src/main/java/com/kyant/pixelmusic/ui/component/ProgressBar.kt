@@ -40,7 +40,7 @@ fun ProgressBar(modifier: Modifier = Modifier) {
         var draggingOffset by remember { mutableStateOf(0f) }.apply {
             value = value.coerceIn(((0f..1f) - player.progress) * constraints.maxWidth.toFloat())
         }
-        val durationOffset = draggingOffset / constraints.maxWidth * player.duration
+        val durationOffset = draggingOffset / width * player.duration
         Column {
             Box {
                 LinearProgressIndicator(
