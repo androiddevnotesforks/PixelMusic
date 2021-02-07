@@ -41,7 +41,7 @@ fun Song.serialize(): SerializedSong = SerializedSong(
 )
 
 fun List<SerializedSong>.toSongs(context: Context): List<Song> {
-    val urls = map { it.id!! }.findUrls()
+    val urls = map { it.id!! }.findUrls2()
     val songs = mutableListOf<Song>()
     forEachIndexed { index, song ->
         songs += Song(

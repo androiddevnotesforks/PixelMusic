@@ -19,9 +19,24 @@ fun SongId.findUrl(): String? {
     }
 }
 
-fun List<SongId>.findUrls(): List<String?> {
+@Composable
+fun List<SongId>.findUrls(): List<String?>? {
+    val jsonParser = LocalJsonParser.current
+    return launchedIOEffect {
+        val result = jsonParser.parse<SongResult>(
+            URL("$API2/song/url?id=${this@findUrls.joinToString()}").readText()
+        )?.data?.map { it.id to it.url }?.toMap()
+        val urls = mutableListOf<String?>()
+        forEach {
+            urls += result?.getValue(it)
+        }
+        urls
+    }
+}
+
+fun List<SongId>.findUrls2(): List<String?> {
     val result = JsonParser().parse<SongResult>(
-        URL("$API2/song/url?id=${this@findUrls.joinToString()}").readText()
+        URL("$API2/song/url?id=${this@findUrls2.joinToString()}").readText()
     )?.data?.map { it.id to it.url }?.toMap()
     val urls = mutableListOf<String?>()
     forEach {
