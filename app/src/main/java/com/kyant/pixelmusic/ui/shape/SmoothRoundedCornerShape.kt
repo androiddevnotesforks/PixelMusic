@@ -16,8 +16,8 @@ class SmoothRoundedCornerShape(private val radius: Double = 5.0) : Shape {
         density: Density
     ): Outline {
         val path = Path().apply {
-            val m = radius.coerceIn(0.00000000001..100.0)
-            val r = size.width.toDouble() / 2
+            val m = radius.coerceIn(0.000_000_000_01..100.0)
+            val r = minOf(size.width, size.height).toDouble() / 2
             val w = size.width.toDouble() / 2
             val h = size.height.toDouble() / 2
             for (i in 0 until (2 * r + 1).toInt()) {

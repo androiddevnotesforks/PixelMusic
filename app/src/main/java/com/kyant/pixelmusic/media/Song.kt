@@ -7,14 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.kyant.pixelmusic.api.AlbumId
 import com.kyant.pixelmusic.api.SongId
 import com.kyant.pixelmusic.api.findUrl
 import com.kyant.pixelmusic.api.findUrls2
 import com.kyant.pixelmusic.api.playlist.Track
-import com.kyant.pixelmusic.util.CacheDataStore
 import com.kyant.pixelmusic.util.loadCachedImage
 import com.kyant.pixelmusic.util.loadCoverWithDiskCache
 import java.io.Serializable
