@@ -7,7 +7,6 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Article
@@ -34,6 +33,7 @@ import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.ProgressBar
 import com.kyant.pixelmusic.ui.player.PlayController
 import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
+import com.kyant.pixelmusic.ui.shape.SuperellipseCornerShape
 import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.util.LaunchedIOEffectUnit
 import kotlinx.coroutines.CoroutineScope
@@ -99,12 +99,13 @@ fun BoxWithConstraintsScope.NowPlaying(
                     }
                 }
             },
-        shape = RoundedCornerShape(16.dp * (1f - progress)),
+        shape = SuperellipseCornerShape(12.dp * (1f - progress)),
         elevation = 1.dp + 23.dp * progress
     ) {
         BoxWithConstraints(
             Modifier
                 .fillMaxSize()
+                .clip(SuperellipseCornerShape(12.dp * (1f - progress)))
                 .offsetGradientBackground(
                     listOf(
                         animateColorAsState(colors[0]).value,

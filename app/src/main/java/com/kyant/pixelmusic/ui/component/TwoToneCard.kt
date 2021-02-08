@@ -2,7 +2,6 @@ package com.kyant.pixelmusic.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -10,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.kyant.pixelmusic.ui.shape.SuperellipseCornerShape
 
 @Composable
 fun TwoToneCard(
@@ -24,7 +24,7 @@ fun TwoToneCard(
         modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp),
-        RoundedCornerShape(16.dp),
+        SuperellipseCornerShape(16.dp),
         color.copy(if (MaterialTheme.colors.isLight) 0.05f else 0.2f),
         elevation = 0.dp
     ) {
