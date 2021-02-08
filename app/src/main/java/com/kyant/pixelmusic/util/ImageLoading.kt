@@ -11,6 +11,8 @@ import androidx.core.net.toUri
 import coil.ImageLoader
 import coil.request.CachePolicy
 import coil.request.ImageRequest
+import com.kyant.pixelmusic.api.AlbumId
+import com.kyant.pixelmusic.api.findCoverUrl
 import com.kyant.pixelmusic.locals.LocalCacheDataStore
 import com.kyant.pixelmusic.locals.ProvideCacheDataStore
 
@@ -61,30 +63,29 @@ fun loadImageWithDiskCache(
 }
 
 @Composable
-fun loadImageWithDiskCache(
-    query: String?,
-    name: String,
-    dataStore: CacheDataStore = LocalCacheDataStore.current
-): ImageBitmap? {
-    var image by remember(name) { mutableStateOf<ImageBitmap?>(null) }
-    var cached by remember(name) { mutableStateOf(false) }
-    val path = "$name.jpg"
-    if (dataStore.contains(path)) {
-        cached = true
-    } else {
-        query?.toUri()?.loadImage()?.asAndroidBitmap()?.let {
-            name.LaunchedIOEffectUnit {
-                dataStore.writeBitmap(path, it)
-                cached = true
+fun AlbumId.loadCoverWithDiskCache(): ImageBitmap? {
+    var cover by remember(this) { mutableStateOf<ImageBitmap?>(null) }
+    var cached by remember(this) { mutableStateOf(false) }
+    ProvideCacheDataStore("covers") {
+        val dataStore = LocalCacheDataStore.current
+        val path = "$this.jpg"
+        if (dataStore.contains(path)) {
+            cached = true
+        } else {
+            findCoverUrl()?.toUri()?.loadImage()?.asAndroidBitmap()?.let {
+                this.LaunchedIOEffectUnit {
+                    dataStore.writeBitmap(path, it)
+                    cached = true
+                }
+            }
+        }
+        cached.LaunchedIOEffectUnit {
+            if (cached) {
+                cover = dataStore.getBitmap(path)?.asImageBitmap()
             }
         }
     }
-    cached.LaunchedIOEffectUnit {
-        if (cached) {
-            image = dataStore.getBitmap(path)?.asImageBitmap()
-        }
-    }
-    return image
+    return cover
 }
 
 fun loadCachedImage(

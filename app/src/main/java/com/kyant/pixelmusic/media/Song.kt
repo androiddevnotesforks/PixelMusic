@@ -9,11 +9,14 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
-import com.kyant.pixelmusic.api.*
+import com.kyant.pixelmusic.api.AlbumId
+import com.kyant.pixelmusic.api.SongId
+import com.kyant.pixelmusic.api.findUrl
+import com.kyant.pixelmusic.api.findUrls2
 import com.kyant.pixelmusic.api.playlist.Track
 import com.kyant.pixelmusic.util.CacheDataStore
 import com.kyant.pixelmusic.util.loadCachedImage
-import com.kyant.pixelmusic.util.loadImageWithDiskCache
+import com.kyant.pixelmusic.util.loadCoverWithDiskCache
 import java.io.Serializable
 
 data class Song(
@@ -86,13 +89,12 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
     name,
     artists?.map { it.name }?.joinToString(),
     album?.name,
-    loadImageWithDiskCache(album?.id?.findCoverUrl(), album?.id.toString(), "covers"),
+    album?.id?.loadCoverWithDiskCache(),
     id?.findUrl()
 )
 
 @Composable
 fun List<Track>.toSongs(): List<Song> {
-    val dataStore = CacheDataStore(LocalContext.current, "covers")
     return map { track ->
         Song(
             track.id,
@@ -100,11 +102,7 @@ fun List<Track>.toSongs(): List<Song> {
             track.name,
             track.ar?.map { it.name }?.joinToString(),
             track.al?.name,
-            loadImageWithDiskCache(
-                track.al?.id?.findCoverUrl(),
-                track.al?.id.toString(),
-                dataStore
-            ),
+            track.al?.id?.loadCoverWithDiskCache(),
             track.id?.findUrl()
         )
     }
