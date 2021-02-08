@@ -12,6 +12,7 @@ import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.kyant.inimate.insets.statusBarsPadding
+import com.kyant.inimate.shape.SuperellipseCornerShape
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -37,7 +38,7 @@ fun ForeLayer(
                     Orientation.Vertical
                 )
                 .pointerInput(Unit) { detectTapGestures {} },
-            RoundedCornerShape((16.dp * progress).coerceAtLeast(0.dp)),
+            SuperellipseCornerShape((16.dp * progress).coerceAtLeast(0.dp)),
             elevation = 24.dp * progress
         ) {
             Column(Modifier.fillMaxSize()) {

@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.kyant.inimate.shape.SmoothRoundedCornerShape
+import com.kyant.inimate.shape.SuperellipseCornerShape
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.locals.Media
 import com.kyant.pixelmusic.media.Song
 import com.kyant.pixelmusic.ui.song.Cover
-import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -54,7 +54,7 @@ fun PlayerPlaylistItem(
         modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp),
-        RoundedCornerShape(cornerSize),
+        SuperellipseCornerShape(cornerSize),
         backgroundColor,
         contentColor,
         elevation = 0.dp

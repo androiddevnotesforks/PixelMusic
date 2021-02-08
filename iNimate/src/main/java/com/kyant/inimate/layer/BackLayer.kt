@@ -2,7 +2,6 @@ package com.kyant.inimate.layer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.SwipeableState
@@ -16,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.kyant.inimate.insets.LocalSysUiController
 import com.kyant.inimate.insets.LocalWindowInsets
 import com.kyant.inimate.insets.statusBarsPadding
+import com.kyant.inimate.shape.SuperellipseCornerShape
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -40,7 +40,7 @@ fun BackLayer(
                 .fillMaxSize()
                 .padding(top = (statusBarHeight * progress - 8.dp * progress).coerceAtLeast(0.dp))
                 .scale((maxWidth - 24.dp * progress) / maxWidth),
-            RoundedCornerShape((12.dp * progress).coerceAtLeast(0.dp))
+            SuperellipseCornerShape((12.dp * progress).coerceAtLeast(0.dp))
         ) {
             Box(
                 Modifier

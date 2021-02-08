@@ -32,8 +32,8 @@ import com.kyant.pixelmusic.locals.LocalNowPlaying
 import com.kyant.pixelmusic.locals.LocalPixelPlayer
 import com.kyant.pixelmusic.ui.component.ProgressBar
 import com.kyant.pixelmusic.ui.player.PlayController
-import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
-import com.kyant.pixelmusic.ui.shape.SuperellipseCornerShape
+import com.kyant.inimate.shape.SmoothRoundedCornerShape
+import com.kyant.inimate.shape.SuperellipseCornerShape
 import com.kyant.pixelmusic.ui.song.Cover
 import com.kyant.pixelmusic.util.LaunchedIOEffectUnit
 import kotlinx.coroutines.CoroutineScope

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.ui.component.TwoToneCard
-import com.kyant.pixelmusic.ui.shape.SuperellipseCornerShape
+import com.kyant.inimate.shape.SuperellipseCornerShape
 import com.kyant.pixelmusic.ui.theme.androidBlue
 
 @Composable

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.kyant.pixelmusic.api.findPlaylist
 import com.kyant.pixelmusic.api.toplist.TopList
 import com.kyant.pixelmusic.media.toSongs
-import com.kyant.pixelmusic.ui.shape.SmoothRoundedCornerShape
+import com.kyant.inimate.shape.SmoothRoundedCornerShape
 import com.kyant.pixelmusic.ui.song.Song
 import com.kyant.pixelmusic.util.EmptyImage
 import com.kyant.pixelmusic.util.loadImage
