@@ -92,21 +92,20 @@ fun com.kyant.pixelmusic.api.search.Song.toSong(): Song = Song(
 
 @Composable
 fun List<Track>.toSongs(): List<Song> {
-    val urls = map { it.id!! }.findUrls()
     val dataStore = CacheDataStore(LocalContext.current, "covers")
-    return mapIndexed { index, song ->
+    return map { track ->
         Song(
-            song.id,
-            song.al?.id,
-            song.name,
-            song.ar?.map { it.name }?.joinToString(),
-            song.al?.name,
+            track.id,
+            track.al?.id,
+            track.name,
+            track.ar?.map { it.name }?.joinToString(),
+            track.al?.name,
             loadImageWithDiskCache(
-                song.al?.id?.findCoverUrl(),
-                song.al?.id.toString(),
+                track.al?.id?.findCoverUrl(),
+                track.al?.id.toString(),
                 dataStore
             ),
-            urls?.get(index)
+            track.id?.findUrl()
         )
     }
 }
